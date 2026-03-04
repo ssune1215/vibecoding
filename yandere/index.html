@@ -3,197 +3,705 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>연애 집착도 테스트</title>
+  <title>🔪 연애 집착도 테스트</title>
 
-  <!-- OG (Kakao preview) -->
+  <!-- Open Graph (카카오/미리보기) -->
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="연애 집착도 테스트" />
-  <meta property="og:description" content="내 집착 레벨은 어느 정도일까? 1분만에 확인!" />
-  <meta property="og:image" content="__THUMB_URL__" />
-  <meta property="og:url" content="__BASE_URL__/yandere/" />
+  <meta property="og:title" content="🔪 연애 집착도 테스트" />
+  <meta property="og:description" content="나도 모르게 집착하는 순간이 있다면? 지금 확인해보세요." />
+  <!-- 썸네일이 준비되어 있으면 경로를 맞춰 사용하세요 -->
+  <meta property="og:image" content="../assets/share-thumb.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
 
-  <link rel="stylesheet" href="../common.css" />
-  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" integrity="sha384-6k7mZq3Y6n0vU8i4+Y0p7k0m9nqz8DgZ7xkqvQpFqG2Jp8VbH0Y0wS6oVv0p0r3m" crossorigin="anonymous"></script>
-  <script defer src="../assets/kakao-share.js"></script>
+  <!-- Kakao SDK -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+    integrity="sha384-6MF8kDgPZtqUo4eQ9Yv4SxXwqG8h+z8r8h0lOQk7mV9Qk2z7u8l3t3cQHq2c0n8K"
+    crossorigin="anonymous"></script>
+
+  <!-- Confetti (가벼운 CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 
   <style>
-    body { padding: 24px; }
-    .card { max-width: 520px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 18px; box-shadow: 0 6px 18px rgba(0,0,0,.08); }
-    h1 { margin: 0 0 12px; font-size: 20px; }
-    .q { margin: 16px 0 10px; font-weight: 700; }
-    .opts button { width: 100%; margin: 8px 0; padding: 12px 14px; border-radius: 12px; border: 1px solid #eee; background: #fafafa; cursor: pointer; }
-    .opts button:hover { background: #f3f3f3; }
-    .row { display:flex; gap:10px; margin-top: 14px; }
-    .row button { flex:1; padding: 12px 14px; border-radius: 12px; border: none; cursor:pointer; }
-    .primary { background:#111; color:#fff; }
-    .secondary { background:#f1f1f1; }
-    .hidden { display:none; }
+    :root{
+      --cardW: 450px;
+      --bg: #ffd6e8;          /* 솔리드 핑크 */
+      --card: rgba(255,255,255,0.78);
+      --stroke: rgba(255, 88, 150, 0.25);
+      --text: #2a2230;
+      --muted: rgba(42,34,48,0.72);
+
+      --hotPink: #ff4d8d;
+      --hotPink2:#ff2f7a;
+
+      --btn: rgba(255,255,255,0.72);
+      --btnStroke: rgba(255, 88, 150, 0.28);
+
+      --shadow: 0 18px 45px rgba(0,0,0,0.12);
+      --shadowIn: 0 10px 20px rgba(0,0,0,0.10);
+      --r2xl: 22px;
+      --rxl: 16px;
+
+      --kakao: #FEE500;
+      --blue: #3B82F6;
+      --red: #EF4444;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: var(--bg);
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color: var(--text);
+      padding: 18px;
+    }
+
+    .wrap{
+      width: min(var(--cardW), 100%);
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: var(--r2xl);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .top{
+      padding: 18px 18px 14px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom: 10px;
+    }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,77,141,0.12);
+      border: 1px solid rgba(255,77,141,0.18);
+      font-weight: 700;
+      letter-spacing: -0.2px;
+    }
+
+    .badge .dot{
+      width: 8px; height: 8px;
+      border-radius: 999px;
+      background: var(--hotPink);
+      box-shadow: 0 0 0 6px rgba(255,77,141,0.12);
+    }
+
+    .tiny{
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .title{
+      font-size: 22px;
+      font-weight: 800;
+      margin: 6px 0 8px;
+      letter-spacing: -0.4px;
+    }
+
+    .startMent{
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14px;
+      white-space: pre-line;
+    }
+
+    .progress{
+      height: 10px;
+      background: rgba(0,0,0,0.06);
+      border-radius: 999px;
+      overflow:hidden;
+      margin-top: 14px;
+      border: 1px solid rgba(255,77,141,0.16);
+    }
+    .bar{
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--hotPink), var(--hotPink2));
+      border-radius: 999px;
+      transition: width 220ms ease;
+    }
+
+    .mid{
+      padding: 14px 18px 18px;
+    }
+
+    .qBox{
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(255,77,141,0.18);
+      border-radius: var(--r2xl);
+      padding: 14px 14px 12px;
+      box-shadow: var(--shadowIn);
+    }
+    .qTitle{
+      margin: 0;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -0.2px;
+      line-height: 1.5;
+    }
+
+    .ans{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .btn{
+      appearance:none;
+      border: 1px solid var(--btnStroke);
+      background: var(--btn);
+      border-radius: 16px;
+      padding: 12px 12px;
+      font-weight: 700;
+      text-align:left;
+      color: var(--text);
+      cursor:pointer;
+      box-shadow: 0 12px 20px rgba(0,0,0,0.08);
+      transform: translateY(0);
+      transition: transform 90ms ease, box-shadow 90ms ease, background 180ms ease;
+    }
+    .btn:hover{
+      background: rgba(255,255,255,0.86);
+    }
+    .btn:active{
+      transform: translateY(2px);
+      box-shadow: 0 7px 14px rgba(0,0,0,0.10);
+    }
+
+    /* 결과 */
+    .resultWrap{
+      padding: 18px;
+    }
+
+    .hero{
+      background: rgba(255,255,255,0.78);
+      border: 1px solid rgba(255,77,141,0.22);
+      border-radius: var(--r2xl);
+      padding: 16px 16px 14px;
+      box-shadow: var(--shadowIn);
+    }
+
+    .heroTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .level{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 900;
+      letter-spacing: -0.2px;
+      background: rgba(255,77,141,0.12);
+      border: 1px solid rgba(255,77,141,0.18);
+    }
+
+    .heroTitle{
+      margin: 0;
+      font-size: 20px;
+      font-weight: 900;
+      letter-spacing: -0.3px;
+      line-height: 1.25;
+    }
+
+    .keywords{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .chip{
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: rgba(0,0,0,0.05);
+      border: 1px solid rgba(0,0,0,0.06);
+      color: rgba(42,34,48,0.85);
+    }
+
+    .desc{
+      margin: 10px 0 0;
+      color: rgba(42,34,48,0.84);
+      line-height: 1.6;
+      font-size: 14px;
+      white-space: pre-line;
+    }
+
+    .tip{
+      margin-top: 12px;
+      padding: 12px 12px;
+      border-radius: 18px;
+      border: 1px dashed rgba(255,77,141,0.28);
+      background: rgba(255,77,141,0.08);
+    }
+    .tipTitle{
+      margin:0 0 6px;
+      font-weight: 900;
+      font-size: 13px;
+      letter-spacing:-0.2px;
+    }
+    .tipBody{
+      margin:0;
+      font-size: 13px;
+      line-height: 1.55;
+      color: rgba(42,34,48,0.80);
+    }
+
+    .cta{
+      display:flex;
+      flex-direction:column;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .ctaBtn{
+      appearance:none;
+      border: 0;
+      border-radius: 16px;
+      padding: 12px 12px;
+      font-weight: 900;
+      cursor:pointer;
+      box-shadow: 0 14px 26px rgba(0,0,0,0.10);
+      transform: translateY(0);
+      transition: transform 90ms ease, box-shadow 90ms ease, filter 180ms ease;
+      text-align:center;
+    }
+    .ctaBtn:active{
+      transform: translateY(2px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.12);
+    }
+    .kakao{ background: var(--kakao); color:#1b1b1b; }
+    .other{ background: var(--blue); color:white; }
+    .retry{ background: var(--red); color:white; }
+
+    .footerNote{
+      margin-top: 10px;
+      font-size: 12px;
+      color: rgba(42,34,48,0.68);
+      text-align:center;
+    }
+
+    .hide{ display:none !important; }
   </style>
 </head>
-<body>
-  <div class="card">
-    <h1>🔪 연애 집착도 테스트</h1>
-    <div id="quiz">
-      <div id="progress"></div>
-      <div class="q" id="qtext"></div>
-      <div class="opts" id="opts"></div>
-    </div>
 
-    <div id="result" class="hidden">
-      <h1 id="rtitle"></h1>
-      <p id="rdesc"></p>
-      <div class="row">
-        <button class="primary" id="share">카카오톡 공유</button>
-        <button class="secondary" id="restart">다시하기</button>
-      </div>
+<body>
+  <div class="wrap">
+    <div class="card" id="app">
+      <!-- START -->
+      <section id="screenStart">
+        <div class="top">
+          <div class="brand">
+            <div class="badge"><span class="dot"></span> vibe test</div>
+            <div class="tiny">🩷 지금, 가볍게 체크</div>
+          </div>
+
+          <h1 class="title">🔪 연애 집착도 테스트</h1>
+          <p class="startMent">🎀 무조건 ‘나쁜’ 건 아니에요.
+🫧 다만 선이 흐려지기 시작하면 피곤해집니다.
+🧊 내 패턴을 먼저 확인해보세요.</p>
+
+          <!-- 진행바: 숫자/퍼센트 표기 없이 바만 -->
+          <div class="progress" aria-label="progress"><div class="bar" id="bar"></div></div>
+        </div>
+
+        <div class="mid">
+          <div class="qBox">
+            <p class="qTitle">준비되셨나요?</p>
+            <div class="ans">
+              <button class="btn" id="btnStart">시작하기 🚀</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- QUIZ -->
+      <section id="screenQuiz" class="hide">
+        <div class="top">
+          <div class="brand">
+            <div class="badge"><span class="dot"></span> vibe test</div>
+            <div class="tiny">💗 솔직하게 고르면 정확해요</div>
+          </div>
+
+          <h2 class="title" id="qNo"> </h2>
+          <p class="startMent" id="qSub" style="display:none"></p>
+          <div class="progress" aria-label="progress"><div class="bar" id="bar2"></div></div>
+        </div>
+
+        <div class="mid">
+          <div class="qBox">
+            <p class="qTitle" id="qText"></p>
+            <div class="ans" id="ans"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RESULT -->
+      <section id="screenResult" class="hide">
+        <div class="resultWrap">
+          <div class="hero">
+            <div class="heroTop">
+              <div>
+                <div class="level" id="rLevel">LEVEL</div>
+                <h2 class="heroTitle" id="rTitle">결과</h2>
+              </div>
+              <div class="tiny">✨ 저장/공유 가능</div>
+            </div>
+
+            <div class="keywords" id="rKeywords"></div>
+
+            <!-- 메인 결과 + 멘트 3문장 고정 -->
+            <p class="desc" id="rDesc"></p>
+
+            <div class="tip">
+              <p class="tipTitle">TIP 💡</p>
+              <p class="tipBody" id="rTip"></p>
+            </div>
+
+            <div class="cta">
+              <button class="ctaBtn kakao" id="btnKakao">카카오톡 공유하기</button>
+              <button class="ctaBtn other" id="btnOther">다른 테스트 해보기</button>
+              <button class="ctaBtn retry" id="btnRetry">테스트 다시하기</button>
+
+              <!-- Kakao SDK createDefaultButton용 숨김 버튼(요청하신 방식) -->
+              <a id="kakao-link-btn" href="javascript:;" class="hide">share</a>
+            </div>
+
+            <div class="footerNote">📌 결과는 재미용이에요. 하지만 패턴은 꽤 잘 맞을지도요 🙂</div>
+          </div>
+        </div>
+      </section>
     </div>
   </div>
 
-<script>
-const questions = [
-  {
-    q: "연락이 늦으면 어떤 생각이 먼저 드나요?",
-    a: [
-      ["바쁜가 보다. 기다린다", 0],
-      ["무슨 일 있나? 걱정된다", 1],
-      ["혹시 나 말고 다른 사람이…?", 2],
-      ["지금 바로 확인해야 한다", 3],
-    ]
-  },
-  {
-    q: "상대의 SNS를 보는 편인가요?",
-    a: [
-      ["거의 안 본다", 0],
-      ["가끔 본다", 1],
-      ["자주 확인한다", 2],
-      ["알림/팔로우까지 다 체크한다", 3],
-    ]
-  },
-  {
-    q: "데이트 약속이 취소되면?",
-    a: [
-      ["다음에 보자고 한다", 0],
-      ["이유를 묻고 이해한다", 1],
-      ["속상해서 티가 난다", 2],
-      ["서운함이 크게 남는다", 3],
-    ]
-  },
-  {
-    q: "상대가 이성 친구와 만난다고 하면?",
-    a: [
-      ["응원한다", 0],
-      ["살짝 신경 쓰인다", 1],
-      ["질문이 많아진다", 2],
-      ["안 만났으면 좋겠다", 3],
-    ]
-  },
-  {
-    q: "연애 중 가장 불안한 순간은?",
-    a: [
-      ["특별히 없다", 0],
-      ["말투가 차갑게 느껴질 때", 1],
-      ["연락 패턴이 바뀔 때", 2],
-      ["답장이 없을 때", 3],
-    ]
-  },
-  {
-    q: "상대의 휴대폰을 볼 기회가 생기면?",
-    a: [
-      ["절대 안 본다", 0],
-      ["잠깐 고민한다", 1],
-      ["궁금해서 조금 본다", 2],
-      ["무조건 확인한다", 3],
-    ]
-  },
-  {
-    q: "다툰 후 화해 방식은?",
-    a: [
-      ["대화로 풀고 끝낸다", 0],
-      ["확인하고 싶어 한다", 1],
-      ["사과를 여러 번 받고 싶다", 2],
-      ["불안해서 계속 붙잡는다", 3],
-    ]
-  },
-  {
-    q: "상대가 혼자만의 시간을 원하면?",
-    a: [
-      ["좋아, 쉬어!", 0],
-      ["조금 아쉽지만 존중", 1],
-      ["왜? 나랑 있기 싫어?", 2],
-      ["불안해서 계속 연락한다", 3],
-    ]
-  },
-];
+  <script>
+    /**
+     * ✅ 중요: 카카오 공유가 되려면 아래 값이 반드시 맞아야 합니다.
+     * - KAKAO_APP_KEY: 카카오 디벨로퍼 "JavaScript 키"
+     * - SITE_URL: 실제 배포 주소(Cloudflare/GitHub Pages)
+     */
+    const KAKAO_APP_KEY = "b30b6d088f5b3551adc2890111d071fc";
+    const SITE_URL = window.location.origin + window.location.pathname.replace(/\/yandere\/?$/, ""); // 대략적인 기본값
 
-let idx = 0;
-let score = 0;
+    // 다른 테스트 보기 버튼 링크(요청 고정)
+    const OTHER_TEST_URL = "https://blog.naver.com/forgiven_77/224195220807";
 
-const qtext = document.getElementById("qtext");
-const opts = document.getElementById("opts");
-const quiz = document.getElementById("quiz");
-const result = document.getElementById("result");
-const rtitle = document.getElementById("rtitle");
-const rdesc = document.getElementById("rdesc");
+    // 질문 8개 / 4지선다 고정
+    const QUESTIONS = [
+      {
+        q: "연락이 끊기면 가장 먼저 드는 생각은?",
+        a: [
+          { t: "바쁜가 보다. 조금 기다려본다.", s: 0 },
+          { t: "음… 뭐 하고 있지? 살짝 신경 쓰인다.", s: 1 },
+          { t: "왜 답이 없지? 이유가 있을 것 같다.", s: 2 },
+          { t: "혹시 다른 사람? 머릿속이 복잡해진다.", s: 3 }
+        ]
+      },
+      {
+        q: "상대의 SNS/활동 기록을 보는 편인가요?",
+        a: [
+          { t: "거의 안 본다.", s: 0 },
+          { t: "가끔 생각나면 확인한다.", s: 1 },
+          { t: "자주 보게 된다. 습관처럼.", s: 2 },
+          { t: "올라오면 바로 보고 의미를 해석한다.", s: 3 }
+        ]
+      },
+      {
+        q: "상대가 이성 지인과 친해 보이면?",
+        a: [
+          { t: "그럴 수 있지. 넘어간다.", s: 0 },
+          { t: "조금은 신경 쓰이지만 티는 안 낸다.", s: 1 },
+          { t: "누구인지, 관계가 뭔지 알고 싶어진다.", s: 2 },
+          { t: "확실히 정리하고 싶다. 불편함이 커진다.", s: 3 }
+        ]
+      },
+      {
+        q: "약속 변경/취소가 생기면 내 반응은?",
+        a: [
+          { t: "상황이 있겠지. 다시 잡으면 된다.", s: 0 },
+          { t: "아쉽지만 괜찮다.", s: 1 },
+          { t: "왜 취소됐는지 자세히 알고 싶다.", s: 2 },
+          { t: "서운함이 크게 남고 오래 간다.", s: 3 }
+        ]
+      },
+      {
+        q: "상대가 ‘혼자 있고 싶어’라고 말하면?",
+        a: [
+          { t: "알겠어. 쉬고 연락 줘.", s: 0 },
+          { t: "조금 걱정되지만 시간을 준다.", s: 1 },
+          { t: "나 때문인가? 이유를 확인하고 싶다.", s: 2 },
+          { t: "거리감이 불안으로 바뀐다.", s: 3 }
+        ]
+      },
+      {
+        q: "연애 중 ‘확인’하고 싶은 건 무엇인가요?",
+        a: [
+          { t: "서로의 신뢰가 제일 중요하다.", s: 0 },
+          { t: "마음이 변하지 않았는지 가끔 확인.", s: 1 },
+          { t: "내가 1순위인지 확실히 알고 싶다.", s: 2 },
+          { t: "모든 게 명확해야 마음이 놓인다.", s: 3 }
+        ]
+      },
+      {
+        q: "다툰 뒤 상대가 바로 풀지 않으면?",
+        a: [
+          { t: "시간이 필요하겠지. 기다린다.", s: 0 },
+          { t: "조금 답답하지만 참아본다.", s: 1 },
+          { t: "지금 해결해야 한다고 느낀다.", s: 2 },
+          { t: "불안해서 계속 생각나고 집중이 안 된다.", s: 3 }
+        ]
+      },
+      {
+        q: "상대가 늦게 답장하면 내가 하는 행동은?",
+        a: [
+          { t: "내 할 일 하면서 기다린다.", s: 0 },
+          { t: "한 번 더 보내볼까 고민한다.", s: 1 },
+          { t: "읽었는지/접속했는지 확인한다.", s: 2 },
+          { t: "연속으로 보내고 반응을 확인한다.", s: 3 }
+        ]
+      }
+    ];
 
-function render() {
-  const cur = questions[idx];
-  document.getElementById("progress").textContent = `${idx+1} / ${questions.length}`;
-  qtext.textContent = cur.q;
-  opts.innerHTML = "";
-  cur.a.forEach(([label, val]) => {
-    const b = document.createElement("button");
-    b.textContent = label;
-    b.onclick = () => {
-      score += val;
+    const RESULTS = [
+      {
+        min: 0, max: 6,
+        level: "LEVEL 1  🫧",
+        title: "담백 안정형",
+        keywords: ["여유", "신뢰", "자기리듬"],
+        desc3: "기본적으로 상대를 믿고 관계를 편하게 가져가는 타입입니다.
+확인 욕구가 낮아서 감정 소모가 적고, 연애가 삶을 잠식하지 않아요.
+다만 무심해 보일 수 있으니 ‘표현’만 살짝 더해주면 완성형입니다.",
+        tip: "마음이 편한 만큼, 좋은 순간을 말로 남겨주세요. 작은 확신은 관계를 더 단단하게 만듭니다."
+      },
+      {
+        min: 7, max: 12,
+        level: "LEVEL 2  🎀",
+        title: "관심 확인형",
+        keywords: ["신경씀", "확인", "조절가능"],
+        desc3: "상대가 소중해서 자연스럽게 반응을 확인하는 편입니다.
+불안이 크진 않지만, 상황에 따라 생각이 많아질 때가 있어요.
+‘확인’의 빈도만 조절하면 아주 건강하게 유지됩니다.",
+        tip: "불안이 올라올 땐 ‘사실’과 ‘상상’을 분리해보세요. 대화는 짧고 정확하게 하는 게 제일 좋아요."
+      },
+      {
+        min: 13, max: 18,
+        level: "LEVEL 3  🔥",
+        title: "불안 탐색형",
+        keywords: ["해석", "집중", "확실함필요"],
+        desc3: "상대의 반응이 줄어들면 이유를 찾고 싶은 마음이 강해집니다.
+관계에 몰입하는 장점이 있지만, 해석이 과해지면 스스로가 힘들어져요.
+‘확실함’을 얻는 방식만 바꾸면 훨씬 편해집니다.",
+        tip: "모호함이 불안을 키워요. ‘지금 어떤 상태인지’만 짧게 확인하고, 그 뒤엔 본인 루틴으로 돌아오세요."
+      },
+      {
+        min: 19, max: 24,
+        level: "LEVEL 4  🔪",
+        title: "집착 경계형",
+        keywords: ["불안", "통제욕", "관계과몰입"],
+        desc3: "연애가 불안의 중심이 되는 순간이 종종 있습니다.
+확인과 통제가 늘어나면 상대도, 본인도 지치기 쉬워요.
+핵심은 ‘사랑의 크기’가 아니라 ‘불안을 다루는 방식’입니다.",
+        tip: "확인 행동을 하기 전 10분만 멈춰보세요. 그 10분에 ‘내가 지금 무서운 건 무엇인지’ 적으면 감정이 내려옵니다."
+      }
+    ];
+
+    const $ = (id) => document.getElementById(id);
+
+    const screenStart = $("screenStart");
+    const screenQuiz = $("screenQuiz");
+    const screenResult = $("screenResult");
+
+    const bar = $("bar");
+    const bar2 = $("bar2");
+    const qText = $("qText");
+    const ans = $("ans");
+
+    const btnStart = $("btnStart");
+    const btnRetry = $("btnRetry");
+    const btnOther = $("btnOther");
+    const btnKakao = $("btnKakao");
+
+    let idx = -1;
+    let score = 0;
+
+    function setScreen(which){
+      screenStart.classList.add("hide");
+      screenQuiz.classList.add("hide");
+      screenResult.classList.add("hide");
+      which.classList.remove("hide");
+    }
+
+    function setProgress(){
+      const p = Math.max(0, (idx) / QUESTIONS.length);
+      const w = Math.round(p * 100);
+      bar.style.width = "0%"; // 시작화면은 0 고정
+      bar2.style.width = w + "%";
+    }
+
+    function renderQuestion(){
+      setProgress();
+      const item = QUESTIONS[idx];
+      qText.textContent = item.q;
+      ans.innerHTML = "";
+      item.a.forEach((opt, i) => {
+        const b = document.createElement("button");
+        b.className = "btn";
+        b.type = "button";
+        b.textContent = opt.t; // A/B/C/D 표시 제거
+        b.addEventListener("click", () => {
+          score += opt.s;
+          next();
+        });
+        ans.appendChild(b);
+      });
+    }
+
+    function next(){
       idx += 1;
-      if (idx >= questions.length) showResult();
-      else render();
-    };
-    opts.appendChild(b);
-  });
-}
+      if (idx >= QUESTIONS.length){
+        showResult();
+        return;
+      }
+      renderQuestion();
+    }
 
-function showResult() {
-  quiz.classList.add("hidden");
-  result.classList.remove("hidden");
+    function pickResult(){
+      return RESULTS.find(r => score >= r.min && score <= r.max) || RESULTS[1];
+    }
 
-  let level, desc;
-  if (score <= 6) {
-    level = "🟢 안정형";
-    desc = "상대의 리듬을 존중하고 스스로도 균형을 잘 잡는 편입니다. 불안이 와도 금방 회복합니다.";
-  } else if (score <= 12) {
-    level = "🟡 관심형";
-    desc = "관심과 애정 표현이 많은 편입니다. 다만 불안이 커질 때는 기준을 정해두면 더 편해집니다.";
-  } else if (score <= 18) {
-    level = "🟠 예민형";
-    desc = "확인이 필요해지는 순간이 자주 옵니다. 감정이 올라올 때 행동보다 대화를 먼저 시도해보세요.";
-  } else {
-    level = "🔴 집착주의";
-    desc = "불안이 행동으로 빠르게 이어질 수 있습니다. ‘확인’보다 ‘합의된 룰’로 관계를 안정시키는 게 핵심입니다.";
-  }
+    function fireConfetti(){
+      try{
+        confetti({ particleCount: 120, spread: 70, origin: { y: 0.6 } });
+        setTimeout(() => confetti({ particleCount: 80, spread: 60, origin: { y: 0.2 } }), 140);
+      }catch(e){}
+    }
 
-  rtitle.textContent = `결과: ${level}`;
-  rdesc.textContent = desc;
+    function initKakao(){
+      if (!window.Kakao) return false;
+      try{
+        if (!Kakao.isInitialized()){
+          if (!KAKAO_APP_KEY || KAKAO_APP_KEY.includes("여기에_")) return false;
+          Kakao.init(KAKAO_APP_KEY);
+        }
+        return true;
+      }catch(e){
+        return false;
+      }
+    }
 
-  const shareBtn = document.getElementById("share");
-  shareBtn.onclick = () => {
-    // share current page
-    shareKakaoFeed({
-      title: "연애 집착도 테스트",
-      description: `내 결과는 ${level}!`,
-      url: window.location.href
+    function setupKakaoShare(result){
+      const ok = initKakao();
+      if (!ok){
+        // 키 미설정이면 버튼 동작 안내(개발자 친화적으로 조용히)
+        btnKakao.addEventListener("click", () => {
+          alert("카카오 공유를 사용하려면 KAKAO_APP_KEY(자바스크립트 키)를 설정해 주세요.");
+        }, { once: true });
+        return;
+      }
+
+      // 현재 페이지 URL(배포 환경 기준)
+      const shareUrl = window.location.href;
+
+      // 숨김 버튼 방식(createDefaultButton)
+      Kakao.Share.createDefaultButton({
+        container: "#kakao-link-btn",
+        objectType: "feed",
+        content: {
+          title: "🔪 연애 집착도 테스트",
+          description: `${result.title} · ${result.keywords.join(" / ")}`,
+          imageUrl: new URL("../assets/share-thumb.jpg", shareUrl).toString(),
+          link: {
+            mobileWebUrl: shareUrl,
+            webUrl: shareUrl
+          }
+        },
+        buttons: [
+          {
+            title: "테스트 하러가기",
+            link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
+          }
+        ]
+      });
+
+      // 보이는 버튼 클릭 → 숨김 버튼 클릭 트리거
+      btnKakao.onclick = () => {
+        const hidden = document.querySelector("#kakao-link-btn");
+        hidden && hidden.click();
+      };
+    }
+
+    function showResult(){
+      setScreen(screenResult);
+      const r = pickResult();
+
+      $("rLevel").textContent = r.level;
+      $("rTitle").textContent = r.title;
+
+      const kw = $("rKeywords");
+      kw.innerHTML = "";
+      r.keywords.forEach(k => {
+        const s = document.createElement("span");
+        s.className = "chip";
+        s.textContent = "#" + k;
+        kw.appendChild(s);
+      });
+
+      $("rDesc").textContent = r.desc3;
+      $("rTip").textContent = r.tip;
+
+      fireConfetti();
+      setupKakaoShare(r);
+    }
+
+    function resetAll(){
+      idx = -1;
+      score = 0;
+      bar.style.width = "0%";
+      bar2.style.width = "0%";
+      setScreen(screenStart);
+    }
+
+    btnStart.addEventListener("click", () => {
+      setScreen(screenQuiz);
+      idx = -1;
+      score = 0;
+      next();
     });
-  };
-}
 
-document.getElementById("restart").onclick = () => {
-  idx = 0; score = 0;
-  result.classList.add("hidden");
-  quiz.classList.remove("hidden");
-  render();
-};
+    btnOther.addEventListener("click", () => {
+      window.open(OTHER_TEST_URL, "_blank", "noopener,noreferrer");
+    });
 
-render();
-</script>
+    btnRetry.addEventListener("click", resetAll);
+
+    // 초기 화면
+    resetAll();
+  </script>
 </body>
 </html>
