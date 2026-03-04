@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>나의 연애 온도 테스트</title>
+
+  <!-- Kakao SDK -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+    integrity="sha384-+g1l7Gkq8gk9u1rTgkL8CkQ7QK8u0c8m8xQ1GQm0o0g8o0g0g0g0g0g0g0g0g0g"
+    crossorigin="anonymous"></script>
+
+  <style>
+    :root{
+      --bg:#ffd6e7;
+      --card:#ff9fc7;
+      --card2:#ffb6d6;
+      --ink:#2b1b23;
+      --muted:rgba(43,27,35,.75);
+      --white:rgba(255,255,255,.92);
+      --shadow:0 16px 40px rgba(0,0,0,.18);
+      --radius:22px;
+      --btn:#fff;
+      --btnInk:#2b1b23;
+      --btnShadow:0 10px 0 rgba(0,0,0,.12);
+      --btnShadowDown:0 4px 0 rgba(0,0,0,.12);
+      --yellow:#ffe812;
+      --blue:#3b82f6;
+      --red:#ef4444;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", Segoe UI, Roboto, Helvetica, Arial;
+      background: radial-gradient(1200px 800px at 20% 10%, #ffe9f3 0%, var(--bg) 40%, #ffc1dc 100%);
+      color:var(--ink);
+      min-height:100svh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px 12px;
+    }
+    .wrap{
+      width:min(450px, 100%);
+      position:relative;
+    }
+    .card{
+      background: linear-gradient(180deg, var(--card) 0%, var(--card2) 100%);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding:18px 18px 16px;
+      border:1px solid rgba(255,255,255,.35);
+      overflow:hidden;
+      position:relative;
+    }
+    .badge{
+      display:inline-flex;
+      gap:8px;
+      align-items:center;
+      background: rgba(255,255,255,.35);
+      border:1px solid rgba(255,255,255,.45);
+      padding:8px 12px;
+      border-radius:999px;
+      font-weight:800;
+      letter-spacing:-.2px;
+      font-size:14px;
+    }
+    .title{
+      margin:14px 0 8px;
+      font-size:26px;
+      line-height:1.15;
+      letter-spacing:-.6px;
+      font-weight:900;
+    }
+    .sub{
+      margin:0 0 14px;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.6;
+      font-weight:700;
+    }
+    .divider{
+      height:1px;
+      background: rgba(255,255,255,.45);
+      margin:14px 0;
+    }
+    .progress{
+      height:10px;
+      background: rgba(255,255,255,.45);
+      border-radius:999px;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.55);
+      margin:12px 0 14px;
+    }
+    .bar{
+      height:100%;
+      width:0%;
+      background: rgba(255,255,255,.92);
+      border-radius:999px;
+      transition: width .35s ease;
+    }
+    .q{
+      font-size:18px;
+      line-height:1.45;
+      letter-spacing:-.3px;
+      font-weight:900;
+      margin:6px 0 10px;
+    }
+    .answers{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:10px;
+    }
+    .btn{
+      border:none;
+      width:100%;
+      text-align:left;
+      padding:14px 14px;
+      border-radius:16px;
+      background: var(--btn);
+      color: var(--btnInk);
+      font-size:15px;
+      font-weight:900;
+      letter-spacing:-.2px;
+      box-shadow: var(--btnShadow);
+      transform: translateY(0);
+      cursor:pointer;
+      transition: transform .08s ease, box-shadow .08s ease, filter .15s ease;
+    }
+    .btn:active{
+      transform: translateY(6px);
+      box-shadow: var(--btnShadowDown);
+    }
+    .btn:hover{filter:brightness(1.02)}
+    .center{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      align-items:stretch;
+      justify-content:center;
+      margin-top:12px;
+    }
+    .primary{
+      text-align:center;
+      font-weight:1000;
+      padding:14px 14px;
+    }
+    .startHint{
+      background: rgba(255,255,255,.35);
+      border:1px solid rgba(255,255,255,.45);
+      border-radius:16px;
+      padding:12px 12px;
+      line-height:1.6;
+      font-size:14px;
+      color: rgba(43,27,35,.85);
+      font-weight:800;
+    }
+
+    /* result */
+    .resultHero{
+      background: rgba(255,255,255,.88);
+      border-radius:18px;
+      padding:14px 14px 12px;
+      border:1px solid rgba(255,255,255,.7);
+    }
+    .resultTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      gap:10px;
+    }
+    .resultName{
+      font-size:20px;
+      font-weight:1000;
+      letter-spacing:-.4px;
+      margin:0 0 6px;
+    }
+    .resultMeter{
+      font-weight:1000;
+      font-size:14px;
+      background: rgba(255,159,199,.25);
+      border:1px solid rgba(255,159,199,.35);
+      padding:8px 10px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+    .resultDesc{
+      margin:10px 0 0;
+      line-height:1.6;
+      font-size:14px;
+      color: rgba(43,27,35,.9);
+      font-weight:800;
+    }
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:10px 0 0;
+    }
+    .chip{
+      font-size:12px;
+      font-weight:1000;
+      padding:8px 10px;
+      border-radius:999px;
+      background: rgba(255,159,199,.2);
+      border:1px solid rgba(255,159,199,.35);
+    }
+    .tipBox{
+      margin-top:12px;
+      background: rgba(255,159,199,.18);
+      border:1px solid rgba(255,159,199,.35);
+      border-radius:18px;
+      padding:12px 12px;
+    }
+    .tipTitle{
+      margin:0 0 6px;
+      font-weight:1000;
+      letter-spacing:-.2px;
+    }
+    .tipText{
+      margin:0;
+      line-height:1.6;
+      font-size:14px;
+      font-weight:850;
+      color: rgba(43,27,35,.9);
+    }
+
+    .ctaRow{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:14px;
+    }
+    .cta{
+      text-align:center;
+      font-weight:1000;
+      padding:14px 14px;
+      border-radius:16px;
+      border:none;
+      cursor:pointer;
+      box-shadow: var(--btnShadow);
+      transform: translateY(0);
+      transition: transform .08s ease, box-shadow .08s ease, filter .15s ease;
+    }
+    .cta:active{transform: translateY(6px); box-shadow: var(--btnShadowDown);}
+    .kakao{background: var(--yellow);}
+    .other{background: var(--blue); color:#fff;}
+    .retry{background: var(--red); color:#fff;}
+
+    /* confetti */
+    canvas#fx{
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      z-index:10;
+    }
+
+    .hide{display:none!important}
+    .footer{
+      margin-top:12px;
+      text-align:center;
+      font-size:12px;
+      color: rgba(43,27,35,.65);
+      font-weight:800;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="fx"></canvas>
+
+  <div class="wrap">
+    <div class="card">
+      <div id="screenStart">
+        <div class="badge">💗 vibe test</div>
+        <h1 class="title">나의 연애 온도 테스트</h1>
+        <p class="sub">
+          연애할 때 나는<br/>
+          따뜻한 편일까, 차가운 편일까?<br/>
+          지금 분위기대로 가볍게 골라주세요 🙂
+        </p>
+
+        <div class="startHint">
+          ✅ 질문은 총 8개예요<br/>
+          ✅ 선택지는 항상 4개예요<br/>
+          ✅ 질문/선택지 순서는 랜덤이에요
+        </div>
+
+        <div class="center">
+          <button class="btn primary" id="btnStart">시작하기</button>
+        </div>
+      </div>
+
+      <div id="screenQuiz" class="hide">
+        <div class="badge">🔥 연애 온도 측정중</div>
+        <div class="progress"><div class="bar" id="bar"></div></div>
+        <div class="q" id="qText"></div>
+        <div class="answers" id="answers"></div>
+      </div>
+
+      <div id="screenResult" class="hide">
+        <div class="badge">🎉 결과</div>
+
+        <div class="divider"></div>
+
+        <div class="resultHero">
+          <div class="resultTop">
+            <div>
+              <p class="resultName" id="rName"></p>
+            </div>
+            <div class="resultMeter" id="rMeter"></div>
+          </div>
+
+          <div class="chips" id="rChips"></div>
+
+          <p class="resultDesc" id="rDesc"></p>
+
+          <div class="tipBox">
+            <p class="tipTitle">💡 TIP</p>
+            <p class="tipText" id="rTip"></p>
+          </div>
+        </div>
+
+        <div class="ctaRow">
+          <button class="cta kakao" id="btnKakao">카카오톡 공유하기</button>
+          <button class="cta other" id="btnOther">다른 테스트 해보기</button>
+          <button class="cta retry" id="btnRetry">테스트 다시하기</button>
+        </div>
+
+        <!-- Kakao createDefaultButton 방식용 숨김 버튼 -->
+        <button id="kakaoHidden" class="hide">hidden</button>
+
+        <div class="footer">© vibe test</div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/** =============================
+ *  기본 설정
+ * ============================= */
+const KAKAO_JS_KEY = "b30b6d088f5b3551adc2890111d071fc";
+const OTHER_TEST_URL = "https://blog.naver.com/forgiven_77/224198478277"; // 파란 버튼 고정 링크
+// 썸네일은 같은 이미지 쓰는 편을 원하셔서, 폴더 내 assets/thumb.png를 기본값으로 잡았습니다.
+const DEFAULT_THUMB = "assets/thumb.png";
+
+// 현재 페이지 URL (GitHub Pages 등에서 공유 시 사용)
+const PAGE_URL = window.location.href;
+
+if (window.Kakao && !Kakao.isInitialized()) {
+  Kakao.init(KAKAO_JS_KEY);
+}
+
+/** =============================
+ *  유틸
+ * ============================= */
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+
+/** =============================
+ *  테스트 데이터
+ *  - 질문 8개 고정
+ *  - 선택지 4개 고정
+ *  - 선택지는 점수(온도)에 영향
+ * ============================= */
+const QUESTIONS = [
+  {
+    q: "연락이 뜸해진 상대를 보면 나는?",
+    a: [
+      { t:"먼저 가볍게 안부를 보낸다 🙂", v: +12 },
+      { t:"바쁘겠지… 기다려본다 😌", v: +6 },
+      { t:"상대 페이스를 보고 나도 템포를 맞춘다 🧠", v: +2 },
+      { t:"나도 잠깐 거리두고 상황을 본다 🧊", v: -6 },
+    ]
+  },
+  {
+    q: "다툼이 생겼을 때 내가 먼저 하는 행동은?",
+    a: [
+      { t:"감정이 가라앉기 전에 바로 대화한다 🔥", v: +10 },
+      { t:"시간을 조금 두고 정리한 뒤 얘기한다 📝", v: +6 },
+      { t:"원인부터 논리적으로 짚고 해결한다 🧩", v: +2 },
+      { t:"일단 조용히 있고 분위기를 본다 🫥", v: -6 },
+    ]
+  },
+  {
+    q: "연애에서 스킨십/표현 스타일은?",
+    a: [
+      { t:"표현은 자주! 애정표현이 사랑이다 💗", v: +12 },
+      { t:"상황이 좋으면 자연스럽게 😙", v: +6 },
+      { t:"과하지 않게, 균형이 중요하다 🙂", v: +2 },
+      { t:"표현은 적은 편, 마음으로 한다 🧊", v: -6 },
+    ]
+  },
+  {
+    q: "상대가 힘들어할 때 나는?",
+    a: [
+      { t:"바로 달려가서 옆에 있어준다 🫶", v: +12 },
+      { t:"필요한 걸 물어보고 맞춰준다 🤝", v: +6 },
+      { t:"해결책을 같이 정리해준다 🧠", v: +2 },
+      { t:"원하면 돕고, 아니면 기다린다 🧊", v: -6 },
+    ]
+  },
+  {
+    q: "기념일/이벤트는 어떻게 생각하나?",
+    a: [
+      { t:"챙길수록 관계가 더 따뜻해진다 🎁", v: +10 },
+      { t:"큰 건 아니어도 소소하게는 챙긴다 🎈", v: +6 },
+      { t:"상대가 원하면 맞춘다 🙂", v: +2 },
+      { t:"굳이 중요하진 않다 🧊", v: -6 },
+    ]
+  },
+  {
+    q: "데이트 계획을 잡을 때 나는?",
+    a: [
+      { t:"상대 취향까지 고려해서 디테일하게 🗺️", v: +10 },
+      { t:"큰 틀만 잡고 현장 분위기로 🎡", v: +6 },
+      { t:"반반. 정해둘 건 정하고 유동적으로 🙂", v: +2 },
+      { t:"상대가 정해주면 따라가는 편 🧊", v: -6 },
+    ]
+  },
+  {
+    q: "상대의 과거 연애 얘기를 들으면?",
+    a: [
+      { t:"질투는 나도 이해하려고 한다 🫠", v: +6 },
+      { t:"가볍게 듣고 현재에 집중한다 😌", v: +4 },
+      { t:"선은 지키되 필요한 정보만 듣는다 🧠", v: +1 },
+      { t:"굳이 듣고 싶지 않다 🧊", v: -4 },
+    ]
+  },
+  {
+    q: "연애에서 내가 가장 중요하게 보는 건?",
+    a: [
+      { t:"서로를 따뜻하게 만드는 마음 💗", v: +12 },
+      { t:"신뢰와 안정감 😌", v: +6 },
+      { t:"서로의 기준과 존중 🧠", v: +2 },
+      { t:"각자의 자유와 거리감 🧊", v: -6 },
+    ]
+  },
+];
+
+/** =============================
+ *  결과(8개)
+ *  - 점수(temperature)를 0~100으로 만든 뒤 구간 매핑
+ * ============================= */
+const RESULTS = [
+  {
+    id:"R1",
+    name:"🧊 냉각수 5도형",
+    range:[0, 12],
+    chips:["거리감", "관찰", "침착"],
+    desc:[
+      "연애를 ‘감정 과열’로 만들지 않는 타입입니다.",
+      "상대에게 휩쓸리기보단 흐름을 먼저 읽고, 내 페이스를 지키는 편입니다.",
+      "차가워 보일 수 있지만, 사실은 신중함에 가깝습니다."
+    ].join(" "),
+    tip:"표현이 적더라도 ‘확인 가능한 신호’ 하나만 더 주면 관계 온도가 훨씬 안정적으로 올라갑니다."
+  },
+  {
+    id:"R2",
+    name:"🌫️ 미지근 20도형",
+    range:[13, 25],
+    chips:["현실적", "조심스러움", "선지킴"],
+    desc:[
+      "감정은 있지만 쉽게 드러내지 않는 편입니다.",
+      "상대의 반응을 보고 조절하는 능력이 좋아요.",
+      "다만 ‘내가 좋아하는 게 맞나?’ 오해를 받을 수 있습니다."
+    ].join(" "),
+    tip:"상대가 불안해하지 않도록 ‘좋아한다’는 말 대신 ‘고마웠다/좋았다’처럼 구체적으로 남겨보세요."
+  },
+  {
+    id:"R3",
+    name:"🌤️ 포근 35도형",
+    range:[26, 38],
+    chips:["균형", "배려", "안정"],
+    desc:[
+      "연애를 편안하게 만드는 안정형입니다.",
+      "과한 감정소모 없이도 관계를 오래 끌고 가는 힘이 있습니다.",
+      "상대 입장에서는 ‘함께 있으면 편한 사람’으로 기억됩니다."
+    ].join(" "),
+    tip:"가끔은 과감하게 리액션을 크게 해보세요. 작은 이벤트가 관계를 더 달콤하게 만듭니다."
+  },
+  {
+    id:"R4",
+    name:"☀️ 따뜻 50도형",
+    range:[39, 52],
+    chips:["표현", "친밀", "온기"],
+    desc:[
+      "연애의 기본 온도를 높게 유지하는 타입입니다.",
+      "상대의 기분을 챙기고 분위기를 살리는 재능이 있습니다.",
+      "연애가 ‘살아있는 관계’가 되도록 움직입니다."
+    ].join(" "),
+    tip:"상대도 편히 표현할 수 있게 ‘요즘 너랑 이 순간이 좋다’ 같은 현재형 칭찬을 자주 꺼내보세요."
+  },
+  {
+    id:"R5",
+    name:"🔥 뜨끈 65도형",
+    range:[53, 66],
+    chips:["직진", "진심", "몰입"],
+    desc:[
+      "좋아하면 티가 확 나는 편입니다.",
+      "관계를 주도적으로 이끌고, 감정도 솔직하게 전달합니다.",
+      "상대는 ‘사랑받고 있다’는 확신을 얻기 쉬워요."
+    ].join(" "),
+    tip:"몰입이 강한 만큼 속도 조절이 중요합니다. 상대 페이스를 한 번 더 확인하면 오래 갑니다."
+  },
+  {
+    id:"R6",
+    name:"🌋 과열 80도형",
+    range:[67, 80],
+    chips:["열정", "집중", "빠른진도"],
+    desc:[
+      "연애에서 에너지가 크게 올라가는 타입입니다.",
+      "표현과 행동이 빠르고, 관계를 ‘지금’ 당장 진하게 만들 수 있습니다.",
+      "다만 상대가 숨 돌릴 틈이 필요할 수 있어요."
+    ].join(" "),
+    tip:"감정이 올라올수록 ‘확신’보다 ‘여유’를 하나 더 얹어보세요. 그 여유가 관계를 더 단단하게 만듭니다."
+  },
+  {
+    id:"R7",
+    name:"💥 폭주 92도형",
+    range:[81, 92],
+    chips:["강한애정", "질투", "몰입MAX"],
+    desc:[
+      "연애가 시작되면 온도가 확 올라가는 편입니다.",
+      "좋아하는 마음이 크고, 그래서 더 자주 확인하고 싶어집니다.",
+      "잘 맞는 상대와 만나면 최고의 케미를 만들 수 있어요."
+    ].join(" "),
+    tip:"불안이 올라올 때는 ‘확인 질문’ 대신 ‘내 상태 공유’로 바꿔보세요. 공격성이 줄고 친밀감은 더 올라갑니다."
+  },
+  {
+    id:"R8",
+    name:"🌈 핫팩 100도형",
+    range:[93, 100],
+    chips:["애정폭발", "헌신", "올인"],
+    desc:[
+      "당신의 연애는 기본적으로 ‘뜨겁고 진하다’에 가깝습니다.",
+      "표현, 배려, 몰입이 모두 강합니다.",
+      "단 하나만 조절하면 ‘완벽한 연애 온도’가 됩니다."
+    ].join(" "),
+    tip:"상대가 받을 준비가 되었는지 ‘속도’만 체크해보세요. 속도만 맞으면 장점이 전부 빛납니다."
+  },
+];
+
+function pickResult(temp){
+  const t = clamp(temp, 0, 100);
+  return RESULTS.find(r => t >= r.range[0] && t <= r.range[1]) || RESULTS[RESULTS.length-1];
+}
+
+/** =============================
+ *  상태
+ * ============================= */
+let order = [];
+let idx = 0;
+let score = 50; // 기본 온도 베이스(중간값)에서 시작 후 선택지로 증감
+
+/** =============================
+ *  DOM
+ * ============================= */
+const screenStart = document.getElementById("screenStart");
+const screenQuiz  = document.getElementById("screenQuiz");
+const screenResult= document.getElementById("screenResult");
+const bar = document.getElementById("bar");
+const qText = document.getElementById("qText");
+const answers = document.getElementById("answers");
+
+const rName = document.getElementById("rName");
+const rMeter = document.getElementById("rMeter");
+const rDesc = document.getElementById("rDesc");
+const rTip = document.getElementById("rTip");
+const rChips = document.getElementById("rChips");
+
+/** =============================
+ *  화면 전환
+ * ============================= */
+function showStart(){
+  screenStart.classList.remove("hide");
+  screenQuiz.classList.add("hide");
+  screenResult.classList.add("hide");
+}
+function showQuiz(){
+  screenStart.classList.add("hide");
+  screenQuiz.classList.remove("hide");
+  screenResult.classList.add("hide");
+}
+function showResult(){
+  screenStart.classList.add("hide");
+  screenQuiz.classList.add("hide");
+  screenResult.classList.remove("hide");
+}
+
+/** =============================
+ *  퀴즈 진행
+ * ============================= */
+function startTest(){
+  // 질문 순서 랜덤
+  order = shuffle(QUESTIONS.map((_,i)=>i));
+  idx = 0;
+  score = 50;
+
+  showQuiz();
+  renderQuestion();
+}
+
+function renderQuestion(){
+  const total = QUESTIONS.length;
+  const progress = (idx / total) * 100;
+  bar.style.width = `${progress}%`;
+
+  const q = QUESTIONS[order[idx]];
+  qText.textContent = q.q;
+
+  // 선택지 순서도 랜덤
+  const opts = shuffle(q.a);
+
+  answers.innerHTML = "";
+  opts.forEach(opt=>{
+    const b = document.createElement("button");
+    b.className = "btn";
+    b.type = "button";
+    b.textContent = opt.t;
+    b.addEventListener("click", ()=>{
+      score += opt.v;
+      idx += 1;
+
+      if(idx >= total){
+        bar.style.width = "100%";
+        finishTest();
+      }else{
+        renderQuestion();
+      }
+    });
+    answers.appendChild(b);
+  });
+}
+
+function finishTest(){
+  const temp = clamp(Math.round(score), 0, 100);
+  const res = pickResult(temp);
+
+  rName.textContent = res.name;
+  rMeter.textContent = `연애 온도 ${temp}°`;
+  rDesc.textContent = res.desc;
+  rTip.textContent = res.tip;
+
+  rChips.innerHTML = "";
+  res.chips.forEach(c=>{
+    const s = document.createElement("span");
+    s.className = "chip";
+    s.textContent = `#${c}`;
+    rChips.appendChild(s);
+  });
+
+  showResult();
+  fireConfetti();
+
+  setupKakaoShare({
+    title: "나의 연애 온도 테스트",
+    description: `${res.name} / 연애 온도 ${temp}°`,
+    imageUrl: new URL(DEFAULT_THUMB, PAGE_URL).toString(),
+    linkUrl: PAGE_URL
+  });
+}
+
+/** =============================
+ *  카카오 공유
+ *  - 버튼 클릭 시 hidden 버튼 방식 사용
+ * ============================= */
+function setupKakaoShare({title, description, imageUrl, linkUrl}){
+  // createDefaultButton는 동일 id에 여러번 달면 중복될 수 있어서, 매번 새로 바인딩합니다.
+  const hidden = document.getElementById("kakaoHidden");
+  hidden.replaceWith(hidden.cloneNode(true));
+  const newHidden = document.getElementById("kakaoHidden");
+
+  if(!window.Kakao) return;
+
+  try{
+    Kakao.Share.createDefaultButton({
+      container: '#kakaoHidden',
+      objectType: 'feed',
+      content: {
+        title,
+        description,
+        imageUrl,
+        link: {
+          mobileWebUrl: linkUrl,
+          webUrl: linkUrl,
+        },
+      },
+      buttons: [
+        {
+          title: '테스트 하러가기',
+          link: {
+            mobileWebUrl: linkUrl,
+            webUrl: linkUrl,
+          },
+        }
+      ],
+    });
+  }catch(e){
+    // 도메인 미등록/환경 문제 등일 수 있음
+  }
+
+  document.getElementById("btnKakao").onclick = ()=>{
+    // hidden 버튼 클릭 유도
+    newHidden.click();
+  };
+}
+
+/** =============================
+ *  결과 버튼 2개
+ * ============================= */
+document.getElementById("btnOther").addEventListener("click", ()=>{
+  window.open(OTHER_TEST_URL, "_blank");
+});
+document.getElementById("btnRetry").addEventListener("click", ()=>{
+  showStart();
+});
+
+/** =============================
+ *  시작 버튼
+ * ============================= */
+document.getElementById("btnStart").addEventListener("click", startTest);
+
+/** =============================
+ *  confetti (가벼운 자체 구현)
+ * ============================= */
+function fireConfetti(){
+  const c = document.getElementById("fx");
+  const ctx = c.getContext("2d");
+  const W = c.width = window.innerWidth;
+  const H = c.height = window.innerHeight;
+
+  const pieces = [];
+  const N = 140;
+
+  for(let i=0;i<N;i++){
+    pieces.push({
+      x: Math.random()*W,
+      y: -20 - Math.random()*H*0.2,
+      r: 3 + Math.random()*4,
+      vx: -2 + Math.random()*4,
+      vy: 2 + Math.random()*5,
+      rot: Math.random()*Math.PI,
+      vr: -0.15 + Math.random()*0.3,
+      life: 0,
+      max: 120 + Math.random()*40
+    });
+  }
+
+  let frame = 0;
+  function tick(){
+    frame++;
+    ctx.clearRect(0,0,W,H);
+
+    pieces.forEach(p=>{
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.vr;
+      p.vy += 0.03; // gravity
+      p.life++;
+
+      // 색 지정은 안 해도 되지만, confetti 느낌 위해 최소한만 사용 (템플릿 분위기 유지)
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rot);
+      ctx.globalAlpha = Math.max(0, 1 - p.life/p.max);
+      ctx.fillStyle = "rgba(255,255,255,0.9)";
+      ctx.fillRect(-p.r, -p.r, p.r*2.2, p.r*1.2);
+      ctx.restore();
+    });
+
+    const alive = pieces.some(p=>p.life < p.max && p.y < H+40);
+    if(alive && frame < 220){
+      requestAnimationFrame(tick);
+    }else{
+      ctx.clearRect(0,0,W,H);
+    }
+  }
+  tick();
+}
+window.addEventListener("resize", ()=>{
+  const c = document.getElementById("fx");
+  c.width = window.innerWidth;
+  c.height = window.innerHeight;
+});
+
+/** =============================
+ *  초기 화면
+ * ============================= */
+showStart();
+</script>
+</body>
+</html>
