@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+
+    <!-- Open Graph (Kakao preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="loveother 테스트" />
+    <meta property="og:description" content="loveother 바이브코딩 테스트" />
+    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/loveother/" />
+    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter (optional, helps some previews) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="loveother 테스트" />
+    <meta name="twitter:description" content="loveother 바이브코딩 테스트" />
+    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>연애 테스트 - 나의 상대 유형은?</title>
+
+  <!-- OG(스크랩/공유용) -->
+
+
+
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"></script>
+
+<style>
+:root{
+  --bg:#f6f7fb;
+  --card:#fff;
+  --line:#e7e8f0;
+
+  --text:#22232a;
+  --muted:#6b6f7a;
+
+  --primary:#5a5cff;
+  --primaryText:#fff;
+
+  --hover:#f2f3ff;
+
+  --kakao:#ffdf00;
+  --blue:#2f7bff;
+  --red:#ff3b3b;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  background:var(--bg);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  color:var(--text);
+}
+
+.wrap{ width:min(680px, 100%); }
+
+.shell{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+}
+
+.header{
+  padding:18px 16px 14px;
+  text-align:center;
+  border-bottom:1px solid var(--line);
+}
+.badge{
+  display:inline-block;
+  font-size:12px;
+  font-weight:900;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  color:var(--muted);
+  background:#fff;
+}
+h1{
+  margin:10px 0 6px;
+  font-size:22px;
+  font-weight:1000;
+  letter-spacing:-.4px;
+}
+.sub{
+  margin:0;
+  font-size:14px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.content{ padding:16px; }
+
+.center{ text-align:center; }
+
+.progress{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:12px;
+}
+.pill{
+  font-size:12px;
+  font-weight:900;
+  color:var(--muted);
+}
+.bar{
+  width:min(240px, 55vw);
+  height:8px;
+  border-radius:999px;
+  background:#eef0f6;
+  overflow:hidden;
+}
+.bar > div{
+  height:100%;
+  width:0%;
+  background:var(--primary);
+  transition:width .25s ease;
+}
+
+.q{
+  text-align:center;
+  font-size:17px;
+  font-weight:1000;
+  letter-spacing:-.3px;
+  line-height:1.55;
+  margin:6px 0 12px;
+}
+
+.choice{
+  width:100%;
+  text-align:left;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px;
+  margin:10px 0;
+  cursor:pointer;
+}
+.choice:hover{ background:var(--hover); }
+.choice .t{
+  font-size:15px;
+  font-weight:950;
+  line-height:1.4;
+}
+.choice .s{
+  margin-top:6px;
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.55;
+}
+
+.btnStack{ display:grid; gap:10px; margin-top:12px; }
+
+.btn{
+  width:100%;
+  border:none;
+  border-radius:12px;
+  padding:12px;
+  font-size:15px;
+  font-weight:950;
+  cursor:pointer;
+}
+.btnPrimary{ background:var(--primary); color:var(--primaryText); }
+.btnKakao{ background:var(--kakao); }
+.btnBlog{ background:var(--blue); color:#fff; }
+.btnRetry{ background:var(--red); color:#fff; }
+
+.resultEmoji{ font-size:44px; margin:2px 0 8px; }
+.resultTitle{
+  font-size:19px;
+  font-weight:1000;
+  letter-spacing:-.3px;
+  margin:0 0 8px;
+}
+.resultDesc{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.7;
+}
+.note{
+  margin-top:12px;
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+/* confetti */
+#confetti{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  display:none;
+  z-index:9999;
+}
+</style>
+</head>
+
+<body>
+<canvas id="confetti"></canvas>
+
+<div class="wrap">
+  <div class="shell">
+    <div class="header">
+      <span class="badge">💗 연애 테스트</span>
+      <h1>나의 상대 유형은?</h1>
+      <p class="sub">첫 느낌으로 선택</p>
+    </div>
+
+    <div class="content" id="app"></div>
+  </div>
+</div>
+
+<script>
+/* ✅ 블로그 주소 변경 반영 */
+const BLOG_URL="https://blog.naver.com/forgiven_77/224195220807";
+
+const TYPES={
+  puppy:{emoji:"🐶",title:"설렘직진",desc:"표현이 빠르고 확실한 편. 상대에게 안심을 주는 타입."},
+  cat:{emoji:"🐱",title:"안정형",desc:"차분하고 일관된 연애를 선호. 오래 갈수록 단단해지는 타입."},
+  bear:{emoji:"🐻",title:"케어형",desc:"상대 컨디션을 잘 챙김. 행동으로 신뢰를 쌓는 타입."},
+  fox:{emoji:"🦊",title:"텐션형",desc:"분위기 전환이 빠름. 재미와 설렘을 살리는 타입."},
+  butterfly:{emoji:"🦋",title:"성장형",desc:"신뢰와 존중이 우선. 각자의 삶을 지키며 함께 가는 타입."}
+};
+
+const QUESTIONS=[
+  { q:"썸 단계에서 연락 템포는?",
+    choices:[
+      {t:"생각나면 바로 연락하는 편", s:"표현이 빠르고 확실하다.", p:{puppy:2}},
+      {t:"너무 몰아치지 않게 조절", s:"안정적인 리듬이 편하다.", p:{cat:2}},
+      {t:"상대 컨디션에 맞춰 조율", s:"부담을 줄이는 쪽을 선택한다.", p:{bear:2}},
+      {t:"가볍게 텐션을 살려 이어감", s:"분위기가 관계를 만든다고 본다.", p:{fox:2}},
+    ]
+  },
+  { q:"데이트가 꼬였을 때, 내 반응은?",
+    choices:[
+      {t:"플랜B를 바로 제시", s:"빠르게 분위기를 살린다.", p:{fox:2}},
+      {t:"괜찮다고 말하며 마음도 표현", s:"감정은 숨기지 않는다.", p:{puppy:2}},
+      {t:"상대 기분부터 챙긴 뒤 결정", s:"감정 안정이 먼저다.", p:{bear:2}},
+      {t:"상황을 정리하고 차분히 말함", s:"정리된 대화를 선호한다.", p:{cat:2}},
+    ]
+  },
+  { q:"싸움이 났을 때, 풀어가는 방식은?",
+    choices:[
+      {t:"바로 대화로 풀고 싶다", s:"미루면 더 힘들다.", p:{puppy:2}},
+      {t:"시간을 두고 핵심만 말한다", s:"감정 정리가 필요하다.", p:{cat:2}},
+      {t:"케어를 먼저 하고 대화한다", s:"안정이 우선이다.", p:{bear:2}},
+      {t:"분위기를 부드럽게 만든 뒤 이야기", s:"대화 공기가 중요하다.", p:{fox:2}},
+    ]
+  },
+  { q:"연애에서 예민해지는 포인트는?",
+    choices:[
+      {t:"확신이 부족할 때", s:"표현이 줄면 불안해진다.", p:{puppy:2}},
+      {t:"태도가 들쭉날쭉할 때", s:"일관성이 중요하다.", p:{cat:2}},
+      {t:"배려가 일방적일 때", s:"균형이 필요하다.", p:{bear:2}},
+      {t:"함께 있어도 재미가 없을 때", s:"설렘 유지가 중요하다.", p:{fox:2}},
+    ]
+  },
+  { q:"각자 시간에 대한 기준은?",
+    choices:[
+      {t:"연락/공유가 많을수록 좋다", s:"연결감이 안정감이다.", p:{puppy:2}},
+      {t:"혼자 시간이 있어야 건강하다", s:"거리감도 필요하다.", p:{cat:2}},
+      {t:"상대와 내 컨디션을 같이 본다", s:"균형이 최우선이다.", p:{bear:2}},
+      {t:"자유를 존중하되 만날 땐 몰입", s:"자유+몰입이 이상적이다.", p:{butterfly:2, fox:1}},
+    ]
+  },
+  { q:"애정 표현은 어느 정도가 편해?",
+    choices:[
+      {t:"자주 표현하는 게 편하다", s:"느껴져야 안심된다.", p:{puppy:2}},
+      {t:"표현보다 태도가 중요하다", s:"꾸준함이 더 크다.", p:{cat:2}},
+      {t:"상대가 좋아하는 방식으로 맞춘다", s:"배려가 관계를 만든다.", p:{bear:2}},
+      {t:"표현도 좋지만 같이 웃는 게 더 크다", s:"재미가 친밀감이다.", p:{fox:2}},
+    ]
+  },
+  { q:"내가 생각하는 좋은 연애는?",
+    choices:[
+      {t:"설렘이 자주 느껴지는 관계", s:"표현이 자연스럽다.", p:{puppy:2}},
+      {t:"편안하게 오래 가는 관계", s:"조용히 단단하다.", p:{cat:2}},
+      {t:"서로 지지해주는 관계", s:"안정감이 크다.", p:{bear:2}},
+      {t:"존중하며 함께 성장하는 관계", s:"자유와 신뢰가 기본이다.", p:{butterfly:2}},
+    ]
+  },
+];
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+let stage="start";
+let quiz=[];
+let idx=0;
+let score={puppy:0,cat:0,bear:0,fox:0,butterfly:0};
+
+const app=document.getElementById("app");
+
+function initQuiz(){
+  quiz = shuffle(QUESTIONS).map(q => ({...q, choices: shuffle(q.choices)}));
+  idx=0;
+  score={puppy:0,cat:0,bear:0,fox:0,butterfly:0};
+}
+
+function reset(){
+  stage="start";
+  initQuiz();
+  stopConfetti();
+  renderStart();
+}
+
+function renderStart(){
+  app.innerHTML = `
+    <div class="center">
+      <div id="shareTitle" style="display:none;"></div>
+      <div id="shareDesc" style="display:none;"></div>
+      <div class="q" style="margin-top:0;">내 연애 리듬을 가볍게 체크해볼까요?</div>
+      <p class="sub" style="margin:0;">가볍게 해보기</p>
+      <div class="btnStack">
+        <button class="btn btnPrimary" id="btnStart">테스트 시작</button>
+      </div>
+    </div>
+  `;
+  document.getElementById("btnStart").addEventListener("click", ()=>{
+    stage="quiz";
+    renderQuiz();
+  });
+}
+
+function renderQuiz(){
+  const total=quiz.length;
+  const progress=Math.round((idx/total)*100);
+  const q=quiz[idx];
+
+  app.innerHTML = `
+    <div class="progress">
+      <span class="pill">Q ${idx+1}/${total}</span>
+      <div class="bar"><div style="width:${progress}%"></div></div>
+    </div>
+
+    <div class="q">${q.q}</div>
+
+    ${q.choices.map((c,i)=>`
+      <button class="choice" data-i="${i}">
+        <div class="t">${c.t}</div>
+        <div class="s">${c.s}</div>
+      </button>
+    `).join("")}
+  `;
+  [...app.querySelectorAll(".choice")].forEach(btn=>{
+    btn.addEventListener("click", ()=> pick(Number(btn.dataset.i)));
+  });
+}
+
+function pick(i){
+  const c=quiz[idx].choices[i];
+  for(const k in c.p){ score[k]=(score[k]||0)+c.p[k]; }
+  idx++;
+  if(idx>=quiz.length){ stage="result"; renderResult(); }
+  else renderQuiz();
+}
+
+function topType(){
+  let best="puppy", bestV=-1e9;
+  for(const k of Object.keys(score)){
+    if(score[k]>bestV){ bestV=score[k]; best=k; }
+  }
+  const tied=Object.keys(score).filter(k=>score[k]===bestV);
+  return tied.length>1 ? tied[Math.floor(Math.random()*tied.length)] : best;
+}
+
+function renderResult(){
+  const r=TYPES[topType()];
+  app.innerHTML = `
+    <div class="center">
+      <div id="shareTitle" style="display:none;"></div>
+      <div id="shareDesc" style="display:none;"></div>
+      <div class="resultEmoji">${r.emoji}</div>
+      <div class="resultTitle">${r.title}</div>
+      <p class="resultDesc">${r.desc}</p>
+
+      <p class="note">친구랑 같이 해보고 결과를 비교해보세요 🙂</p>
+
+      <div class="btnStack">
+        <button class="btn btnKakao" id="btnKakao">💬 카톡 공유</button>
+        <button class="btn btnBlog" id="btnBlog">🔵 다른 테스트</button>
+        <button class="btn btnRetry" id="btnRetry">🔁 다시 하기</button>
+      </div>
+    </div>
+  `;
+
+  startConfettiLite();
+
+  // 공유 카드용 텍스트(통일)
+  const st=document.getElementById('shareTitle');
+  const sd=document.getElementById('shareDesc');
+  if(st) st.textContent='연애 테스트 - 나의 상대 유형은?';
+  if(sd) sd.textContent=`${r.emoji} ${r.title} — ${r.desc}`;
+
+  document.getElementById("btnRetry").addEventListener("click", reset);
+  document.getElementById("btnBlog").addEventListener("click", ()=> window.open(BLOG_URL, "_blank"));
+  document.getElementById("btnKakao").addEventListener("click", () => shareKakaoFromDOM("/loveother/"));
+}
+
+function shareKakao(){
+  // (구버전 호환) 공통 공유로 연결
+  shareKakaoFromDOM('/loveother/');
+}
+
+/* 가벼운 컨페티 */
+const canvas=document.getElementById("confetti");
+const ctx=canvas.getContext("2d");
+let confTimer=null;
+
+function startConfettiLite(){
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  canvas.style.display="block";
+  canvas.width = Math.floor(window.innerWidth * dpr);
+  canvas.height = Math.floor(window.innerHeight * dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  const pieces=[];
+  const COUNT=55;
+  for(let i=0;i<COUNT;i++){
+    pieces.push({
+      x:Math.random()*window.innerWidth,
+      y:-10-Math.random()*180,
+      vx:-0.8+Math.random()*1.6,
+      vy:2+Math.random()*3,
+      s:4+Math.random()*4,
+      life:0
+    });
+  }
+
+  let frame=0;
+  clearInterval(confTimer);
+  confTimer=setInterval(()=>{
+    frame++;
+    ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+    for(const p of pieces){
+      p.x+=p.vx; p.y+=p.vy; p.life++;
+      ctx.globalAlpha=Math.max(0, 1-(p.life/130));
+      const hue=(p.life*2+p.x)%360;
+      ctx.fillStyle=`hsl(${hue},40%,78%)`;
+      ctx.fillRect(p.x,p.y,p.s,p.s);
+    }
+    if(frame>130) stopConfetti();
+  },16);
+}
+function stopConfetti(){
+  clearInterval(confTimer); confTimer=null;
+  ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+  canvas.style.display="none";
+}
+
+reset();
+</script>
+  <script src="../assets/kakao-share.js"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+</body>
+</html>

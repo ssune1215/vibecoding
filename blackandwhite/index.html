@@ -1,0 +1,790 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  
+    <!-- Open Graph (Kakao preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="blackandwhite 테스트" />
+    <meta property="og:description" content="blackandwhite 바이브코딩 테스트" />
+    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/blackandwhite/" />
+    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter (optional, helps some previews) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="blackandwhite 테스트" />
+    <meta name="twitter:description" content="blackandwhite 바이브코딩 테스트" />
+    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>🌓 나는 겉과 속이 얼마나 다를까?</title>
+  <meta name="description" content="겉으로 보이는 나와 속마음의 나. 그 사이의 간격을 부드럽게 확인해보세요." />
+
+  <!-- OG (카톡/SNS) -->
+
+
+
+
+<!-- Kakao SDK -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#000000;
+      --card:#ffffff;
+      --text:#111111;
+      --muted:#666666;
+      --border: rgba(0,0,0,.10);
+      --shadow: 0 18px 55px rgba(0,0,0,.55);
+      --radius: 22px;
+
+      /* 답변 버튼(선택지) 고급화 */
+      --optBg:#ffffff;
+      --optText:#111111;
+      --optBorder: rgba(0,0,0,.18);
+      --optShadow: 0 10px 20px rgba(0,0,0,.10);
+
+      /* 기본 버튼 */
+      --btn:#111111;
+      --btnText:#ffffff;
+
+      --kakao:#FEE500;
+      --kakaoText:#191919;
+      --blue:#2F80ED;
+      --red:#EB5757;
+
+      --barBg: rgba(0,0,0,.10);
+      --barFill: rgba(0,0,0,.85);
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans KR", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      min-height:100vh;
+      padding: 22px 14px;
+    }
+
+    /* 450px 카드 고정 */
+    .wrap{
+      width: 450px;
+      max-width: 100%;
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 20px 18px 18px;
+      overflow:hidden;
+      position: relative;
+    }
+
+    /* ✅ 제목 아이콘(크기/정렬 조정) */
+    .title{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      font-size: 20px;
+      font-weight: 900;
+      line-height: 1.25;
+      margin: 6px 0 10px;
+      letter-spacing: -0.2px;
+      text-align:center;
+      word-break: keep-all;
+    }
+    .title .icon{
+      font-size: 22px; /* 살짝 크게 */
+      line-height: 1;
+      transform: translateY(-1px); /* 미세 정렬 */
+    }
+
+    /* 시작 멘트 3줄 */
+    .sub{
+      text-align:center;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.75;
+      margin: 0 0 14px;
+      white-space: pre-line;
+      word-break: keep-all;
+    }
+
+    .divider{
+      height:1px;
+      background: rgba(0,0,0,.08);
+      margin: 14px 0;
+    }
+
+    /* 진행바: 숫자/퍼센트 표기 없음 */
+    .progressBar{
+      width:100%;
+      height:10px;
+      background: var(--barBg);
+      border-radius: 999px;
+      overflow:hidden;
+      margin: 8px 0 14px;
+    }
+    .progressFill{
+      height:100%;
+      width:0%;
+      background: var(--barFill);
+      border-radius: 999px;
+      transition: width .35s ease;
+    }
+
+    .q{
+      font-size: 16px;
+      font-weight: 900;
+      line-height:1.60;
+      margin: 8px 0 14px;
+      letter-spacing: -0.2px;
+      text-align:center;
+      white-space: pre-line;
+      word-break: keep-all;
+    }
+
+    .answers{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top: 6px;
+    }
+
+    /* ✅ 선택지 버튼: 라운드/테두리/눌림/호버 고급화 */
+    .optionBtn{
+      width:100%;
+      border: 1px solid var(--optBorder);
+      cursor:pointer;
+      padding: 12px 12px;
+      border-radius: 18px;
+      background: var(--optBg);
+      color: var(--optText);
+      font-size: 14px;
+      font-weight: 900;
+      box-shadow: var(--optShadow);
+      transition: transform .06s ease, box-shadow .2s ease, background .2s ease;
+      text-align:left;
+      line-height: 1.42;
+      white-space: pre-line;
+      word-break: keep-all;
+    }
+    .optionBtn:hover{
+      background: #f7f7f7;
+      box-shadow: 0 12px 26px rgba(0,0,0,.12);
+    }
+    .optionBtn:active{
+      transform: translateY(1px);
+      box-shadow: 0 8px 18px rgba(0,0,0,.10);
+    }
+
+    /* 공통 버튼 */
+    .btn{
+      width:100%;
+      border:0;
+      cursor:pointer;
+      padding: 12px 12px;
+      border-radius: 14px;
+      background: var(--btn);
+      color: var(--btnText);
+      font-size: 14px;
+      font-weight: 900;
+      box-shadow: 0 10px 22px rgba(0,0,0,.18);
+      transition: transform .06s ease, filter .2s ease;
+      text-align:center;
+      line-height: 1.40;
+      white-space: pre-line;
+      word-break: keep-all;
+    }
+    .btn:active{ transform: translateY(1px); }
+
+    .btn.secondary{
+      background: #f5f5f5;
+      color: var(--text);
+      border: 1px solid rgba(0,0,0,.12);
+      box-shadow:none;
+      font-weight: 900;
+      text-align:center;
+    }
+
+    .resultTitle{
+      font-size: 18px;
+      font-weight: 950;
+      text-align:center;
+      margin: 2px 0 10px;
+      letter-spacing:-0.2px;
+      word-break: keep-all;
+    }
+
+    .resultCard{
+      background: #fafafa;
+      border: 1px solid rgba(0,0,0,.10);
+      border-radius: 16px;
+      padding: 14px 14px;
+      margin: 8px 0 14px;
+    }
+
+    /* ✅ 결과 키워드 배지 */
+    .badgeRow{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-bottom:10px;
+      justify-content:flex-start;
+    }
+    .badge{
+      display:inline-block;
+      padding: 6px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      background: #ffffff;
+      border: 1px solid rgba(0,0,0,.12);
+      color: #111;
+      line-height: 1;
+    }
+
+    .resultMain{
+      font-size: 16px;
+      font-weight: 950;
+      margin: 0 0 8px;
+      white-space: pre-line;
+      word-break: keep-all;
+    }
+
+    .resultText{
+      margin:0;
+      font-size: 14px;
+      line-height: 1.75;
+      color: #222;
+      white-space: pre-line;
+      word-break: keep-all;
+    }
+
+    .ctaRow{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top: 10px;
+    }
+
+    .cta{
+      width:100%;
+      border:0;
+      cursor:pointer;
+      padding: 12px 12px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 950;
+      text-align:center;
+    }
+
+    .cta.kakao{ background: var(--kakao); color: var(--kakaoText); }
+    .cta.blue{ background: var(--blue); color: #fff; }
+    .cta.red{ background: var(--red); color: #fff; }
+
+    .footerNote{
+      text-align:center;
+      color: #888;
+      font-size: 12px;
+      line-height: 1.5;
+      margin-top: 12px;
+      word-break: keep-all;
+    }
+
+    /* confetti */
+    .confetti{
+      position: fixed;
+      top: -10px;
+      left: 0;
+      width: 100%;
+      height: 0;
+      pointer-events: none;
+      z-index: 9999;
+    }
+    .confetti span{
+      position:absolute;
+      top:-20px;
+      width:10px;
+      height:16px;
+      border-radius: 2px;
+      opacity:.95;
+      animation: fall 1.15s linear forwards;
+    }
+    @keyframes fall{
+      to { transform: translateY(calc(100vh + 40px)) rotate(360deg); opacity: 1; }
+    }
+
+    .hidden{ display:none !important; }
+
+    @media (max-width: 360px){
+      .optionBtn{ font-size: 13px; padding: 11px 11px; border-radius: 16px; }
+      .title{ font-size: 19px; }
+      .title .icon{ font-size: 21px; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card" id="app">
+
+      <!-- START -->
+      <section id="startView">
+        <div class="title"><span class="icon">🌓</span><span>나는 겉과 속이 얼마나 다를까?</span></div>
+
+        <!-- 시작 멘트 3줄 -->
+        <div class="sub">🖤 오늘의 나는, 겉으로 먼저 보일 수 있어요.
+🤍 속마음은 천천히 드러나기도 하고요.
+✨ 부담 없이, 첫 느낌대로 골라주세요.</div>
+
+        <div class="divider"></div>
+
+        <button class="btn" id="startBtn">테스트 시작하기</button>
+      </section>
+
+      <!-- TEST -->
+      <section id="testView" class="hidden">
+        <div class="progressBar" aria-label="progress">
+          <div class="progressFill" id="progressFill"></div>
+        </div>
+
+        <div class="q" id="questionText"></div>
+        <div class="answers" id="answers"></div>
+
+        <div class="divider"></div>
+        <button class="btn secondary" id="backBtn">이전 문항</button>
+      </section>
+
+      <!-- RESULT -->
+      <section id="resultView" class="hidden">
+        <div class="resultTitle">✨ 결과</div>
+
+        <div class="resultCard">
+          <div class="badgeRow" id="badgeRow"></div>
+          <div class="resultMain" id="resultMain"></div>
+          <p class="resultText" id="resultText"></p>
+        </div>
+
+        <div class="ctaRow">
+          <button class="cta kakao" id="kakaoShareBtn">카카오톡 공유하기</button>
+          <button class="cta blue" id="otherTestBtn">다른 테스트 해보기</button>
+          <button class="cta red" id="restartBtn">테스트 다시하기</button>
+        </div>
+
+        <div class="footerNote">결과 화면에서 공유하면 더 깔끔합니다.</div>
+      </section>
+
+    </div>
+  </div>
+
+  <div class="confetti" id="confetti"></div>
+
+  <!-- createDefaultButton 숨김 버튼 -->
+  <a id="kakaoHiddenBtn" href="javascript:void(0)" style="display:none;"></a>
+
+  <script>
+    /***********************
+     * 0) 설정
+     ************************/
+    const SITE_URL = window.location.href.split("#")[0];
+    const KAKAO_JS_KEY = "4d3d00e575a03a304f090860cac80309";
+    const OG_IMAGE_URL = window.location.origin + "/assets/share-thumb.jpg";
+    const OTHER_TEST_URL = "https://blog.naver.com/forgiven_77/224195220807";
+
+    document.querySelector('meta[property="og:url"]').setAttribute("content", SITE_URL);
+    document.querySelector('meta[property="og:image"]').setAttribute("content", OG_IMAGE_URL);
+
+    /***********************
+     * 1) 문항 (부드러운 톤 / 선택지 이모지 없음)
+     ************************/
+    const questions = [
+      {
+        q: "🙂 사람이 많은 자리에서\n저는 보통 어떤 편인가요?",
+        a: [
+          { text: "먼저 웃어주고, 분위기가 편해지도록 돕는 편이에요.", type: "A" },
+          { text: "조용히 흐름을 보다가, 필요할 때 자연스럽게 말해요.", type: "B" },
+          { text: "말을 길게 하기보다, 핵심을 정리해서 짧게 말해요.", type: "C" },
+          { text: "겉으론 괜찮아 보여도, 속마음은 쉽게 꺼내지 않아요.", type: "D" },
+        ]
+      },
+      {
+        q: "🖤 누가 저를 보고\n“차가워 보인다”라고 말하면요?",
+        a: [
+          { text: "사실은 다정한 편이라, 조금 억울하게 느껴져요.", type: "A" },
+          { text: "크게 흔들리진 않지만, 괜히 더 조심하게 돼요.", type: "B" },
+          { text: "선을 지키는 게 편해서, 그럴 수도 있다고 생각해요.", type: "C" },
+          { text: "아직 마음이 안 열린 것뿐이라, 자연스러운 반응이에요.", type: "D" },
+        ]
+      },
+      {
+        q: "🌧 속상한 일이 생겼을 때,\n저는 주로 어떻게 하나요?",
+        a: [
+          { text: "믿는 사람에게는, 조심스럽게라도 말해보는 편이에요.", type: "A" },
+          { text: "겉으로 티를 덜 내고, 혼자 정리할 시간을 가져요.", type: "B" },
+          { text: "감정보다 상황을 먼저 정리하고, 해결 방향을 잡아요.", type: "C" },
+          { text: "일단 거리를 두고, 조용히 회복할 시간을 만들어요.", type: "D" },
+        ]
+      },
+      {
+        q: "🌿 처음 만난 사람과는\n어떤 속도로 가까워지나요?",
+        a: [
+          { text: "편안한 분위기를 먼저 만들고, 친해지는 속도도 빠른 편이에요.", type: "A" },
+          { text: "무난하게 시작하고, 조금씩 천천히 가까워져요.", type: "B" },
+          { text: "상대의 태도를 보고, 확신이 들 때 움직여요.", type: "C" },
+          { text: "시간이 꽤 필요해요. 속마음은 쉽게 열리지 않아요.", type: "D" },
+        ]
+      },
+      {
+        q: "🎭 제가 자주 쓰는\n‘사회적 모드’는 어떤 모습인가요?",
+        a: [
+          { text: "밝고 친근한 분위기로, 상대가 편해지도록 해요.", type: "A" },
+          { text: "차분하고 안정적인 톤으로, 과하게 튀지 않아요.", type: "B" },
+          { text: "정리된 느낌으로, 말과 행동을 깔끔하게 해요.", type: "C" },
+          { text: "상대에게 맞춰주되, 내 얘기는 많이 하지 않아요.", type: "D" },
+        ]
+      },
+      {
+        q: "💬 누군가가 저를 좋아한다고\n표현하면 저는요?",
+        a: [
+          { text: "마음이 따뜻해져서, 저도 더 잘해주고 싶어져요.", type: "A" },
+          { text: "고맙지만 속도는 천천히, 내 페이스를 지키려 해요.", type: "B" },
+          { text: "말보다 흐름을 보고, 상대의 진심을 확인해요.", type: "C" },
+          { text: "겉으론 담담해도, 속으로는 오래 생각해요.", type: "D" },
+        ]
+      },
+      {
+        q: "🧩 친해졌다고 느끼는 기준은\n어떤 쪽에 가까운가요?",
+        a: [
+          { text: "연락이 편해지고, 사소한 얘기도 자연스러울 때요.", type: "A" },
+          { text: "눈치를 덜 보게 되고, 말이 편해졌다고 느낄 때요.", type: "B" },
+          { text: "약속과 기준이 맞고, 신뢰가 쌓였다고 느낄 때요.", type: "C" },
+          { text: "약한 부분을 보여도 안전하다고 느낄 때요.", type: "D" },
+        ]
+      },
+      {
+        q: "🌙 사람들이 잘 모르는\n제 속마음은 어떤 편인가요?",
+        a: [
+          { text: "생각보다 여려서, 작은 말에도 마음이 움직여요.", type: "A" },
+          { text: "생각이 많아서, 말하기 전에 오래 정리해요.", type: "B" },
+          { text: "정이 있어도 기준을 넘으면, 단호해질 때가 있어요.", type: "C" },
+          { text: "진짜 마음은 쉽게 안 보여요. 확실히 믿기 전까진요.", type: "D" },
+        ]
+      },
+    ];
+
+    /***********************
+     * 2) 결과 8유형 + 키워드 배지
+     ************************/
+    const results = {
+      "A>B": {
+        title: "✨ 겉은 따뜻함 / 속은 조심스러움",
+        badges: ["#따뜻함", "#속도조절", "#안정지향"],
+        text:
+`처음엔 편하게 다가가지만, 속으로는 관계의 온도를 천천히 맞춥니다.
+그래서 말은 부드러운데, 마음은 쉽게 급해지지 않아요.
+“편해진다”는 느낌이 생기면, 그때부터 오래 가는 타입입니다.`
+      },
+      "A>D": {
+        title: "🌟 겉은 밝음 / 속은 숨김이 많음",
+        badges: ["#분위기메이커", "#속마음숨김", "#안전감"],
+        text:
+`겉으로는 분위기를 잘 풀어주지만, 속마음은 쉽게 공개하지 않습니다.
+사람이 많을수록 더 괜찮은 척하게 되고, 혼자일 때 진짜 감정이 나와요.
+가까운 관계에서는 “안전하다는 확신”이 가장 중요합니다.`
+      },
+      "B>A": {
+        title: "🌿 겉은 차분함 / 속은 애정이 많음",
+        badges: ["#차분함", "#정이많음", "#조용한챙김"],
+        text:
+`겉으로는 조용하고 안정적으로 보이지만, 속에는 정이 많이 쌓입니다.
+표현을 아끼는 편이라 오해가 생기기도 하지만, 마음은 꽤 깊어요.
+신뢰가 생기면 말수가 늘고, 챙김이 확 늘어나는 타입입니다.`
+      },
+      "B>C": {
+        title: "🕯 겉은 무난함 / 속은 정리형",
+        badges: ["#무난함", "#상황정리", "#현실적"],
+        text:
+`겉으로는 무난해 보여도, 속으로는 계속 상황을 정리하고 있습니다.
+감정에 휩쓸리기보단 “지금 필요한 것”을 먼저 찾는 편이에요.
+위기 때 든든하지만, 가끔은 혼자 너무 떠안을 수 있습니다.`
+      },
+      "C>B": {
+        title: "📌 겉은 단단함 / 속은 고민이 많음",
+        badges: ["#기준명확", "#생각많음", "#책임감"],
+        text:
+`겉으로는 똑부러지고 단단해 보여서, 사람들이 기대를 걸기 쉽습니다.
+하지만 속으로는 경우의 수를 많이 생각하고, 결정을 늦게 내릴 때도 있어요.
+기준이 분명한 만큼, 마음을 열면 오래 책임지는 타입입니다.`
+      },
+      "C>D": {
+        title: "🔍 겉은 이성적 / 속은 경계심",
+        badges: ["#이성적", "#거리유지", "#검증후개방"],
+        text:
+`겉으로는 논리적이고 담담하지만, 속으로는 사람을 쉽게 들이지 않습니다.
+말보다 행동을 보고, 신뢰가 확인될 때까지 거리를 유지합니다.
+다만 “내 사람”이 되면, 말 없이도 크게 챙겨주는 편입니다.`
+      },
+      "D>B": {
+        title: "🖤 겉은 무심함 / 속은 예민함",
+        badges: ["#무심한척", "#예민함", "#혼자회복"],
+        text:
+`겉으로는 괜찮아 보여도, 속으로는 말의 뉘앙스를 오래 곱씹습니다.
+그래서 표현을 줄이게 되고, 혼자 회복하는 시간이 필요해요.
+정리되면 다시 괜찮아지지만, 그 과정은 조용히 진행됩니다.`
+      },
+      "D>A": {
+        title: "🌙 겉은 쿨함 / 속은 진심이 많음",
+        badges: ["#쿨한척", "#진심과다", "#깊게감"],
+        text:
+`겉으로는 담담하지만, 마음이 가면 생각보다 깊게 갑니다.
+들키기 싫어서 표현을 줄이는데, 그만큼 속은 더 진해질 수 있어요.
+마음을 여는 순간, 관계의 밀도가 확 달라지는 타입입니다.`
+      },
+    };
+
+    let idx = 0;
+    let history = [];
+    let score = { A:0, B:0, C:0, D:0 };
+
+    const startView = document.getElementById("startView");
+    const testView = document.getElementById("testView");
+    const resultView = document.getElementById("resultView");
+
+    const questionText = document.getElementById("questionText");
+    const answersEl = document.getElementById("answers");
+    const progressFill = document.getElementById("progressFill");
+
+    const startBtn = document.getElementById("startBtn");
+    const backBtn = document.getElementById("backBtn");
+    const restartBtn = document.getElementById("restartBtn");
+
+    const badgeRow = document.getElementById("badgeRow");
+    const resultMain = document.getElementById("resultMain");
+    const resultText = document.getElementById("resultText");
+
+    const kakaoShareBtn = document.getElementById("kakaoShareBtn");
+    const otherTestBtn = document.getElementById("otherTestBtn");
+
+    function show(view){
+      startView.classList.add("hidden");
+      testView.classList.add("hidden");
+      resultView.classList.add("hidden");
+      view.classList.remove("hidden");
+    }
+
+    function renderQuestion(){
+      const total = questions.length;
+      const q = questions[idx];
+
+      progressFill.style.width = `${(idx / total) * 100}%`;
+      questionText.textContent = q.q;
+
+      answersEl.innerHTML = "";
+      q.a.forEach((opt) => {
+        const btn = document.createElement("button");
+        btn.className = "optionBtn";
+        btn.textContent = opt.text;
+        btn.addEventListener("click", () => choose(opt.type));
+        answersEl.appendChild(btn);
+      });
+
+      backBtn.disabled = (idx === 0);
+      backBtn.style.filter = backBtn.disabled ? "grayscale(1) opacity(.55)" : "none";
+      backBtn.style.cursor = backBtn.disabled ? "not-allowed" : "pointer";
+    }
+
+    function choose(type){
+      history[idx] = type;
+      recalcScore();
+
+      if(idx < questions.length - 1){
+        idx += 1;
+        renderQuestion();
+      }else{
+        progressFill.style.width = `100%`;
+        showResult();
+      }
+    }
+
+    function recalcScore(){
+      score = { A:0, B:0, C:0, D:0 };
+      history.forEach(t => { if(t) score[t] += 1; });
+    }
+
+    function topTwoTypes(){
+      const entries = Object.entries(score).sort((a,b)=> b[1]-a[1]);
+      const topScore = entries[0][1];
+      const tiedTop = entries.filter(e => e[1] === topScore).map(e=>e[0]);
+
+      let first = entries[0][0];
+      if(tiedTop.length > 1){
+        for(let i = history.length-1; i>=0; i--){
+          if(history[i] && tiedTop.includes(history[i])) { first = history[i]; break; }
+        }
+      }
+
+      const withoutFirst = Object.entries(score)
+        .filter(([t]) => t !== first)
+        .sort((a,b)=> b[1]-a[1]);
+
+      const secondScore = withoutFirst[0][1];
+      const tiedSecond = withoutFirst.filter(e => e[1] === secondScore).map(e=>e[0]);
+
+      let second = withoutFirst[0][0];
+      if(tiedSecond.length > 1){
+        for(let i = history.length-1; i>=0; i--){
+          if(history[i] && tiedSecond.includes(history[i])) { second = history[i]; break; }
+        }
+      }
+
+      return [first, second];
+    }
+
+    function resolveResultKey(){
+      const [first, second] = topTwoTypes();
+      const key = `${first}>${second}`;
+      if(results[key]) return key;
+
+      if(first === "A") return results["A>B"] ? "A>B" : "A>D";
+      if(first === "B") return results["B>A"] ? "B>A" : "B>C";
+      if(first === "C") return results["C>B"] ? "C>B" : "C>D";
+      return results["D>B"] ? "D>B" : "D>A";
+    }
+
+    function showResult(){
+      const key = resolveResultKey();
+      const r = results[key];
+
+      // 배지 렌더
+      badgeRow.innerHTML = "";
+      (r.badges || []).forEach(t=>{
+        const b = document.createElement("span");
+        b.className = "badge";
+        b.textContent = t;
+        badgeRow.appendChild(b);
+      });
+
+      resultMain.textContent = r.title;
+      resultText.textContent = r.text;
+
+      show(resultView);
+      fireConfetti(26);
+      prepareKakaoShare(r.title);
+    }
+
+    function resetAll(){
+      idx = 0;
+      history = [];
+      score = { A:0, B:0, C:0, D:0 };
+      progressFill.style.width = "0%";
+      show(startView);
+    }
+
+    // Confetti
+    const confettiEl = document.getElementById("confetti");
+    function fireConfetti(count){
+      confettiEl.innerHTML = "";
+      const colors = ["#ffffff","#d9d9d9","#bdbdbd","#f5f5f5","#FEE500","#2F80ED","#EB5757"];
+      for(let i=0;i<count;i++){
+        const s = document.createElement("span");
+        s.style.left = (Math.random() * 100) + "vw";
+        s.style.width = (8 + Math.random() * 8) + "px";
+        s.style.height = (12 + Math.random() * 10) + "px";
+        s.style.background = colors[Math.floor(Math.random()*colors.length)];
+        s.style.animationDelay = (Math.random() * 0.2) + "s";
+        s.style.animationDuration = (0.9 + Math.random() * 0.7) + "s";
+        confettiEl.appendChild(s);
+      }
+      setTimeout(()=>{ confettiEl.innerHTML = ""; }, 1600);
+    }
+
+    // Kakao share (hidden createDefaultButton)
+    function initKakao(){
+      try{
+        if(window.Kakao && !window.Kakao.isInitialized()){
+          window.Kakao.init(KAKAO_JS_KEY);
+        }
+        return !!(window.Kakao && window.Kakao.isInitialized());
+      }catch(e){
+        return false;
+      }
+    }
+    const kakaoReady = initKakao();
+
+    function prepareKakaoShare(resultTitle){
+      const shareUrl = SITE_URL;
+      const hiddenBtn = document.getElementById("kakaoHiddenBtn");
+
+      if(kakaoReady && window.Kakao){
+        hiddenBtn.innerHTML = "";
+        window.Kakao.Share.createDefaultButton({
+          container: "#kakaoHiddenBtn",
+          objectType: "feed",
+          content: {
+            title: "나는 겉과 속이 얼마나 다를까?",
+            description: "내 결과: " + resultTitle,
+            imageUrl: OG_IMAGE_URL,
+            link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
+          },
+          buttons: [
+            { title: "나도 해보기", link: { mobileWebUrl: shareUrl, webUrl: shareUrl } }
+          ]
+        });
+        kakaoShareBtn.onclick = () => hiddenBtn.click();
+      }else{
+        kakaoShareBtn.onclick = () => {
+          copyToClipboard(shareUrl);
+          alert("카카오 공유 설정이 완전하지 않아 링크를 복사했습니다. 카톡에 붙여넣어 공유해 주세요.");
+        };
+      }
+    }
+
+    function copyToClipboard(text){
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).catch(()=>fallbackCopy(text));
+      }else{
+        fallbackCopy(text);
+      }
+    }
+    function fallbackCopy(text){
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+
+    startBtn.addEventListener("click", () => {
+      idx = 0;
+      history = [];
+      score = { A:0, B:0, C:0, D:0 };
+      show(testView);
+      renderQuestion();
+    });
+
+    backBtn.addEventListener("click", () => {
+      if(idx === 0) return;
+      idx -= 1;
+      renderQuestion();
+    });
+
+    restartBtn.addEventListener("click", resetAll);
+
+    otherTestBtn.addEventListener("click", () => {
+      window.open(OTHER_TEST_URL, "_blank", "noopener,noreferrer");
+    });
+  </script>
+</body>
+</html>

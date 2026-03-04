@@ -1,0 +1,524 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  
+    <!-- Open Graph (Kakao preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="lovertest 테스트" />
+    <meta property="og:description" content="lovertest 바이브코딩 테스트" />
+    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/lovertest/" />
+    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter (optional, helps some previews) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="lovertest 테스트" />
+    <meta name="twitter:description" content="lovertest 바이브코딩 테스트" />
+    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>내 애인은 어떤 스타일???</title>
+
+  <!-- OG(스크랩/공유용) -->
+
+
+
+<meta name="description" content="내 애인은 어떤 스타일인지 알아보는 테스트"/>
+
+  <!-- Kakao SDK -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script>
+
+  <style>
+    :root{
+      --text:#1f2430;
+      --muted:#6b7280;
+      --line: rgba(236, 232, 255, .95);
+
+      --bgA:#fff3fa;
+      --bgB:#ffeef8;
+
+      --card:#ffffff;
+      --shadow: 0 18px 60px rgba(15, 23, 42, .10);
+      --radius: 26px;
+
+      --primary:#ff4fa3;
+      --primary2:#8b5cf6;
+
+      --btnYellow:#ffe100;
+      --btnYellowText:#111;
+      --btnBlue:#2f6bff;
+      --btnRed:#ff3b3b;
+    }
+
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans KR", Arial, sans-serif;
+      color: var(--text);
+      min-height: 100vh;
+      background: radial-gradient(1200px 520px at 70% 35%, var(--bgB) 0%, transparent 55%),
+                  linear-gradient(135deg, var(--bgA), #ffffff 48%, #fff7fd 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 24px;
+    }
+
+    .wrap{
+      width: min(980px, 100%);
+      display:flex;
+      justify-content:center;
+    }
+
+    .card{
+      width: min(520px, 100%);
+      background: var(--card);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 38px 34px 28px;
+      position: relative;
+      overflow:hidden;
+    }
+
+    .title{
+      font-size: 34px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      text-align:center;
+      margin: 0 0 10px;
+    }
+
+    .subtitle{
+      text-align:center;
+      color: var(--muted);
+      margin: 0 0 22px;
+      font-size: 14px;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: rgba(255,79,163,.10);
+      border: 1px solid rgba(255,79,163,.22);
+      color: #c81c77;
+      font-size: 13px;
+      font-weight: 700;
+      margin: 0 auto 16px;
+    }
+
+    .center{display:flex; justify-content:center;}
+    .divider{
+      height:1px;
+      background: rgba(139,92,246,.15);
+      margin: 18px -34px 22px;
+    }
+
+    .btn{
+      width: 100%;
+      border: none;
+      border-radius: 16px;
+      padding: 16px 18px;
+      font-weight: 900;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform .06s ease, filter .15s ease;
+      user-select:none;
+    }
+    .btn:active{ transform: translateY(1px) scale(.995); }
+    .btnPrimary{
+      background: linear-gradient(90deg, var(--primary), var(--primary2));
+      color: white;
+      box-shadow: 0 14px 40px rgba(255,79,163,.22);
+    }
+
+    .progressWrap{
+      margin-top: 18px;
+      background: #f1f5f9;
+      border-radius: 999px;
+      overflow:hidden;
+      height: 10px;
+    }
+    .progress{
+      height: 10px;
+      width: 0%;
+      background: linear-gradient(90deg, var(--primary), var(--primary2));
+      transition: width .25s ease;
+    }
+
+    .qbox{
+      margin-top: 22px;
+    }
+
+    .qTitle{
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      margin: 0 0 14px;
+      text-align:center;
+    }
+
+    .opt{
+      width: 100%;
+      padding: 12px 14px;
+      margin: 10px 0;
+      border-radius: 14px;
+      border: 1px solid rgba(15,23,42,.10);
+      background: #fff;
+      font-weight: 700;
+      color: #1f2937;
+      cursor:pointer;
+      transition: background .15s ease, transform .06s ease, border-color .15s ease;
+    }
+    .opt:hover{
+      border-color: rgba(255,79,163,.35);
+      background: rgba(255,79,163,.05);
+    }
+    .opt:active{ transform: translateY(1px); }
+
+    .result{
+      text-align:center;
+    }
+
+    .emoji{
+      font-size: 40px;
+      margin: 14px 0 6px;
+    }
+
+    .resultName{
+      font-size: 24px;
+      font-weight: 900;
+      margin: 8px 0 10px;
+      letter-spacing:-0.02em;
+    }
+
+    .desc{
+      margin: 0 auto 18px;
+      color: #374151;
+      font-weight: 700;
+      line-height: 1.55;
+      background: rgba(15,23,42,.03);
+      border: 1px solid rgba(15,23,42,.06);
+      border-radius: 14px;
+      padding: 14px 14px;
+      max-width: 420px;
+    }
+
+    .bullets{
+      list-style:none;
+      padding: 0;
+      margin: 0 auto 18px;
+      max-width: 420px;
+      text-align:left;
+    }
+    .bullets li{
+      padding: 10px 12px;
+      margin: 10px 0;
+      border-radius: 12px;
+      border: 1px solid rgba(15,23,42,.10);
+      background:#fff;
+      font-weight: 700;
+      color: #334155;
+      text-align:center;
+    }
+
+    .btnRow{
+      display:flex;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .btnRow .btn{ width: 50%; }
+    .btnYellow{
+      background: var(--btnYellow);
+      color: var(--btnYellowText);
+      font-weight: 900;
+    }
+    .btnGray{
+      background: rgba(15,23,42,.06);
+      color: #111827;
+      font-weight: 900;
+    }
+
+    .foot{
+      margin-top: 18px;
+      text-align:center;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 820px){
+      .wrap{justify-content:center;}
+      .card{padding: 34px 22px 24px;}
+      .divider{margin: 18px -22px 22px;}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card" id="card">
+      <div class="center">
+        <div class="pill">💘 연애 테스트</div>
+      </div>
+
+      <h1 class="title" id="mainTitle">나의 숨겨진 연애 본능 진단</h1>
+      <p class="subtitle" id="subTitle">현실 고증 200%, 과몰입 주의!</p>
+
+      <div id="startView">
+        <button class="btn btnPrimary" id="startBtn">진단 시작하기</button>
+      </div>
+
+      <div id="testView" style="display:none;">
+        <div class="progressWrap"><div class="progress" id="progress"></div></div>
+        <div class="qbox">
+          <h2 class="qTitle" id="qTitle"></h2>
+          <div id="options"></div>
+        </div>
+      </div>
+
+      <div id="resultView" style="display:none;">
+        <div class="result">
+          <div class="emoji" id="resultEmoji">❤️</div>
+          <div class="resultName" id="resultName">결과</div>
+          <p class="desc" id="resultDesc"></p>
+          <ul class="bullets" id="resultBullets"></ul>
+
+          <div class="btnRow" style="margin-top:18px;">
+            <button class="btn btnYellow" id="kakaoBtn">💬 카톡 공유</button>
+            <button class="btn btnGray" id="copyBtn">🔗 링크 복사</button>
+          </div>
+
+          <div class="foot">※ 결과는 재미로만! 근데 은근 맞을 수도 있음 😁</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+/* =========================================================
+   ✅ 공통 카카오 설정 (그대로 복붙)
+   - 키 하나로 통일
+   - 공통 썸네일: /assets/share-thumb.jpg
+   - 버튼 문구: "테스트 해보기"
+   ========================================================= */
+const KAKAO_APP_KEY = "9bfb62892ee9abe18003809af70827eb";
+const BASE_URL = (window.location.origin + window.location.pathname).replace(/\/?$/, "/");
+const SHARE_THUMB = window.location.origin + "/assets/share-thumb.jpg";
+
+/* =========================================================
+   ✅ Love 테스트 로직 (간단형)
+   ========================================================= */
+const questions = [
+  { q:"연인이 내 일정을 물어볼 때, 나는?", a:[
+    {t:"공유하는 게 편하다", s:{WARM:2, COOL:0}},
+    {t:"내 시간은 좀 지켜줬으면", s:{WARM:0, COOL:2}},
+    {t:"상황따라 다르다", s:{WARM:1, COOL:1}},
+  ]},
+  { q:"연인이 연락이 뜸할 때", a:[
+    {t:"그럴 수도 있지~ 기다린다", s:{WARM:2, COOL:0}},
+    {t:"바로 확인한다", s:{WARM:0, COOL:2}},
+    {t:"은근 신경 쓰이는데 티는 안 냄", s:{WARM:1, COOL:1}},
+  ]},
+  { q:"갈등이 생기면", a:[
+    {t:"대화로 풀자", s:{WARM:2, COOL:0}},
+    {t:"시간 두고 정리", s:{WARM:0, COOL:2}},
+    {t:"일단 감정부터 달랜다", s:{WARM:1, COOL:1}},
+  ]},
+  { q:"연애에서 내가 중요하게 보는 건?", a:[
+    {t:"정서적 안정감", s:{WARM:2, COOL:0}},
+    {t:"서로의 자율", s:{WARM:0, COOL:2}},
+    {t:"둘 다", s:{WARM:1, COOL:1}},
+  ]},
+  { q:"연인이 애정표현을 원할 때", a:[
+    {t:"자주 해주는 편", s:{WARM:2, COOL:0}},
+    {t:"많이 하면 부담", s:{WARM:0, COOL:2}},
+    {t:"필요할 때만", s:{WARM:1, COOL:1}},
+  ]},
+  { q:"데이트 계획은", a:[
+    {t:"세세하게 짜는 편", s:{WARM:2, COOL:0}},
+    {t:"즉흥이 좋다", s:{WARM:0, COOL:2}},
+    {t:"큰 틀만", s:{WARM:1, COOL:1}},
+  ]},
+  { q:"연인이 힘들어하면", a:[
+    {t:"바로 달래주고 같이 해결", s:{WARM:2, COOL:0}},
+    {t:"공간을 주는 게 더 도움", s:{WARM:0, COOL:2}},
+    {t:"말 걸되 조심스럽게", s:{WARM:1, COOL:1}},
+  ]}
+];
+
+const results = {
+  WARM:{
+    emoji:"🔥",
+    name:"불타는 올인형",
+    desc:"감정이 올라오면 진심으로 몰입해요. 애정표현도 빠르고 상대에게 확신을 주는 타입!",
+    bullets:["표현이 빠르고 확실한 편", "애정표현이 사랑의 언어", "가끔은 속도 조절도 필요"]
+  },
+  COOL:{
+    emoji:"🌲",
+    name:"든든한 소나무형",
+    desc:"감정의 기복이 적고 상대에게 신뢰를 줘요. 갈등이 생겨도 회피하지 않고 대화로 풀어가는 진정한 연애 고수!",
+    bullets:["안정감이 장점", "상대 입장도 잘 고려", "무심해 보이지 않게 한마디 더"]
+  }
+};
+
+let idx = 0;
+let score = {WARM:0, COOL:0};
+let lastResultKey = null;
+
+const startView = document.getElementById("startView");
+const testView  = document.getElementById("testView");
+const resultView= document.getElementById("resultView");
+
+const startBtn = document.getElementById("startBtn");
+const qTitle   = document.getElementById("qTitle");
+const options  = document.getElementById("options");
+const progress = document.getElementById("progress");
+
+const resultEmoji   = document.getElementById("resultEmoji");
+const resultName    = document.getElementById("resultName");
+const resultDesc    = document.getElementById("resultDesc");
+const resultBullets = document.getElementById("resultBullets");
+
+const kakaoBtn = document.getElementById("kakaoBtn");
+const copyBtn  = document.getElementById("copyBtn");
+
+function ensureKakaoInit(){
+  if(!window.Kakao){
+    alert("카카오 SDK 로딩이 안 됐어요.");
+    return false;
+  }
+  if(!Kakao.isInitialized()) Kakao.init(KAKAO_APP_KEY);
+  return true;
+}
+
+/* ✅ 카카오 공유 (썸네일/버튼 통일 + 캐시 회피) */
+function kakaoShare(){
+  if(!ensureKakaoInit()) return;
+
+  const key = lastResultKey || "WARM";
+  const shareUrl = BASE_URL + "?v=" + Date.now();
+  // 결과는 설명/타이틀에만 사용하고, 링크는 "테스트 시작 화면"으로 공유합니다.
+  const resultLabel = (results[key]?.name) ? results[key].name : "";
+
+  Kakao.Share.sendDefault({
+    objectType: "feed",
+    content: {
+      title: resultLabel ? `내 애인은 어떤 스타일??? 👀 (내 결과: ${resultLabel})` : "내 애인은 어떤 스타일??? 👀",
+      description: resultLabel ? `내 결과는 "${resultLabel}"! 너도 테스트 해봐 👀` : "너도 테스트 해봐 👀",
+      imageUrl: SHARE_THUMB,
+      link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
+    },
+    buttons: [
+      { title:"테스트 해보기", link:{ mobileWebUrl: shareUrl, webUrl: shareUrl } }
+    ]
+  });
+}
+
+function copyLink(){
+  const url = window.location.href;
+  navigator.clipboard?.writeText(url).then(()=>{
+    alert("링크가 복사됐어요!");
+  }).catch(()=>{
+    prompt("복사 실패! 아래 링크를 복사하세요:", url);
+  });
+}
+
+function renderQuestion(){
+  const total = questions.length;
+  const q = questions[idx];
+  qTitle.textContent = q.q;
+  options.innerHTML = "";
+  progress.style.width = Math.round((idx/total)*100) + "%";
+
+  q.a.forEach((opt)=>{
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.type = "button";
+    b.textContent = opt.t;
+    b.onclick = ()=>{
+      Object.entries(opt.s).forEach(([k,v])=> score[k]+=v);
+      idx++;
+      if(idx >= total){
+        showResult();
+      }else{
+        renderQuestion();
+      }
+    };
+    options.appendChild(b);
+  });
+}
+
+function calcResultKey(){
+  // 단순 2타입
+  return (score.WARM >= score.COOL) ? "WARM" : "COOL";
+}
+
+function showResult(){
+  testView.style.display = "none";
+  resultView.style.display = "block";
+  progress.style.width = "100%";
+
+  lastResultKey = calcResultKey();
+  const r = results[lastResultKey];
+
+  resultEmoji.textContent = r.emoji;
+  resultName.textContent  = r.name;
+  resultDesc.textContent  = r.desc;
+
+  resultBullets.innerHTML = "";
+  r.bullets.forEach(t=>{
+    const li = document.createElement("li");
+    li.textContent = t;
+    resultBullets.appendChild(li);
+  });
+}
+
+function startTest(){
+  idx = 0;
+  score = {WARM:0, COOL:0};
+  lastResultKey = null;
+
+  startView.style.display = "none";
+  resultView.style.display = "none";
+  testView.style.display  = "block";
+  renderQuestion();
+}
+
+/* ✅ URL로 결과 바로 보기 지원 (?result=WARM) */
+(function initFromQuery(){
+  // ✅ 공유 링크는 기본적으로 "테스트 시작" 화면으로 오픈합니다.
+  // - 결과 바로 보기는 showResult=1이 있을 때만 허용
+  const params = new URLSearchParams(location.search);
+  const r = params.get("result");
+  const show = params.get("showResult") === "1";
+  if(show && r && results[r]){
+    startView.style.display = "none";
+    testView.style.display = "none";
+    resultView.style.display = "block";
+    lastResultKey = r;
+
+    const rr = results[r];
+    resultEmoji.textContent = rr.emoji;
+    resultName.textContent  = rr.name;
+    resultDesc.textContent  = rr.desc;
+
+    resultBullets.innerHTML = "";
+    rr.bullets.forEach(t=>{
+      const li = document.createElement("li");
+      li.textContent = t;
+      resultBullets.appendChild(li);
+    });
+  }
+})();
+
+startBtn.addEventListener("click", startTest);
+kakaoBtn.addEventListener("click", kakaoShare);
+copyBtn.addEventListener("click", copyLink);
+</script>
+
+</body>
+</html>

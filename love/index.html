@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  
+    <!-- Open Graph (Kakao preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="love 테스트" />
+    <meta property="og:description" content="love 바이브코딩 테스트" />
+    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/love/" />
+    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter (optional, helps some previews) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="love 테스트" />
+    <meta name="twitter:description" content="love 바이브코딩 테스트" />
+    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>나의 숨겨진 연애 본능 진단</title>
+
+  <!-- OG(스크랩/공유용) -->
+
+
+
+<!-- Kakao SDK -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+
+  <!-- Confetti (선택) -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root{
+      --primary:#FF6B6B;
+      --primary2:#FF4FA3;
+      --bg:#FFF1F6;
+      --card:#FFFFFF;
+      --text:#222;
+      --muted:#666;
+      --line:#EDEDED;
+      --radius:28px;
+      --shadow:0 18px 45px rgba(0,0,0,.08);
+      --w:450px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Apple SD Gothic Neo", "Noto Sans KR", Arial, sans-serif;
+      background: radial-gradient(1200px 600px at 70% 30%, #ffe7f3 0%, var(--bg) 55%, #fff 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px 16px;
+    }
+    .wrap{width:min(var(--w), 100%)}
+    .card{
+      width:100%;
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      border:1px solid rgba(255, 107, 107, .12);
+    }
+    .hero{
+      padding:34px 26px 18px;
+      text-align:center;
+    }
+    .emoji{
+      width:56px;height:56px;
+      display:inline-flex;
+      align-items:center;justify-content:center;
+      border-radius:18px;
+      background:#fff6f8;
+      border:1px solid rgba(255,107,107,.18);
+      margin-bottom:14px;
+      font-size:28px;
+    }
+    h1{
+      margin:0 0 10px;
+      font-size:26px;
+      letter-spacing:-0.4px;
+      color:var(--primary);
+      font-weight:800;
+    }
+    .sub{
+      margin:0;
+      color:var(--muted);
+      font-size:14px;
+      line-height:1.5;
+    }
+    .divider{height:1px;background:var(--line); margin:14px 0 0}
+    .body{padding:22px 22px 22px}
+    .btn{
+      width:100%;
+      border:none;
+      border-radius:16px;
+      padding:16px 16px;
+      font-size:16px;
+      font-weight:800;
+      cursor:pointer;
+      transition:transform .06s ease, filter .2s ease;
+      user-select:none;
+    }
+    .btn:active{transform:scale(.99)}
+    .btn-primary{
+      background:linear-gradient(90deg, var(--primary) 0%, #ff7f7f 50%, var(--primary2) 100%);
+      color:#fff;
+      box-shadow:0 12px 28px rgba(255, 79, 163, .24);
+    }
+    .btn-outline{
+      background:#fff;
+      border:1px solid rgba(0,0,0,.08);
+      color:#222;
+    }
+    .btn-yellow{
+      background:#FEE500;
+      color:#1b1b1b;
+      font-weight:900;
+    }
+    .btn-blue{
+      background:#2D7FF9;
+      color:#fff;
+      font-weight:900;
+    }
+    .btn-red{
+      background:#FF4D4D;
+      color:#fff;
+      font-weight:900;
+    }
+    .tiny{
+      margin-top:14px;
+      font-size:12px;
+      color:#777;
+      text-align:center;
+      line-height:1.5;
+    }
+
+    /* quiz */
+    .progress{
+      height:10px;
+      border-radius:999px;
+      background:#f3f3f3;
+      overflow:hidden;
+      margin:0 0 18px;
+    }
+    .bar{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg, var(--primary) 0%, var(--primary2) 100%);
+      border-radius:999px;
+      transition:width .25s ease;
+    }
+    .qTitle{
+      font-size:18px;
+      font-weight:900;
+      margin:2px 0 14px;
+      line-height:1.45;
+    }
+    .choices{display:flex; flex-direction:column; gap:10px}
+    .choice{
+      width:100%;
+      text-align:left;
+      padding:14px 14px;
+      border-radius:14px;
+      border:1px solid rgba(0,0,0,.08);
+      background:#fff;
+      cursor:pointer;
+      font-size:15px;
+      line-height:1.45;
+      font-weight:700;
+    }
+    .choice:hover{filter:brightness(.985)}
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900;
+      background:#fff3f7;
+      border:1px solid rgba(255,79,163,.18);
+      color:#b13a73;
+    }
+
+    /* result */
+    .resultHead{
+      text-align:center;
+      padding:22px 22px 8px;
+    }
+    .resultType{
+      font-size:22px;
+      font-weight:1000;
+      margin:10px 0 6px;
+      letter-spacing:-0.3px;
+    }
+    .resultDesc{
+      margin:0 auto;
+      color:#444;
+      font-size:14px;
+      line-height:1.6;
+      max-width:360px;
+    }
+    .resultBox{
+      margin:14px 22px 0;
+      padding:14px 14px;
+      border-radius:16px;
+      background:#fafafa;
+      border:1px solid rgba(0,0,0,.06);
+      color:#333;
+      font-size:14px;
+      line-height:1.55;
+    }
+    .bullets{
+      margin:12px 0 0;
+      padding-left:18px;
+    }
+    .bullets li{margin:6px 0}
+    .btnRow{
+      padding:16px 22px 22px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .hide{display:none !important}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+
+      <!-- START -->
+      <section id="startSection">
+        <div class="hero">
+          <div class="emoji">💘</div>
+          <h1>나의 숨겨진<br/>연애 본능 진단</h1>
+          <p class="sub">현실 고증 200%, 과몰입 주의!<br/>몇 가지 선택으로 내 연애 본능을 확인해요.</p>
+          <div class="divider"></div>
+        </div>
+        <div class="body">
+          <button id="startBtn" class="btn btn-primary">진단 시작하기</button>
+          <div class="tiny">※ 결과는 재미로만! 다만 은근 맞을 수도 😏</div>
+        </div>
+      </section>
+
+      <!-- QUIZ -->
+      <section id="quizSection" class="hide">
+        <div class="hero" style="padding-bottom:14px;">
+          <span class="pill">💗 Love 테스트</span>
+          <div class="divider"></div>
+        </div>
+
+        <div class="body">
+          <div class="progress"><div id="bar" class="bar"></div></div>
+
+          <div id="qTitle" class="qTitle"></div>
+          <div id="choices" class="choices"></div>
+
+          <div class="tiny" style="margin-top:16px;">선택은 “당장 내 마음” 기준으로 고르면 정확도가 올라가요.</div>
+        </div>
+      </section>
+
+      <!-- RESULT -->
+      <section id="resultSection" class="hide">
+        <div class="resultHead">
+          <span class="pill">💘 결과</span>
+          <div id="resultType" class="resultType"></div>
+          <p id="resultDesc" class="resultDesc"></p>
+
+          <!-- 공유용 텍스트 (카카오 카드에 그대로 사용) -->
+          <div id="shareTitle" style="display:none;"></div>
+          <div id="shareDesc" style="display:none;"></div>
+        </div>
+
+        <div class="resultBox">
+          <div style="font-weight:900; margin-bottom:8px;">요약</div>
+          <ul id="resultBullets" class="bullets"></ul>
+        </div>
+
+        <div class="btnRow">
+          <button id="kakaoBtn" class="btn btn-yellow">💬 카톡 공유</button>
+          <button id="otherBtn" class="btn btn-blue">🔎 다른 테스트 해보기</button>
+          <button id="restartBtn" class="btn btn-red">🔁 테스트 다시하기</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+<script>
+/** =========================
+ *  설정
+ * ========================= */
+const KAKAO_JS_KEY = "9bfb62892ee9abe18003809af70827eb";
+// 공통 썸네일 경로(재환님이 assets 폴더에 이 이름으로 넣으면 됨)
+const SHARE_THUMB_PATH = "/assets/share-thumb.jpg";
+// "다른 테스트 해보기" 링크(재환님 기본값)
+const OTHER_TEST_LINK = "https://blog.naver.com/forgiven_77/224195220807";
+
+// 결과 공유 버튼 문구 통일
+const KAKAO_BUTTON_TITLE = "테스트 해보기";
+
+/** =========================
+ *  질문/선택지(8문항)
+ *  유형: OLIN(올인) / SONAMU(소나무) / JIKJIN(직진) / GWAN(관찰)
+ * ========================= */
+const quiz = [
+  {
+    q: "좋아하는 사람이 생겼다. 내 첫 반응은?",
+    a: [
+      { t:"바로 티 난다. 나도 모르게 올인 모드 😳", s:{OLIN:2} },
+      { t:"천천히 가까워지며 신뢰부터 쌓는다.", s:{SONAMU:2} },
+      { t:"먼저 약속 잡고 ‘우리 뭐야?’ 느낌으로 직진!", s:{JIKJIN:2} },
+      { t:"상대 패턴부터 관찰… 확신 생기면 움직인다.", s:{GWAN:2} },
+    ]
+  },
+  {
+    q: "연락 스타일은?",
+    a: [
+      { t:"보고 싶으면 바로! 감정이 빠르게 올라온다.", s:{OLIN:2} },
+      { t:"꾸준히. 너무 과하지 않게 오래 가는 편.", s:{SONAMU:2} },
+      { t:"짧고 강하게. 핵심만 딱!", s:{JIKJIN:2} },
+      { t:"상대 템포에 맞춰 조절한다.", s:{GWAN:2} },
+    ]
+  },
+  {
+    q: "연애에서 가장 중요하게 보는 건?",
+    a: [
+      { t:"‘이 사람’이라는 확신과 몰입감", s:{OLIN:2} },
+      { t:"안정감, 책임감, 약속을 지키는 태도", s:{SONAMU:2} },
+      { t:"설렘과 추진력, 대화 텐션", s:{JIKJIN:2} },
+      { t:"서로의 거리감/경계 존중", s:{GWAN:2} },
+    ]
+  },
+  {
+    q: "갈등이 생기면 나는?",
+    a: [
+      { t:"감정이 먼저 올라오지만 결국 솔직하게 푼다.", s:{OLIN:2} },
+      { t:"회피하지 않고 차분히 대화로 정리한다.", s:{SONAMU:2} },
+      { t:"바로 ‘지금 해결하자’ 모드로 직진", s:{JIKJIN:2} },
+      { t:"잠깐 거리 두고 상황을 정리한 뒤 말한다.", s:{GWAN:2} },
+    ]
+  },
+  {
+    q: "데이트 약속이 꼬였다. 내 반응은?",
+    a: [
+      { t:"서운함이 크다… 그래도 금방 다시 맞춘다.", s:{OLIN:2} },
+      { t:"사정 이해하고 다음 계획을 탄탄히 잡는다.", s:{SONAMU:2} },
+      { t:"바로 대안 제시! 오늘 안 되면 내일!", s:{JIKJIN:2} },
+      { t:"그날 컨디션/상황 보고 유연하게 판단", s:{GWAN:2} },
+    ]
+  },
+  {
+    q: "상대가 무뚝뚝해 보일 때",
+    a: [
+      { t:"내가 더 다가간다. 마음을 열게 만든다.", s:{OLIN:2} },
+      { t:"시간을 주고, 꾸준히 편하게 해준다.", s:{SONAMU:2} },
+      { t:"직접 물어본다. ‘나한테 관심 있어?’", s:{JIKJIN:2} },
+      { t:"관찰 후 결론. 진짜 무뚝뚝인지 확인한다.", s:{GWAN:2} },
+    ]
+  },
+  {
+    q: "연애 중 ‘나’를 가장 잘 설명하는 문장은?",
+    a: [
+      { t:"한번 꽂히면 진심으로 몰입하는 편", s:{OLIN:2} },
+      { t:"옆에서 오래 지켜주는 안정형", s:{SONAMU:2} },
+      { t:"좋아하면 표현으로 밀어붙이는 편", s:{JIKJIN:2} },
+      { t:"감정은 깊지만 표현은 신중한 편", s:{GWAN:2} },
+    ]
+  },
+  {
+    q: "마지막 질문! 상대가 ‘밀당’을 하면?",
+    a: [
+      { t:"헷갈리면 더 올인… (근데 손해 보기 싫다 😅)", s:{OLIN:2} },
+      { t:"가만히 흔들리지 않고 내 템포 유지", s:{SONAMU:2} },
+      { t:"밀당? 그럼 내가 끝낸다. 확실히 하자.", s:{JIKJIN:2} },
+      { t:"밀당인지 체크하고, 선 넘으면 정리", s:{GWAN:2} },
+    ]
+  },
+];
+
+/** =========================
+ *  결과 데이터
+ * ========================= */
+const results = {
+  OLIN: {
+    emoji: "🔥",
+    title: "불타는 올인형",
+    desc: "감정이 타오르면 진심으로 몰입하는 타입이에요. 사랑에 ‘전력’을 다해요.",
+    bullets: [
+      "좋아하면 바로 표현하고, 관계 속도가 빠른 편",
+      "상대의 반응에 민감하지만, 진심이 큰 장점",
+      "연애할수록 더 깊어지는 스타일",
+      "팁: 감정이 뜨거울 때 ‘호흡 한 번’이면 완성형"
+    ],
+    shareTitle: "나의 숨겨진 연애 본능은? 🔥 불타는 올인형",
+    shareDesc: "진심으로 몰입하는 타입!\n지금 테스트 해보세요 🙂",
+    sub: "서브: ENFP, ESFP, INFP"
+  },
+  SONAMU: {
+    emoji: "🌲",
+    title: "든든한 소나무형",
+    desc: "감정의 기복이 적고, 상대에게 신뢰를 주는 안정형이에요. 오래 갈수록 진가가 보여요.",
+    bullets: [
+      "꾸준함·책임감이 강점(연애 체력 높음)",
+      "갈등이 생겨도 대화로 풀어가는 편",
+      "상대를 편하게 해주는 ‘안정감’이 매력",
+      "팁: 가끔은 티 나게 표현해주면 설렘이 더 커져요"
+    ],
+    shareTitle: "나의 숨겨진 연애 본능은? 🌲 든든한 소나무형",
+    shareDesc: "신뢰를 주는 안정형!\n지금 테스트 해보세요 🙂",
+    sub: "서브: ISFJ, ESFJ, ISTJ"
+  },
+  JIKJIN: {
+    emoji: "🏹",
+    title: "설렘 직진형",
+    desc: "표현이 빠르고 확실한 편! 좋아하면 ‘지금’ 움직여서 관계를 만들어가는 타입이에요.",
+    bullets: [
+      "밀당보다 ‘확실함’을 선호",
+      "기회가 오면 바로 잡는 추진력",
+      "연애 텐션을 잘 살리고 분위기를 주도",
+      "팁: 상대 템포를 한 박자만 맞추면 성공률 급상승"
+    ],
+    shareTitle: "나의 숨겨진 연애 본능은? 🏹 설렘 직진형",
+    shareDesc: "표현이 빠르고 확실한 타입!\n지금 테스트 해보세요 🙂",
+    sub: "서브: ENTJ, ENTP, ESTP"
+  },
+  GWAN: {
+    emoji: "🧊",
+    title: "쿨한 관찰자형",
+    desc: "감정은 깊지만 표현은 신중한 편이에요. 확신이 생기면 오래 가는 타입!",
+    bullets: [
+      "상대의 패턴/태도를 보고 판단하는 편",
+      "섣불리 흔들리지 않고 자기 기준이 있음",
+      "신뢰가 쌓이면 엄청 다정해지는 반전",
+      "팁: 마음이 생겼다면 한 번은 ‘표현’해줘도 좋아요"
+    ],
+    shareTitle: "나의 숨겨진 연애 본능은? 🧊 쿨한 관찰자형",
+    shareDesc: "신중하지만 깊게 가는 타입!\n지금 테스트 해보세요 🙂",
+    sub: "서브: INTJ, ISTP, INFJ"
+  },
+};
+
+/** =========================
+ *  DOM
+ * ========================= */
+const startSection = document.getElementById("startSection");
+const quizSection = document.getElementById("quizSection");
+const resultSection = document.getElementById("resultSection");
+
+const startBtn = document.getElementById("startBtn");
+const qTitle = document.getElementById("qTitle");
+const choices = document.getElementById("choices");
+const bar = document.getElementById("bar");
+
+const resultType = document.getElementById("resultType");
+const resultDesc = document.getElementById("resultDesc");
+const resultBullets = document.getElementById("resultBullets");
+
+const shareTitleEl = document.getElementById("shareTitle");
+const shareDescEl = document.getElementById("shareDesc");
+
+const kakaoBtn = document.getElementById("kakaoBtn");
+const otherBtn = document.getElementById("otherBtn");
+const restartBtn = document.getElementById("restartBtn");
+
+/** =========================
+ *  상태
+ * ========================= */
+let idx = 0;
+let score = { OLIN:0, SONAMU:0, JIKJIN:0, GWAN:0 };
+
+/** =========================
+ *  유틸
+ * ========================= */
+function go(section){
+  startSection.classList.add("hide");
+  quizSection.classList.add("hide");
+  resultSection.classList.add("hide");
+  section.classList.remove("hide");
+}
+
+function setProgress(){
+  const pct = Math.round((idx / quiz.length) * 100);
+  bar.style.width = pct + "%";
+}
+
+function pickResult(){
+  const entries = Object.entries(score);
+  entries.sort((a,b)=>b[1]-a[1]);
+  return entries[0][0];
+}
+
+function confettiPop(){
+  if (!window.confetti) return;
+  confetti({
+    particleCount: 80,
+    spread: 65,
+    origin: { y: 0.72 }
+  });
+}
+
+/** =========================
+ *  카카오 공유 (단일 파일 내장)
+ * ========================= */
+function initKakao(){
+  if (!window.Kakao) return false;
+  if (!window.Kakao.isInitialized()) window.Kakao.init(KAKAO_JS_KEY);
+  return true;
+}
+
+function shareKakaoFeed(title, desc, url){
+  if (!initKakao()) {
+    alert("카카오 SDK 로딩 실패");
+    return;
+  }
+  const thumb = window.location.origin + SHARE_THUMB_PATH;
+
+  window.Kakao.Share.sendDefault({
+    objectType: "feed",
+    content: {
+      title,
+      description: desc,
+      imageUrl: thumb,
+      link: { mobileWebUrl: url, webUrl: url }
+    },
+    buttons: [
+      {
+        title: KAKAO_BUTTON_TITLE, // ✅ "테스트 해보기"
+        link: { mobileWebUrl: url, webUrl: url }
+      }
+    ]
+  });
+}
+
+/** =========================
+ *  렌더
+ * ========================= */
+function renderQuestion(){
+  setProgress();
+  const cur = quiz[idx];
+  qTitle.textContent = cur.q;
+  choices.innerHTML = "";
+
+  cur.a.forEach((opt) => {
+    const b = document.createElement("button");
+    b.className = "choice";
+    b.type = "button";
+    b.textContent = opt.t;
+    b.addEventListener("click", () => {
+      Object.keys(opt.s).forEach(k => score[k] += opt.s[k]);
+      idx++;
+      if (idx >= quiz.length){
+        showResult(pickResult(), true);
+      } else {
+        renderQuestion();
+      }
+    });
+    choices.appendChild(b);
+  });
+}
+
+function showResult(code, fromQuiz){
+  const r = results[code];
+  if (!r) return;
+
+  // 화면 구성
+  resultType.textContent = `${r.emoji} ${r.title}`;
+  resultDesc.textContent = r.desc;
+
+  resultBullets.innerHTML = "";
+  r.bullets.forEach(li=>{
+    const el = document.createElement("li");
+    el.textContent = li;
+    resultBullets.appendChild(el);
+  });
+
+  // 공유용 텍스트 세팅(카카오 카드에 그대로 들어감)
+  shareTitleEl.textContent = `${r.shareTitle}`;
+  shareDescEl.textContent = `${r.desc}\n${r.sub}`;
+
+  // URL에 결과 코드 심기 -> 공유 링크로 들어오면 바로 결과
+  const url = new URL(window.location.href);
+  url.searchParams.set("r", code);
+  history.replaceState({}, "", url.toString());
+
+  if (fromQuiz) confettiPop();
+  go(resultSection);
+}
+
+/** =========================
+ *  이벤트
+ * ========================= */
+document.addEventListener("DOMContentLoaded", () => {
+  // 시작 버튼 (무조건 동작)
+  startBtn.addEventListener("click", () => {
+    idx = 0;
+    score = { OLIN:0, SONAMU:0, JIKJIN:0, GWAN:0 };
+    bar.style.width = "0%";
+    go(quizSection);
+    renderQuestion();
+  });
+
+  // 카카오 공유 버튼
+  kakaoBtn.addEventListener("click", () => {
+    const title = shareTitleEl.textContent.trim() || document.title;
+    const desc = shareDescEl.textContent.trim() || "지금 테스트 해보세요 🙂";
+    // 공유 시에는 결과코드가 박힌 현재 URL 그대로
+    const url = window.location.href;
+    shareKakaoFeed(title, desc, url);
+  });
+
+  // 다른 테스트 해보기
+  otherBtn.addEventListener("click", () => {
+    window.open(OTHER_TEST_LINK, "_blank");
+  });
+
+  // 다시하기
+  restartBtn.addEventListener("click", () => {
+    // 결과 파라미터 제거
+    const url = new URL(window.location.href);
+    url.searchParams.delete("r");
+    history.replaceState({}, "", url.toString());
+
+    idx = 0;
+    score = { OLIN:0, SONAMU:0, JIKJIN:0, GWAN:0 };
+    bar.style.width = "0%";
+    go(startSection);
+  });
+
+  // 공유 링크로 들어온 경우(?r=CODE)
+  const url = new URL(window.location.href);
+  const code = url.searchParams.get("r");
+  if (code && results[code]) {
+    showResult(code, false);
+  }
+});
+</script>
+</body>
+</html>

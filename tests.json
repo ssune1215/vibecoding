@@ -1,0 +1,12 @@
+[
+  { "title": "💘 연애 MBTI 테스트", "path": "./lovembti/", "group": "love" },
+  { "title": "💘 Love 테스트", "path": "./love/", "group": "love" },
+  { "title": "💞 Love Other", "path": "./loveother/", "group": "love" },
+  { "title": "💍 Lover Test", "path": "./lovertest/", "group": "love" },
+  { "title": "🔪 연애 집착도 테스트", "path": "./yandere/", "group": "love" },
+
+  { "title": "🖤 Black & White", "path": "./blackandwhite/", "group": "etc" },
+  { "title": "🍜 점심 추천", "path": "./lunch/", "group": "etc" },
+  { "title": "🎯 룰렛", "path": "./roulette/", "group": "etc" },
+  { "title": "⚖️ Balance", "path": "./balance/", "group": "etc" }
+]

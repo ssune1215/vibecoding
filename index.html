@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Vibecoding 테스트 모음</title>
+
+  <!-- OG (공유 썸네일: 공통) -->
+  <meta property="og:title" content="Vibecoding 테스트 모음" />
+  <meta property="og:description" content="원하는 테스트를 골라주세요. 각 링크는 블로그에 그대로 붙여도 됩니다." />
+  <meta property="og:image" content="./assets/share-thumb.jpg" />
+
+  <style>
+    :root{
+      --bg:#fdeaf2;
+      --card:#ffffff;
+      --text:#1f1f1f;
+      --muted:#7d6a74;
+      --line:#ffd1e3;
+
+      --pink:#ff5aa7;
+      --pink2:#ff89c3;
+
+      --shadow:0 18px 45px rgba(30, 10, 20, .12);
+      --radius:22px;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(900px 450px at 20% 10%, #fff6fb, transparent 55%),
+        radial-gradient(800px 420px at 85% 15%, #fff0f8, transparent 55%),
+        linear-gradient(180deg, var(--bg), #fff6fb);
+    }
+    .wrap{width:100%;max-width:520px;padding:18px;}
+    .card{
+      background:var(--card);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 12px;
+      border-radius:999px;
+      background:#ffe3f2;
+      border:1px solid rgba(255,90,167,.22);
+      color:#b0195b;
+      font-weight:900;
+      font-size:12px;
+      letter-spacing:-.2px;
+      margin-bottom:10px;
+    }
+    h1{
+      margin:4px 0 6px;
+      font-size:22px;
+      letter-spacing:-.7px;
+      font-weight:950;
+    }
+    .sub{
+      margin:0 0 14px;
+      color:var(--muted);
+      font-size:13.5px;
+      line-height:1.6;
+    }
+    .box{
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:12px;
+      background:linear-gradient(135deg, rgba(255,90,167,.08), rgba(255,137,195,.05));
+    }
+    .group{
+      margin:6px 0 14px;
+    }
+    .group-title{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-weight:950;
+      color:#b0195b;
+      font-size:13px;
+      margin:6px 0 10px;
+      letter-spacing:-.2px;
+    }
+    .list{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      padding:0;
+      margin:0;
+      list-style:none;
+    }
+    .item a{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      text-decoration:none;
+      color:var(--text);
+      background:#fff;
+      border:1px solid rgba(255,90,167,.16);
+      border-radius:16px;
+      padding:12px 12px;
+      box-shadow:0 10px 18px rgba(255,90,167,.08);
+      transition:transform .08s ease, box-shadow .18s ease, filter .18s ease;
+      font-weight:900;
+      letter-spacing:-.3px;
+    }
+    .item a:hover{filter:brightness(1.01);}
+    .item a:active{
+      transform:translateY(1px);
+      box-shadow:0 7px 12px rgba(255,90,167,.10);
+    }
+    .emoji{
+      width:26px;height:26px;
+      display:grid;place-items:center;
+      border-radius:10px;
+      background:#fff1f8;
+      border:1px solid rgba(255,90,167,.18);
+      flex:0 0 auto;
+      font-size:16px;
+    }
+    .meta{
+      margin-left:auto;
+      color:#a38b98;
+      font-size:12px;
+      font-weight:800;
+    }
+    .note{
+      margin-top:10px;
+      color:#8b7481;
+      font-size:12px;
+      line-height:1.6;
+    }
+    .error{
+      margin-top:10px;
+      background:#fff0f6;
+      border:1px dashed rgba(255,90,167,.35);
+      border-radius:14px;
+      padding:10px 12px;
+      color:#7d3f5c;
+      font-size:12.5px;
+      line-height:1.6;
+      display:none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div class="pill">💗 Vibecoding 테스트 모음</div>
+      <h1>원하는 테스트를 골라주세요</h1>
+      <p class="sub">각 링크는 블로그에 그대로 붙여도 됩니다.</p>
+
+      <div class="box" id="listBox">
+        <!-- 목록이 여기 생성됩니다 -->
+      </div>
+
+      <div class="note">* 모든 테스트는 같은 썸네일(<code>/assets/share-thumb.jpg</code>)을 사용합니다.</div>
+      <div class="error" id="errBox"></div>
+    </div>
+  </div>
+
+<script>
+  // group 라벨/순서
+  const GROUPS = [
+    { key: "love", title: "💘 Love", order: 1 },
+    { key: "etc",  title: "🖤 Etc",  order: 2 },
+  ];
+
+  const DEFAULT_GROUP = "etc";
+
+  function safeText(s){ return (s ?? "").toString(); }
+
+  function groupTitle(key){
+    const g = GROUPS.find(x => x.key === key);
+    return g ? g.title : "🗂 Others";
+  }
+
+  function groupOrder(key){
+    const g = GROUPS.find(x => x.key === key);
+    return g ? g.order : 99;
+  }
+
+  async function loadTests(){
+    const res = await fetch("./tests.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("tests.json을 불러오지 못했습니다. (HTTP " + res.status + ")");
+    const data = await res.json();
+    if (!Array.isArray(data)) throw new Error("tests.json 형식이 배열이 아닙니다.");
+    return data;
+  }
+
+  function render(tests){
+    // group 기준 묶기
+    const map = new Map();
+    for (const t of tests){
+      const title = safeText(t.title).trim();
+      const path  = safeText(t.path).trim();
+      const group = safeText(t.group).trim() || DEFAULT_GROUP;
+
+      if (!title || !path) continue;
+      if (!map.has(group)) map.set(group, []);
+      map.get(group).push({ title, path, group });
+    }
+
+    // group 정렬
+    const groups = Array.from(map.entries())
+      .sort((a,b) => groupOrder(a[0]) - groupOrder(b[0]));
+
+    const box = document.getElementById("listBox");
+    box.innerHTML = "";
+
+    for (const [groupKey, items] of groups){
+      // item 정렬(가나다)
+      items.sort((a,b) => a.title.localeCompare(b.title, "ko"));
+
+      const section = document.createElement("div");
+      section.className = "group";
+
+      const gt = document.createElement("div");
+      gt.className = "group-title";
+      gt.textContent = groupTitle(groupKey);
+      section.appendChild(gt);
+
+      const ul = document.createElement("ul");
+      ul.className = "list";
+
+      for (const it of items){
+        const li = document.createElement("li");
+        li.className = "item";
+
+        // 제목에서 이모지 한 글자(앞) 추출(없으면 기본)
+        const m = it.title.match(/^(\p{Extended_Pictographic}|\p{Emoji_Presentation})\s*/u);
+        const emo = m ? m[1] : "💗";
+        const cleanTitle = it.title.replace(/^(\p{Extended_Pictographic}|\p{Emoji_Presentation})\s*/u, "").trim();
+
+        const a = document.createElement("a");
+        a.href = it.path;          // 예: "./yandere/"
+        a.rel = "noopener noreferrer";
+
+        const e = document.createElement("span");
+        e.className = "emoji";
+        e.textContent = emo;
+
+        const t = document.createElement("span");
+        t.textContent = cleanTitle ? cleanTitle : it.title;
+
+        const meta = document.createElement("span");
+        meta.className = "meta";
+        meta.textContent = "바로가기";
+
+        a.appendChild(e);
+        a.appendChild(t);
+        a.appendChild(meta);
+
+        li.appendChild(a);
+        ul.appendChild(li);
+      }
+
+      section.appendChild(ul);
+      box.appendChild(section);
+    }
+
+    // 아무것도 없으면 안내
+    if (!groups.length){
+      box.innerHTML = `<div class="error" style="display:block">tests.json에 표시할 테스트가 없습니다. (title/path 확인)</div>`;
+    }
+  }
+
+  (async () => {
+    const errBox = document.getElementById("errBox");
+    try{
+      const tests = await loadTests();
+      render(tests);
+    }catch(e){
+      errBox.style.display = "block";
+      errBox.textContent = "목록을 불러오지 못했습니다. " + (e?.message || e);
+    }
+  })();
+</script>
+</body>
+</html>

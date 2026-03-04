@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  
+    <!-- Open Graph (Kakao preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="VibeCoding" />
+    <meta property="og:description" content="바이브코딩 테스트 모음" />
+    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/" />
+    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter (optional, helps some previews) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="VibeCoding" />
+    <meta name="twitter:description" content="바이브코딩 테스트 모음" />
+    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vibecoding 테스트 모음</title>
+
+  <!-- OG(스크랩/공유용) -->
+
+
+
+<link rel="stylesheet" href="./common.css" />
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="badge">❤️ Vibecoding 테스트 모음</div>
+      <h1>원하는 테스트를 골라주세요</h1>
+      <p class="sub">각 링크는 블로그에 그대로 붙여도 됩니다.</p>
+    </div>
+    <div class="content">
+      <div class="card">
+        <div id="links" style="display:flex; flex-direction:column; gap:10px;"></div>
+        <p class="mini">* 모든 테스트는 같은 썸네일(/assets/share-thumb.jpg)을 사용합니다.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    const linksEl = document.getElementById('links');
+    const LINK_STYLE = 'text-decoration:none;font-weight:900;color:#b1125d;';
+    const BR = () => document.createElement('br');
+
+    function addLink(item){
+      const a = document.createElement('a');
+      a.href = item.path;
+      a.setAttribute('style', LINK_STYLE);
+      a.textContent = item.title;
+      linksEl.appendChild(a);
+    }
+
+    function renderFromTests(tests){
+      // love 그룹 먼저, 그 다음 etc 그룹(기존 화면의 <br> 느낌 유지)
+      const love = tests.filter(t => t.group === 'love');
+      const etc  = tests.filter(t => t.group !== 'love');
+
+      love.forEach(addLink);
+      if (love.length && etc.length) linksEl.appendChild(BR());
+      etc.forEach(addLink);
+    }
+
+    fetch('./tests.json', {cache: 'no-store'})
+      .then(r => r.ok ? r.json() : Promise.reject(new Error('tests.json fetch failed')))
+      .then(data => {
+        const tests = (data && data.tests) ? data.tests : [];
+        if (!tests.length) throw new Error('tests.json empty');
+        renderFromTests(tests);
+      })
+      .catch(() => {
+        // fallback: 최소 하드코딩(기존 링크) - tests.json이 없거나 경로 문제일 때 안전장치
+        const fallback = [
+          {title:'💘 연애 MBTI 테스트', path:'./lovembti/', group:'love'},
+          {title:'❤️ Love 테스트', path:'./love/', group:'love'},
+          {title:'💞 Love Other', path:'./loveother/', group:'love'},
+          {title:'💍 Lover Test', path:'./lovertest/', group:'love'},
+          {title:'🔪 연애 집착도 테스트', path:'./yandere/', group:'love'},
+          {title:'🖤 Black & White', path:'./blackandwhite/', group:'etc'},
+          {title:'🍜 점심 추천', path:'./lunch/', group:'etc'},
+          {title:'🎯 룰렛', path:'./roulette/', group:'etc'},
+          {title:'⚖️ Balance', path:'./balance/', group:'etc'}
+        ];
+        renderFromTests(fallback);
+      });
+  })();
+  </script>
+</body>
+</html>

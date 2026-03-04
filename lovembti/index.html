@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  
+    <!-- Open Graph (Kakao preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="lovembti 테스트" />
+    <meta property="og:description" content="lovembti 바이브코딩 테스트" />
+    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/lovembti/" />
+    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter (optional, helps some previews) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="lovembti 테스트" />
+    <meta name="twitter:description" content="lovembti 바이브코딩 테스트" />
+    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>연애 MBTI 테스트</title>
+
+  <!-- 캐시 최대한 방지 -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+
+  <!-- OG(스크랩/공유용) -->
+
+
+
+<!-- Kakao SDK / Confetti -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root{
+      --card:#fff; --bg:#FFF1F6; --text:#2a2a2a; --muted:#7a6470;
+      --shadow:0 14px 34px rgba(255,105,180,.14);
+      --primary:#FF4FA3; --soft:#FFE4F0; --soft2:#FFF7FB; --stroke:rgba(255,79,163,.18);
+      --barBg:#FAD3E5; --bar:#FF4FA3;
+      --yellow:#FEE500; --blue:#3B82F6; --red:#EF4444;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
+      font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+      color:var(--text);background:var(--bg);padding:18px;}
+    .wrap{width:450px;max-width:100%;background:var(--card);border-radius:22px;box-shadow:var(--shadow);
+      overflow:hidden;border:1px solid rgba(255,79,163,.14);}
+    .top{padding:20px 18px 14px;background:var(--soft2);border-bottom:1px solid rgba(255,79,163,.12);}
+    .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;
+      background:var(--soft);border:1px solid var(--stroke);font-size:12px;color:#7a3a59;}
+    h1{margin:12px 0 6px;font-size:20px;line-height:1.25;letter-spacing:-.2px;}
+    .sub{margin:0;font-size:13px;color:var(--muted);line-height:1.5;}
+    .progressWrap{padding:14px 18px 0;background:#fff;}
+    .bar{height:10px;width:100%;background:var(--barBg);border-radius:999px;overflow:hidden;border:1px solid rgba(255,79,163,.10);}
+    .fill{height:100%;width:0%;background:var(--bar);border-radius:999px;transition:width .35s ease;}
+    .content{padding:16px 18px 18px;}
+    .question{margin:0 0 14px;font-size:16px;line-height:1.45;letter-spacing:-.2px;}
+    .choices{display:flex;flex-direction:column;gap:10px;}
+    button.choice{width:100%;text-align:left;border:1px solid rgba(255,79,163,.18);background:#fff;border-radius:16px;
+      padding:14px;cursor:pointer;box-shadow:0 8px 18px rgba(255,79,163,.08);
+      transition:transform .08s ease, box-shadow .2s ease, border-color .2s ease;line-height:1.35;font-size:14px;}
+    button.choice:hover{transform:translateY(-1px);box-shadow:0 12px 26px rgba(255,79,163,.12);border-color:rgba(255,79,163,.35);}
+    .startArea{padding:18px;display:flex;flex-direction:column;gap:12px;}
+    .primaryBtn{width:100%;border:none;border-radius:16px;padding:14px;background:var(--primary);color:#fff;cursor:pointer;
+      font-weight:900;font-size:15px;box-shadow:0 14px 26px rgba(255,79,163,.22);}
+    .hint{font-size:12px;color:var(--muted);line-height:1.55;margin:0;}
+    .resultHead{padding:16px 18px 0;}
+    .resultCard{margin:10px 18px 14px;background:var(--soft2);border:1px solid rgba(255,79,163,.18);border-radius:18px;padding:14px;}
+    .resultEmoji{font-size:46px;line-height:1;text-align:center;margin:2px 0 10px;}
+    .resultType{font-size:18px;font-weight:900;letter-spacing:-.2px;margin:0 0 6px;color:#b1125d;}
+    .resultOne{margin:0 0 10px;color:var(--muted);font-size:13px;line-height:1.55;}
+    .bullets{margin:0;padding-left:18px;color:#2b2b2b;font-size:13px;line-height:1.7;}
+    .subTypes{margin-top:12px;padding:12px;border-radius:14px;background:#fff;border:1px solid rgba(255,79,163,.14);}
+    .subTypes .label{font-size:12px;color:var(--muted);margin:0 0 8px;line-height:1.4;}
+    .subItem{font-size:12px;line-height:1.5;margin:6px 0 0;color:#2b2b2b;}
+    .subItem span{color:#7a3a59;font-weight:900;}
+    .btnRow{padding:0 18px 18px;display:flex;flex-direction:column;gap:10px;}
+    .actionBtn{width:100%;border:none;border-radius:16px;padding:14px;font-weight:900;cursor:pointer;font-size:14px;box-shadow:0 10px 22px rgba(0,0,0,.08);}
+    .kakao{background:var(--yellow);color:#111;}
+    .other{background:var(--blue);color:#fff;}
+    .restart{background:var(--red);color:#fff;}
+    .hide{display:none;}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div class="badge">💘 연애 테스트 · MBTI</div>
+      <h1>내가 끌리는 연애 MBTI는?</h1>
+      <p class="sub">선택 몇 번이면, 내 취향에 가까운 상대 스타일을 골라줘요.</p>
+    </div>
+
+    <div class="progressWrap hide" id="progressWrap">
+      <div class="bar"><div class="fill" id="fill"></div></div>
+    </div>
+
+    <div class="startArea" id="startScreen">
+      <button class="primaryBtn" id="startBtn">테스트 시작하기</button>
+      <p class="hint">• 결과는 짧고 굵게 요약<br/>• 선택은 취향이야 :)</p>
+    </div>
+
+    <div class="content hide" id="quizScreen">
+      <p class="question" id="questionText">질문</p>
+      <div class="choices" id="choices"></div>
+    </div>
+
+    <div class="hide" id="resultScreen">
+      <div class="resultHead"><p class="hint" style="margin:0;">결과</p></div>
+
+      <div class="resultCard">
+        <div class="resultEmoji" id="resultEmoji">💘</div>
+        <p class="resultType" id="resultType">추천 상대 MBTI: ENFP</p>
+        <p class="resultOne" id="resultOne">짧고 굵은 한 줄 코멘트</p>
+        <ul class="bullets" id="resultBullets"></ul>
+
+        <div class="subTypes">
+          <p class="label">서브 추천(Top 3) · 한 줄 코멘트</p>
+          <div id="subList"></div>
+        </div>
+      </div>
+
+      <div class="btnRow">
+        <!-- ✅ 이 버튼 누르면 “무조건” 카카오 공유 피커 뜨게 -->
+        <button class="actionBtn kakao" id="kakaoBtn">카카오톡으로 공유하기</button>
+        <button class="actionBtn other" id="otherTestBtn">다른 테스트 해보기</button>
+        <button class="actionBtn restart" id="restartBtn">테스트 다시하기</button>
+      </div>
+
+      <!-- 카카오가 생성하는 진짜 공유버튼(숨김) -->
+      <a id="kakaoHiddenBtn" href="javascript:;" style="display:none;"></a>
+    </div>
+  </div>
+
+<script>
+  /* =========================
+     0) 설정
+  ========================= */
+  const KAKAO_JS_KEY = "9bfb62892ee9abe18003809af70827eb";
+  const ORIGIN = window.location.origin;
+  const THUMB_URL = ORIGIN + "/assets/share-thumb.jpg"; // ✅ 스샷 파일명 그대로
+
+  function safeInitKakao(){
+    if (!window.Kakao) throw new Error("Kakao SDK not loaded");
+    if (!Kakao.isInitialized()) Kakao.init(KAKAO_JS_KEY);
+  }
+
+  /* =========================
+     1) MBTI 테스트(간단 8문항, 16타입 생성)
+  ========================= */
+  const score = { E:0, I:0, S:0, N:0, T:0, F:0, J:0, P:0 };
+  const questions = [
+    { q:"첫 만남에서 끌리는 분위기는?", a:[
+      { t:"에너지 넘치고 대화 주도", w:{E:2} },
+      { t:"차분하지만 여운 있는 매력", w:{I:2} },
+      { t:"현실적인 배려가 보임", w:{S:1,F:1} },
+      { t:"독특해서 호기심 생김", w:{N:2} },
+    ]},
+    { q:"설렘이 터지는 순간은?", a:[
+      { t:"즉흥 약속! 번개 데이트", w:{P:2,E:1} },
+      { t:"계획한 데이트가 깔끔하게", w:{J:2} },
+      { t:"실제로 도움 되는 배려", w:{S:2} },
+      { t:"가치관 대화가 통할 때", w:{N:2} },
+    ]},
+    { q:"다툼 해결 스타일은?", a:[
+      { t:"원인 정리하고 결론 내기", w:{T:2,J:1} },
+      { t:"감정부터 풀고 공감하기", w:{F:2} },
+      { t:"시간 갖고 차분히 얘기", w:{I:1,J:1} },
+      { t:"분위기 바꾸고 만나서 풀기", w:{E:1,P:1} },
+    ]},
+    { q:"상대에게 꼭 바라는 매력은?", a:[
+      { t:"논리/명확함", w:{T:2} },
+      { t:"따뜻함/공감", w:{F:2} },
+      { t:"현실감/책임감", w:{S:2} },
+      { t:"센스/아이디어", w:{N:2} },
+    ]},
+    { q:"연락 스타일은?", a:[
+      { t:"핵심만, 과한 톡은 부담", w:{I:1,T:1} },
+      { t:"일상 공유 자주 하는 편", w:{E:1,F:1} },
+      { t:"일정/약속 미리 정리", w:{J:2} },
+      { t:"유연하게, 규칙적이면 답답", w:{P:2} },
+    ]},
+    { q:"주말 데이트 취향은?", a:[
+      { t:"핫플/맛집/전시 같이 돌아다니기", w:{E:2,P:1} },
+      { t:"조용히 쉬면서 충전", w:{I:2} },
+      { t:"루틴 있는 안정 데이트", w:{S:2,J:1} },
+      { t:"새로운 곳 탐험", w:{N:2,P:1} },
+    ]},
+    { q:"연인이 고민을 말할 때 나는?", a:[
+      { t:"해결책 같이 찾기", w:{T:2,S:1} },
+      { t:"공감/위로 먼저", w:{F:2} },
+      { t:"의미/큰 그림 같이 보기", w:{N:2} },
+      { t:"구체적으로 챙겨주기", w:{S:2} },
+    ]},
+    { q:"내가 원하는 연애의 핵심은?", a:[
+      { t:"재미+텐션+성장", w:{E:1,N:1,P:1} },
+      { t:"안정+신뢰+약속", w:{S:1,J:2} },
+      { t:"명확함+기준", w:{T:2,J:1} },
+      { t:"배려+감정 안정", w:{F:2} },
+    ]},
+  ];
+
+  const emojiMap = {
+    ISTJ:"🧱", ISFJ:"🌷", INFJ:"🔮", INTJ:"♟️",
+    ISTP:"🛠️", ISFP:"🎨", INFP:"🌙", INTP:"🧠",
+    ESTP:"🔥", ESFP:"🎉", ENFP:"✨", ENTP:"💡",
+    ESTJ:"📊", ESFJ:"🤝", ENFJ:"🌟", ENTJ:"🚀"
+  };
+
+  const results = {
+    ISTJ:{ one:"신뢰·기준이 분명한 안정형에게 끌려요.", bullets:["약속을 잘 지킴","일관성 있는 애정","든든함"] },
+    ISFJ:{ one:"따뜻하게 챙겨주는 배려형이 찰떡.", bullets:["세심한 케어","편안한 분위기","진심이 행동"] },
+    INFJ:{ one:"가치관이 통하는 깊은 대화형이 좋아요.", bullets:["의미 있는 대화","조용한 배려","관계 방향성"] },
+    INTJ:{ one:"확신 있는 전략형 매력에 끌려요.", bullets:["논리/계획","성장 지향","책임감"] },
+    ISTP:{ one:"간섭 없이 편한 쿨한 현실파가 좋아요.", bullets:["자유 존중","담백한 애정","행동으로 증명"] },
+    ISFP:{ one:"편안한 감성, 자연스러운 다정함.", bullets:["부드러운 분위기","통제는 부담","감성 케어"] },
+    INFP:{ one:"진심·낭만이 있는 감정선에 끌려요.", bullets:["따뜻한 말","세계 존중","감성 포인트"] },
+    INTP:{ one:"지적 티키타카가 최고.", bullets:["대화의 깊이","유연함","감정 강요 X"] },
+    ESTP:{ one:"텐션·속도가 중요한 타입.", bullets:["즉흥 데이트","솔직한 매력","재미 핵심"] },
+    ESFP:{ one:"함께 있으면 밝아지는 분위기형.", bullets:["표현 풍부","일상 공유","에너지"] },
+    ENFP:{ one:"설렘을 잘 만드는 활력형이 찰떡.", bullets:["대화가 끊기지 않음","즉흥도 즐김","솔직함"] },
+    ENTP:{ one:"자극·아이디어형 센스에 끌려요.", bullets:["티키타카","새로움","규칙 과하면 답답"] },
+    ESTJ:{ one:"안정적으로 이끄는 현실 리더형.", bullets:["신뢰 최우선","정리/결단","든든함"] },
+    ESFJ:{ one:"온도를 맞춰주는 따뜻한 케어형.", bullets:["감정 케어","루틴 강함","함께 즐거움"] },
+    ENFJ:{ one:"‘우리’로 성장하는 팀플 연애.", bullets:["대화로 정리","응원/동기부여","리더십"] },
+    ENTJ:{ one:"결단력 있는 추진형 매력.", bullets:["목표/성장","기준 명확","함께 발전"] },
+  };
+
+  function resetScores(){ for(const k in score) score[k]=0; }
+  function addWeights(w){ for(const k in w) score[k]=(score[k]||0)+w[k]; }
+
+  function getTopTypes(){
+    const axes=[["E","I"],["S","N"],["T","F"],["J","P"]];
+    const list=[];
+    for(const a of axes[0]) for(const b of axes[1]) for(const c of axes[2]) for(const d of axes[3]){
+      const type=`${a}${b}${c}${d}`;
+      const s=(score[a]||0)+(score[b]||0)+(score[c]||0)+(score[d]||0);
+      list.push({type,s});
+    }
+    list.sort((x,y)=>(y.s-x.s)||x.type.localeCompare(y.type));
+    return list.slice(0,4).map(v=>v.type);
+  }
+
+  function confettiBoom(){
+    try{ confetti({ particleCount:110, spread:65, origin:{ y:0.65 } }); }catch(e){}
+  }
+
+  /* =========================
+     2) 화면
+  ========================= */
+  let step=0;
+  const $start=document.getElementById("startScreen");
+  const $quiz=document.getElementById("quizScreen");
+  const $result=document.getElementById("resultScreen");
+  const $progressWrap=document.getElementById("progressWrap");
+  const $qText=document.getElementById("questionText");
+  const $choices=document.getElementById("choices");
+  const $fill=document.getElementById("fill");
+  const $resEmoji=document.getElementById("resultEmoji");
+  const $resType=document.getElementById("resultType");
+  const $resOne=document.getElementById("resultOne");
+  const $resBullets=document.getElementById("resultBullets");
+  const $subList=document.getElementById("subList");
+
+  function renderProgress(){
+    const pct=Math.round((step/questions.length)*100);
+    $fill.style.width=pct+"%";
+  }
+
+  function renderQuestion(){
+    renderProgress();
+    const item=questions[step];
+    $qText.textContent=item.q;
+    $choices.innerHTML="";
+    item.a.forEach(opt=>{
+      const btn=document.createElement("button");
+      btn.className="choice";
+      btn.type="button";
+      btn.textContent=opt.t;
+      btn.onclick=()=>{
+        addWeights(opt.w);
+        step++;
+        if(step>=questions.length) showResult();
+        else renderQuestion();
+      };
+      $choices.appendChild(btn);
+    });
+  }
+
+  function start(){
+    resetScores();
+    step=0;
+    $start.classList.add("hide");
+    $result.classList.add("hide");
+    $quiz.classList.remove("hide");
+    $progressWrap.classList.remove("hide");
+    renderQuestion();
+  }
+
+  function showResult(){
+    $fill.style.width="100%";
+    const top4=getTopTypes();
+    const main=top4[0];
+    const subs=top4.slice(1,4);
+    const mainData=results[main] || { one:"내 취향에 가까운 상대 타입이에요.", bullets:["대화가 편함","감정이 안정적","관계가 자연스러움"] };
+
+    $resEmoji.textContent=emojiMap[main] || "💘";
+    $resType.textContent=`추천 상대 MBTI: ${main}`;
+    $resOne.textContent=mainData.one;
+
+    $resBullets.innerHTML="";
+    mainData.bullets.forEach(b=>{ const li=document.createElement("li"); li.textContent=b; $resBullets.appendChild(li); });
+
+    $subList.innerHTML="";
+    subs.forEach(t=>{
+      const div=document.createElement("div");
+      div.className="subItem";
+      div.innerHTML=`${emojiMap[t]||"💗"} <span>${t}</span> - ${(results[t]?.one)||"이 타입도 꽤 잘 맞는 편이에요."}`;
+      $subList.appendChild(div);
+    });
+
+    // 공유 문구에 넣을 데이터 저장
+    $result.dataset.main = main;
+    $result.dataset.subs = subs.join(", ");
+    $result.dataset.one  = mainData.one;
+
+    $quiz.classList.add("hide");
+    $result.classList.remove("hide");
+    confettiBoom();
+
+    // ✅ 결과가 나온 뒤에 “공식 공유버튼”을 만들어둠(중요) :contentReference[oaicite:1]{index=1}
+    buildKakaoHiddenButton();
+  }
+
+  function restart(){
+    resetScores();
+    step=0;
+    $progressWrap.classList.add("hide");
+    $quiz.classList.add("hide");
+    $result.classList.add("hide");
+    $start.classList.remove("hide");
+    $fill.style.width="0%";
+  }
+
+  document.getElementById("startBtn").addEventListener("click", start);
+  document.getElementById("restartBtn").addEventListener("click", restart);
+  document.getElementById("otherTestBtn").addEventListener("click", ()=>{
+    window.location.href="https://blog.naver.com/forgiven_77/224195220807";
+  });
+
+  /* =========================
+     3) ✅ 카카오 공유(복사/클립보드 절대 없음)
+     - createDefaultButton로 “카카오가 만든 공유버튼”을 숨겨서 생성
+     - 우리 버튼 클릭 시 그 숨은 버튼을 눌러서 피커(친구/채팅) 띄움
+  ========================= */
+  function buildKakaoHiddenButton(){
+    // 같은 페이지에서 여러번 만들지 않게 초기화
+    const hidden = document.getElementById("kakaoHiddenBtn");
+    hidden.replaceWith(hidden.cloneNode(true)); // 이벤트/상태 싹 초기화
+    const freshHidden = document.getElementById("kakaoHiddenBtn");
+
+    try{
+      safeInitKakao();
+      const shareUrl = window.location.href;
+      const main = $result.dataset.main || "MBTI";
+      const subs = $result.dataset.subs || "";
+      const one  = $result.dataset.one  || "";
+
+      Kakao.Share.createDefaultButton({
+        container: "#kakaoHiddenBtn",
+        objectType: "feed",
+        content: {
+          title: `내 애인은 어떤 스타일??? 👀 (추천: ${main})`,
+          description: `${one}${subs ? `\n서브: ${subs}` : ""}`,
+          imageUrl: THUMB_URL,
+          link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
+        },
+        buttons: [
+          { title: "결과 확인하러 가기", link: { mobileWebUrl: shareUrl, webUrl: shareUrl } }
+        ]
+      });
+    }catch(e){
+      // 여기는 복사로 대체하지 않음
+      console.error(e);
+      alert("카카오 SDK 초기화/설정 문제로 공유창을 못 띄웠어요. (콘솔 확인)");
+    }
+  }
+
+  // ✅ 우리 눈에 보이는 버튼: 클릭하면 숨은 카카오 버튼을 “클릭”
+  document.getElementById("kakaoBtn").addEventListener("click", ()=>{
+    const el = document.getElementById("kakaoHiddenBtn");
+    el.click();
+  });
+</script>
+</body>
+</html>

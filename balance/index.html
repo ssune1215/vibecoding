@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    
+    <!-- Open Graph (Kakao preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="balance 테스트" />
+    <meta property="og:description" content="balance 바이브코딩 테스트" />
+    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/balance/" />
+    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter (optional, helps some previews) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="balance 테스트" />
+    <meta name="twitter:description" content="balance 바이브코딩 테스트" />
+    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>직장인 대환장 밸런스 게임</title>
+
+  <!-- OG(스크랩/공유용) -->
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        body { font-family: 'Pretendard', sans-serif; background: #f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        .container { background: white; width: 90%; max-width: 450px; padding: 35px 25px; border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; }
+        
+        /* 메인 대문 스타일 */
+        #start-area img { width: 100px; margin-bottom: 20px; }
+        .main-title { font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 15px; word-break: keep-all; }
+        .sub-title { font-size: 1rem; color: #64748b; margin-bottom: 30px; line-height: 1.5; }
+        
+        /* 공통 버튼 스타일 */
+        .btn-primary { background: #3b82f6; color: white; border: none; padding: 20px 40px; font-size: 1.3rem; font-weight: bold; border-radius: 20px; cursor: pointer; transition: 0.2s; width: 100%; box-shadow: 0 8px 0 #2563eb; }
+        .btn-primary:active { transform: translateY(4px); box-shadow: 0 4px 0 #2563eb; }
+        
+        /* 게임 및 결과 영역 숨김 */
+        #game-area, #result-area { display: none; }
+        
+        /* 게임 화면 스타일 */
+        .progress-bar { background: #e2e8f0; height: 8px; border-radius: 4px; margin-bottom: 25px; overflow: hidden; }
+        .progress-fill { background: #3b82f6; height: 100%; width: 0%; transition: 0.3s; }
+        .q-text { font-size: 1.3rem; font-weight: 700; color: #1e293b; margin-bottom: 30px; word-break: keep-all; min-height: 3.5rem; display: flex; align-items: center; justify-content: center; }
+        .choice-btn { background: #f8fafc; border: 2px solid #e2e8f0; padding: 18px; border-radius: 15px; width: 100%; margin-bottom: 12px; cursor: pointer; font-size: 1rem; font-weight: 600; color: #475569; transition: 0.2s; word-break: keep-all; }
+        .choice-btn:hover { background: #eff6ff; border-color: #3b82f6; color: #3b82f6; }
+        
+        /* 결과 스타일 */
+        .res-type { font-size: 1.8rem; font-weight: 800; color: #3b82f6; margin: 20px 0; }
+        .res-desc { color: #64748b; line-height: 1.6; margin-bottom: 30px; background: #f1f5f9; padding: 20px; border-radius: 15px; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div id="start-area">
+            <div style="font-size: 50px; margin-bottom: 10px;">😱</div>
+            <div class="main-title">직장인 대환장<br>밸런스 게임</div>
+            <p class="sub-title">당신을 기다리는 10가지 지옥의 선택지!<br>끝까지 살아남아 유형을 확인하세요.</p>
+            <button class="btn-primary" onclick="startGame()">시작하기!</button>
+        </div>
+
+        <div id="game-area">
+            <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+            <div id="q-number" style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Question 1/10</div>
+            <div class="q-text" id="question">질문 불러오는 중...</div>
+            <button class="choice-btn" id="btnA" onclick="nextQuestion('A')"></button>
+            <button class="choice-btn" id="btnB" onclick="nextQuestion('B')"></button>
+        </div>
+
+        <div id="result-area">
+            <div style="font-size: 50px; margin-bottom: 10px;">🏆</div>
+            <div class="main-title">분석 결과</div>
+            <div class="res-type" id="res-type"></div>
+            <div class="res-desc" id="res-desc"></div>
+            <button class="btn-primary" onclick="location.reload()">다시 도전하기</button>
+        </div>
+    </div>
+
+    <script>
+        let questions = [
+            { q: "오늘의 점심 파트너, 당신의 선택은?", a: "침묵하는 팀장님과 1:1 식사", b: "자랑 가득한 부장님과 단체 식사" },
+            { q: "더 싫은 상사의 행동은?", a: "정해줬더니 '그건 좀..' 거절하기", b: "식당 갈 때까지 '아무거나' 반복하기" },
+            { q: "하나만 골라야 한다면?", a: "회사 앞 모든 팀 만나는 식당", b: "왕복 40분 걸리는 먼 맛집" },
+            { q: "식사 중 더 고통스러운 상황은?", a: "빛의 속도로 먹고 일어나는 상사", b: "다 먹고 30분째 등산 얘기하는 상사" },
+            { q: "내 소중한 점심시간, 하나만 택한다면?", a: "식후 15분 꿀맛 같은 낮잠", b: "비싼 카페 법카 커피" },
+            { q: "월요일 아침 출근했더니?", a: "메일 200개 쌓여있기", b: "갑자기 오전 9시 전체 회의" },
+            { q: "더 받기 싫은 업무 지시는?", a: "퇴근 10분 전 '간단한' 수정 요청", b: "주말에 카톡으로 '월욜에 얘기하자'" },
+            { q: "회사 탕비실에 딱 하나만 있다면?", a: "무제한 고급 캡슐 커피", b: "무제한 수입 과자/간식" },
+            { q: "더 견디기 힘든 동료는?", a: "내 모든 일에 훈수 두는 '꼰대'", b: "일 하나도 안 해서 내가 다 하는 '구멍'" },
+            { q: "다시 태어난다면?", a: "연봉은 높지만 야근 잦은 대기업", b: "연봉은 적지만 워라밸 최강 중소기업" }
+        ];
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        let currentIdx = 0;
+        let scoreA = 0;
+
+        function startGame() {
+            document.getElementById('start-area').style.display = 'none';
+            document.getElementById('game-area').style.display = 'block';
+            questions = shuffle(questions);
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if (currentIdx < questions.length) {
+                const q = questions[currentIdx];
+                document.getElementById('q-number').innerText = `Question ${currentIdx + 1} / 10`;
+                document.getElementById('question').innerText = q.q;
+                document.getElementById('btnA').innerText = q.a;
+                document.getElementById('btnB').innerText = q.b;
+                document.getElementById('progress').style.width = `${((currentIdx) / questions.length) * 100}%`;
+            } else {
+                showResult();
+            }
+        }
+
+        function nextQuestion(choice) {
+            if (choice === 'A') scoreA++;
+            currentIdx++;
+            loadQuestion();
+        }
+
+        function showResult() {
+            document.getElementById('game-area').style.display = 'none';
+            document.getElementById('result-area').style.display = 'block';
+            confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+
+            let type = "";
+            let desc = "";
+
+            if (scoreA >= 8) {
+                type = "철벽 방어형 소울리스";
+                desc = "당신은 효율과 평화를 중시하는 고수입니다. 불필요한 감정 소모를 극도로 싫어하며 실속을 챙기는 타입이군요! 가끔은 동료들에게 마음을 조금만 열어보세요.";
+            } else if (scoreA >= 5) {
+                type = "눈치백단 사회생활 만렙";
+                desc = "상황 판단이 빠르고 적절히 타허협할 줄 아는 당신! 어느 팀에서도 환영받을 처세술의 달인입니다. 스트레스 관리만 잘하면 승승장구할 타입입니다.";
+            } else {
+                type = "따뜻한 가슴의 리액션 요정";
+                desc = "힘든 상황도 사람으로 극복하는 타입! 가끔 피곤하긴 해도 팀의 분위기 메이커 역할을 톡톡히 하시네요. 하지만 자신의 에너지도 꼭 챙기세요!";
+            }
+
+            document.getElementById('res-type').innerText = type;
+            document.getElementById('res-desc').innerText = desc;
+        }
+    </script>
+</body>
+</html>
