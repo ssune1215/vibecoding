@@ -1,0 +1,31 @@
+<!-- usage-example.html -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Vibe Kakao Share Example</title>
+
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"></script>
+<script src="/js/vibe-config.js"></script>
+<script src="/js/vibe-common.js"></script>
+
+</head>
+<body>
+
+<h2>카카오 공유 테스트</h2>
+
+<button onclick="share()">카톡 공유하기</button>
+
+<script>
+function share(){
+  Vibe.shareKakao({
+    title: "🔥 연애 온도 테스트",
+    description: "내 연애 온도는 몇 도일까?",
+    imageUrl: "https://via.placeholder.com/800x420.png?text=LOVE+TEST",
+    url: window.location.href
+  });
+}
+</script>
+
+</body>
+</html>
