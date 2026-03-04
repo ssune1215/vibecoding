@@ -1,8 +1,8 @@
 // assets/kakao-share.js
 // Common Kakao share (no-Korean text to avoid encoding issues)
 
-const KAKAO_JS_KEY = "4d3d00e575a03a304f090860cac80309";
-const THUMB_URL = "https://cdn.jsdelivr.net/gh/ssune1215/vibecoding-assets@main/share-thumb.jpg?v=5";
+const KAKAO_JS_KEY = "__KAKAO_JS_KEY__";
+const THUMB_URL = "__THUMB_URL__";
 
 function initKakao() {
   if (!window.Kakao) {

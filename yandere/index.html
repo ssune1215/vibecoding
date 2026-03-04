@@ -2,93 +2,198 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8" />
-  
-    <!-- Open Graph (Kakao preview) -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="VibeCoding" />
-    <meta property="og:description" content="바이브코딩 테스트 모음" />
-    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/" />
-    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>연애 집착도 테스트</title>
 
-    <!-- Twitter (optional, helps some previews) -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="VibeCoding" />
-    <meta name="twitter:description" content="바이브코딩 테스트 모음" />
-    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
-    
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Vibecoding 테스트 모음</title>
+  <!-- OG (Kakao preview) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="연애 집착도 테스트" />
+  <meta property="og:description" content="내 집착 레벨은 어느 정도일까? 1분만에 확인!" />
+  <meta property="og:image" content="__THUMB_URL__" />
+  <meta property="og:url" content="__BASE_URL__/yandere/" />
 
-  <!-- OG(스크랩/공유용) -->
+  <link rel="stylesheet" href="../common.css" />
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" integrity="sha384-6k7mZq3Y6n0vU8i4+Y0p7k0m9nqz8DgZ7xkqvQpFqG2Jp8VbH0Y0wS6oVv0p0r3m" crossorigin="anonymous"></script>
+  <script defer src="../assets/kakao-share.js"></script>
 
-
-
-<link rel="stylesheet" href="./common.css" />
+  <style>
+    body { padding: 24px; }
+    .card { max-width: 520px; margin: 0 auto; background: #fff; border-radius: 16px; padding: 18px; box-shadow: 0 6px 18px rgba(0,0,0,.08); }
+    h1 { margin: 0 0 12px; font-size: 20px; }
+    .q { margin: 16px 0 10px; font-weight: 700; }
+    .opts button { width: 100%; margin: 8px 0; padding: 12px 14px; border-radius: 12px; border: 1px solid #eee; background: #fafafa; cursor: pointer; }
+    .opts button:hover { background: #f3f3f3; }
+    .row { display:flex; gap:10px; margin-top: 14px; }
+    .row button { flex:1; padding: 12px 14px; border-radius: 12px; border: none; cursor:pointer; }
+    .primary { background:#111; color:#fff; }
+    .secondary { background:#f1f1f1; }
+    .hidden { display:none; }
+  </style>
 </head>
 <body>
-  <div class="wrap">
-    <div class="top">
-      <div class="badge">❤️ Vibecoding 테스트 모음</div>
-      <h1>원하는 테스트를 골라주세요</h1>
-      <p class="sub">각 링크는 블로그에 그대로 붙여도 됩니다.</p>
+  <div class="card">
+    <h1>🔪 연애 집착도 테스트</h1>
+    <div id="quiz">
+      <div id="progress"></div>
+      <div class="q" id="qtext"></div>
+      <div class="opts" id="opts"></div>
     </div>
-    <div class="content">
-      <div class="card">
-        <div id="links" style="display:flex; flex-direction:column; gap:10px;"></div>
-        <p class="mini">* 모든 테스트는 같은 썸네일(/assets/share-thumb.jpg)을 사용합니다.</p>
+
+    <div id="result" class="hidden">
+      <h1 id="rtitle"></h1>
+      <p id="rdesc"></p>
+      <div class="row">
+        <button class="primary" id="share">카카오톡 공유</button>
+        <button class="secondary" id="restart">다시하기</button>
       </div>
     </div>
   </div>
 
-  <script>
-  (function(){
-    const linksEl = document.getElementById('links');
-    const LINK_STYLE = 'text-decoration:none;font-weight:900;color:#b1125d;';
-    const BR = () => document.createElement('br');
+<script>
+const questions = [
+  {
+    q: "연락이 늦으면 어떤 생각이 먼저 드나요?",
+    a: [
+      ["바쁜가 보다. 기다린다", 0],
+      ["무슨 일 있나? 걱정된다", 1],
+      ["혹시 나 말고 다른 사람이…?", 2],
+      ["지금 바로 확인해야 한다", 3],
+    ]
+  },
+  {
+    q: "상대의 SNS를 보는 편인가요?",
+    a: [
+      ["거의 안 본다", 0],
+      ["가끔 본다", 1],
+      ["자주 확인한다", 2],
+      ["알림/팔로우까지 다 체크한다", 3],
+    ]
+  },
+  {
+    q: "데이트 약속이 취소되면?",
+    a: [
+      ["다음에 보자고 한다", 0],
+      ["이유를 묻고 이해한다", 1],
+      ["속상해서 티가 난다", 2],
+      ["서운함이 크게 남는다", 3],
+    ]
+  },
+  {
+    q: "상대가 이성 친구와 만난다고 하면?",
+    a: [
+      ["응원한다", 0],
+      ["살짝 신경 쓰인다", 1],
+      ["질문이 많아진다", 2],
+      ["안 만났으면 좋겠다", 3],
+    ]
+  },
+  {
+    q: "연애 중 가장 불안한 순간은?",
+    a: [
+      ["특별히 없다", 0],
+      ["말투가 차갑게 느껴질 때", 1],
+      ["연락 패턴이 바뀔 때", 2],
+      ["답장이 없을 때", 3],
+    ]
+  },
+  {
+    q: "상대의 휴대폰을 볼 기회가 생기면?",
+    a: [
+      ["절대 안 본다", 0],
+      ["잠깐 고민한다", 1],
+      ["궁금해서 조금 본다", 2],
+      ["무조건 확인한다", 3],
+    ]
+  },
+  {
+    q: "다툰 후 화해 방식은?",
+    a: [
+      ["대화로 풀고 끝낸다", 0],
+      ["확인하고 싶어 한다", 1],
+      ["사과를 여러 번 받고 싶다", 2],
+      ["불안해서 계속 붙잡는다", 3],
+    ]
+  },
+  {
+    q: "상대가 혼자만의 시간을 원하면?",
+    a: [
+      ["좋아, 쉬어!", 0],
+      ["조금 아쉽지만 존중", 1],
+      ["왜? 나랑 있기 싫어?", 2],
+      ["불안해서 계속 연락한다", 3],
+    ]
+  },
+];
 
-    function addLink(item){
-      const a = document.createElement('a');
-      a.href = item.path;
-      a.setAttribute('style', LINK_STYLE);
-      a.textContent = item.title;
-      linksEl.appendChild(a);
-    }
+let idx = 0;
+let score = 0;
 
-    function renderFromTests(tests){
-      // love 그룹 먼저, 그 다음 etc 그룹(기존 화면의 <br> 느낌 유지)
-      const love = tests.filter(t => t.group === 'love');
-      const etc  = tests.filter(t => t.group !== 'love');
+const qtext = document.getElementById("qtext");
+const opts = document.getElementById("opts");
+const quiz = document.getElementById("quiz");
+const result = document.getElementById("result");
+const rtitle = document.getElementById("rtitle");
+const rdesc = document.getElementById("rdesc");
 
-      love.forEach(addLink);
-      if (love.length && etc.length) linksEl.appendChild(BR());
-      etc.forEach(addLink);
-    }
+function render() {
+  const cur = questions[idx];
+  document.getElementById("progress").textContent = `${idx+1} / ${questions.length}`;
+  qtext.textContent = cur.q;
+  opts.innerHTML = "";
+  cur.a.forEach(([label, val]) => {
+    const b = document.createElement("button");
+    b.textContent = label;
+    b.onclick = () => {
+      score += val;
+      idx += 1;
+      if (idx >= questions.length) showResult();
+      else render();
+    };
+    opts.appendChild(b);
+  });
+}
 
-    fetch('./tests.json', {cache: 'no-store'})
-      .then(r => r.ok ? r.json() : Promise.reject(new Error('tests.json fetch failed')))
-      .then(data => {
-        const tests = (data && data.tests) ? data.tests : [];
-        if (!tests.length) throw new Error('tests.json empty');
-        renderFromTests(tests);
-      })
-      .catch(() => {
-        // fallback: 최소 하드코딩(기존 링크) - tests.json이 없거나 경로 문제일 때 안전장치
-        const fallback = [
-          {title:'💘 연애 MBTI 테스트', path:'./lovembti/', group:'love'},
-          {title:'❤️ Love 테스트', path:'./love/', group:'love'},
-          {title:'💞 Love Other', path:'./loveother/', group:'love'},
-          {title:'💍 Lover Test', path:'./lovertest/', group:'love'},
-          {title:'🔪 연애 집착도 테스트', path:'./yandere/', group:'love'},
-          {title:'🖤 Black & White', path:'./blackandwhite/', group:'etc'},
-          {title:'🍜 점심 추천', path:'./lunch/', group:'etc'},
-          {title:'🎯 룰렛', path:'./roulette/', group:'etc'},
-          {title:'⚖️ Balance', path:'./balance/', group:'etc'}
-        ];
-        renderFromTests(fallback);
-      });
-  })();
-  </script>
+function showResult() {
+  quiz.classList.add("hidden");
+  result.classList.remove("hidden");
+
+  let level, desc;
+  if (score <= 6) {
+    level = "🟢 안정형";
+    desc = "상대의 리듬을 존중하고 스스로도 균형을 잘 잡는 편입니다. 불안이 와도 금방 회복합니다.";
+  } else if (score <= 12) {
+    level = "🟡 관심형";
+    desc = "관심과 애정 표현이 많은 편입니다. 다만 불안이 커질 때는 기준을 정해두면 더 편해집니다.";
+  } else if (score <= 18) {
+    level = "🟠 예민형";
+    desc = "확인이 필요해지는 순간이 자주 옵니다. 감정이 올라올 때 행동보다 대화를 먼저 시도해보세요.";
+  } else {
+    level = "🔴 집착주의";
+    desc = "불안이 행동으로 빠르게 이어질 수 있습니다. ‘확인’보다 ‘합의된 룰’로 관계를 안정시키는 게 핵심입니다.";
+  }
+
+  rtitle.textContent = `결과: ${level}`;
+  rdesc.textContent = desc;
+
+  const shareBtn = document.getElementById("share");
+  shareBtn.onclick = () => {
+    // share current page
+    shareKakaoFeed({
+      title: "연애 집착도 테스트",
+      description: `내 결과는 ${level}!`,
+      url: window.location.href
+    });
+  };
+}
+
+document.getElementById("restart").onclick = () => {
+  idx = 0; score = 0;
+  result.classList.add("hidden");
+  quiz.classList.remove("hidden");
+  render();
+};
+
+render();
+</script>
 </body>
 </html>
