@@ -1,14 +1,4 @@
-// assets/kakao-share.js
-// Common Kakao share (no-Korean text to avoid encoding issues)
-
 const KAKAO_JS_KEY = "b30b6d088f5b3551adc2890111d071fc";
-function getThumbUrl() {
-  try {
-    return new URL("og.png", window.location.href).href;
-  } catch {
-    return "og.png";
-  }
-}
 
 function initKakao() {
   if (!window.Kakao) {
@@ -19,52 +9,43 @@ function initKakao() {
   return true;
 }
 
-function shareKakaoFeed(opts) {
-  if (!initKakao()) {
-    alert("Kakao SDK load failed. Check kakao.min.js");
-    return;
-  }
+function shareKakao() {
+  if (!initKakao()) return;
 
-  const title = (opts && opts.title) || document.title || "Vibecoding Test";
-  const description = (opts && opts.description) || "";
-  const shareUrl = (opts && opts.url) || window.location.href;
+  const shareUrl = location.href; // ✅ 지금 접속 중인 URL 그대로
+  const title = document.title || "연애 온도 테스트";
+  const desc =
+    document.querySelector('meta[property="og:description"]')?.content ||
+    "내 연애 온도는 몇 도일까? 지금 바로 테스트";
+
+  const img =
+    document.querySelector('meta[property="og:image"]')?.content ||
+    (location.origin + "/assets/thumb.png"); // ✅ 공통 썸네일 경로(권장)
 
   Kakao.Share.sendDefault({
     objectType: "feed",
     content: {
-      title: title,
-      description: description,
-      imageUrl: getThumbUrl(),
-      link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+      title,
+      description: desc,
+      imageUrl: img,
+      link: {
+        mobileWebUrl: shareUrl,
+        webUrl: shareUrl,
+      },
     },
     buttons: [
       {
-        title: "Open test",
-        link: { mobileWebUrl: shareUrl, webUrl: shareUrl },
+        title: "테스트 하러가기",
+        link: {
+          mobileWebUrl: shareUrl,
+          webUrl: shareUrl,
+        },
       },
     ],
   });
 }
 
-function shareKakaoFromDOM(pathPrefix) {
-  const base = window.location.origin;
-  const url = pathPrefix ? base + pathPrefix : window.location.href;
-
-  const pickText = (sels) => {
-    for (let i = 0; i < sels.length; i++) {
-      const el = document.querySelector(sels[i]);
-      if (el && el.textContent && el.textContent.trim()) return el.textContent.trim();
-    }
-    return "";
-  };
-
-  const title =
-    pickText(["#shareTitle", "#resultTitle", "#result-title", ".resultTitle", "h1", "h2"]) ||
-    (document.title || "Vibecoding Test");
-
-  const description =
-    pickText(["#shareDesc", "#resultDesc", "#result-desc", ".resultDesc", "#result-type"]) ||
-    "";
-
-  shareKakaoFeed({ title: title, description: description, url: url });
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("kakaoShareBtn");
+  if (btn) btn.addEventListener("click", shareKakao);
+});
