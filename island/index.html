@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>🏝️ 무인도 생존 확률 테스트</title>
+
+<meta property="og:title" content="🏝️ 무인도 생존 확률 테스트">
+<meta property="og:description" content="무인도에 떨어지면 당신의 생존 확률은?">
+<meta property="og:image" content="../assets/share-thumb.jpg">
+
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script src="../js/kakao-share.js"></script>
+
+<style>
+
+:root{
+--sea1:#9fe3ff;
+--sea2:#5cc4ec;
+--sea3:#1a96c8;
+
+--sand:#f8e6b6;
+--sand2:#f2dca4;
+
+--text:#2b2b2b;
+--shadow:0 25px 60px rgba(0,0,0,.25);
+}
+
+*{box-sizing:border-box}
+
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Noto Sans KR",sans-serif;
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+color:var(--text);
+
+background:
+radial-gradient(circle at 20% 10%,rgba(255,255,255,.35),transparent 40%),
+radial-gradient(circle at 80% 20%,rgba(255,255,255,.25),transparent 45%),
+linear-gradient(180deg,var(--sea1),var(--sea2),var(--sea3));
+}
+
+.wrap{
+width:100%;
+max-width:450px;
+padding:20px;
+}
+
+.card{
+background:linear-gradient(180deg,var(--sand),var(--sand2));
+border-radius:28px;
+padding:24px;
+box-shadow:var(--shadow);
+text-align:center;
+position:relative;
+overflow:hidden;
+}
+
+.card:before{
+content:"🌴";
+font-size:60px;
+position:absolute;
+left:10px;
+top:-5px;
+opacity:.4;
+}
+
+.card:after{
+content:"🐚";
+font-size:50px;
+position:absolute;
+right:10px;
+bottom:-10px;
+opacity:.4;
+}
+
+.pill{
+display:inline-block;
+padding:6px 14px;
+background:#fff;
+border-radius:999px;
+font-weight:900;
+font-size:12px;
+margin-bottom:12px;
+}
+
+h1{font-size:22px;margin:6px 0}
+p{font-size:14px}
+
+.progressWrap{
+margin:14px 0;
+height:12px;
+background:rgba(255,255,255,.6);
+border-radius:999px;
+overflow:hidden;
+}
+
+.progressBar{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,#00c6ff,#0072ff);
+transition:.3s;
+}
+
+.answers{
+display:flex;
+flex-direction:column;
+gap:10px;
+margin-top:12px;
+}
+
+.btn{
+border:none;
+background:#fff;
+padding:12px;
+border-radius:16px;
+font-weight:800;
+cursor:pointer;
+box-shadow:0 8px 18px rgba(0,0,0,.15);
+transition:.15s;
+}
+
+.btn:hover{
+transform:translateY(-2px)
+}
+
+.hero{
+background:#fff;
+padding:16px;
+border-radius:16px;
+margin-top:10px;
+}
+
+.levelRow{
+display:flex;
+justify-content:center;
+gap:8px;
+margin:8px 0;
+}
+
+.chip{
+background:#eee;
+border-radius:999px;
+padding:6px 10px;
+font-size:12px;
+font-weight:800;
+}
+
+.tipBox{
+margin-top:10px;
+background:#f4f4f4;
+padding:10px;
+border-radius:12px;
+font-size:13px;
+}
+
+.actions{
+margin-top:12px;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
+
+.actionBtn{
+border:none;
+padding:12px;
+border-radius:14px;
+font-weight:900;
+cursor:pointer;
+}
+
+.kakao{background:#ffe812}
+.other{background:#e8f2ff}
+.retry{background:#ffecec}
+
+.screen{display:none}
+.screen.active{display:block}
+
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+<div class="card">
+
+<section id="start" class="screen active">
+
+<div class="pill">🏝 Island Survival</div>
+<h1>무인도에 떨어졌다!</h1>
+<p>내 생존 확률은 얼마나 될까?</p>
+
+<button class="btn" onclick="start()">테스트 시작하기</button>
+
+</section>
+
+<section id="quiz" class="screen">
+
+<div class="progressWrap">
+<div class="progressBar" id="bar"></div>
+</div>
+
+<h2 id="q"></h2>
+
+<div class="answers" id="answers"></div>
+
+</section>
+
+<section id="result" class="screen">
+
+<div class="hero">
+
+<h2 id="rt"></h2>
+
+<div class="levelRow">
+<span class="chip" id="rl"></span>
+<span class="chip" id="rk"></span>
+</div>
+
+<p id="rd"></p>
+
+<div class="tipBox" id="tip"></div>
+
+</div>
+
+<div class="actions">
+
+<button class="actionBtn kakao" id="kakaoShareBtn">
+카카오톡 공유하기
+</button>
+
+<button class="actionBtn other"
+onclick="location.href='https://blog.naver.com/forgiven_77/224195220807'">
+다른 테스트 해보기
+</button>
+
+<button class="actionBtn retry" onclick="restart()">
+테스트 다시하기
+</button>
+
+</div>
+
+</section>
+
+</div>
+</div>
+
+<script>
+
+function shuffle(a){
+return a.sort(()=>Math.random()-.5)
+}
+
+const QUESTIONS=[
+
+{
+q:"눈을 떴습니다. 모래사장입니다. 주변에는 아무도 없고 바다와 숲만 보입니다. 당신이 가장 먼저 하는 행동은?",
+a:[
+"주변을 천천히 살펴보며 안전한 장소를 먼저 찾는다",
+"높은 곳을 찾아 올라가 이 섬의 지형을 확인한다",
+"혹시 먹을 것이 있을지 주변을 바로 탐색한다",
+"잠깐 앉아서 상황을 정리하고 계획을 생각한다"
+]
+},
+
+{
+q:"해가 조금씩 기울고 있습니다. 오늘 밤을 버티기 위한 준비가 필요합니다.",
+a:[
+"비를 막거나 바람을 피할 수 있는 간단한 쉼터를 만든다",
+"불을 피울 수 있는 재료를 찾아본다",
+"주변에 위험한 동물이 없는지 확인한다",
+"섬 주변을 조금 더 탐색해 정보를 모은다"
+]
+},
+
+{
+q:"목이 마릅니다. 물을 구해야 합니다.",
+a:[
+"식물이 많은 쪽으로 이동해 물이 있을 가능성을 찾는다",
+"지형을 살펴보며 물이 흐를 만한 낮은 곳을 찾는다",
+"비나 이슬을 모을 수 있는 방법을 생각한다",
+"지금 당장은 체력을 아끼며 다른 방법을 고민한다"
+]
+},
+
+{
+q:"밤이 되었습니다. 어두운 숲에서 이상한 소리가 들립니다.",
+a:[
+"가까이 가지 않고 멀리서 상황을 관찰한다",
+"불을 피워 주변을 밝힌다",
+"조용히 숨어서 상황이 지나가길 기다린다",
+"아침이 될 때까지 움직이지 않는다"
+]
+},
+
+{
+q:"다음 날 아침입니다. 섬에서 살아남기 위한 장기 계획이 필요합니다.",
+a:[
+"지속적으로 사용할 수 있는 거점을 만든다",
+"식량을 안정적으로 구할 방법을 찾는다",
+"섬을 조금씩 탐색하며 정보를 모은다",
+"체력을 아끼며 생활 패턴을 만든다"
+]
+},
+
+{
+q:"멀리서 배가 지나가는 것이 보입니다.",
+a:[
+"연기가 크게 보이도록 불을 피운다",
+"높은 곳으로 올라가 최대한 눈에 띄게 움직인다",
+"신호를 보낼 준비를 하고 기회를 기다린다",
+"지금은 보이지 않을 것 같아 다음 기회를 준비한다"
+]
+},
+
+{
+q:"무인도 생활이 며칠째 이어지고 있습니다. 멘탈 관리가 중요해졌습니다.",
+a:[
+"매일 할 일을 정해 루틴을 만든다",
+"몸을 움직이며 집중할 일을 만든다",
+"구조될 가능성을 계속 생각하며 희망을 유지한다",
+"하루하루 버티는 것에 집중한다"
+]
+},
+
+{
+q:"멀리서 비행기 소리가 들립니다. 마지막 구조 기회일지도 모릅니다.",
+a:[
+"연기를 크게 올릴 준비를 한다",
+"눈에 띄는 곳으로 이동해 신호를 보낸다",
+"확실히 보일 때까지 기다렸다가 행동한다",
+"비행기가 지나가는 방향을 계속 추적한다"
+]
+}
+
+]
+
+const RESULTS=[
+
+{
+t:"🏆 생존 확률 92%",
+l:"완성형 생존자",
+k:"판단력 · 전략",
+d:"위기 상황에서도 침착하게 상황을 분석합니다.",
+tip:"계획적인 행동이 생존 확률을 높입니다."
+},
+
+{
+t:"🔥 생존 확률 78%",
+l:"도전형 생존자",
+k:"행동력",
+d:"빠르게 행동하며 환경에 적응합니다.",
+tip:"체력 관리만 하면 생존력이 더 올라갑니다."
+},
+
+{
+t:"🧭 생존 확률 66%",
+l:"전략형 생존자",
+k:"분석",
+d:"상황을 분석하는 능력이 뛰어납니다.",
+tip:"결정을 조금 더 빠르게 내려보세요."
+},
+
+{
+t:"🌿 생존 확률 55%",
+l:"안정형",
+k:"신중",
+d:"위험을 최소화하는 선택을 합니다.",
+tip:"가끔은 모험도 필요합니다."
+},
+
+{
+t:"🌊 생존 확률 41%",
+l:"감각형",
+k:"직감",
+d:"직감적인 선택을 하는 스타일입니다.",
+tip:"기본 생존 루틴을 만들어보세요."
+},
+
+{
+t:"🐢 생존 확률 29%",
+l:"체력 보존형",
+k:"안정",
+d:"무리하지 않는 스타일입니다.",
+tip:"하루 하나 목표를 만들어보세요."
+},
+
+{
+t:"🌀 생존 확률 17%",
+l:"혼란형",
+k:"즉흥",
+d:"선택이 어려워질 때가 있습니다.",
+tip:"우선순위를 정하는 것이 중요합니다."
+}
+
+]
+
+let index=0
+let score=0
+
+function show(id){
+document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"))
+document.getElementById(id).classList.add("active")
+}
+
+function start(){
+index=0
+score=0
+show("quiz")
+render()
+}
+
+function render(){
+
+const q=QUESTIONS[index]
+
+document.getElementById("q").innerText=q.q
+
+const box=document.getElementById("answers")
+box.innerHTML=""
+
+shuffle([...q.a]).forEach((t,i)=>{
+
+const b=document.createElement("button")
+b.className="btn"
+b.innerText=t
+
+b.onclick=()=>{
+score+=Math.floor(Math.random()*3)
+index++
+
+if(index>=QUESTIONS.length){
+result()
+}else{
+render()
+}
+
+}
+
+box.appendChild(b)
+
+})
+
+document.getElementById("bar").style.width=(index/QUESTIONS.length*100)+"%"
+
+}
+
+function result(){
+
+show("result")
+
+const r=RESULTS[score%RESULTS.length]
+
+document.getElementById("rt").innerText=r.t
+document.getElementById("rl").innerText=r.l
+document.getElementById("rk").innerText=r.k
+document.getElementById("rd").innerText=r.d
+document.getElementById("tip").innerText=r.tip
+
+}
+
+function restart(){
+show("start")
+}
+
+</script>
+
+</body>
+</html>
