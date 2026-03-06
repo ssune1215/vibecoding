@@ -1,22 +1,241 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8"/><meta content="website" property="og:type"/><meta content="연애 테스트 - 나의 상대 유형은?" property="og:title"/><meta content="결과를 확인하고 바로 공유해보세요." property="og:description"/><meta content="./" property="og:url"/><meta content="og.png" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/><meta content="연애 테스트 - 나의 상대 유형은?" name="twitter:title"/><meta content="결과를 확인하고 바로 공유해보세요." name="twitter:description"/><meta content="og.png" name="twitter:image"/>
-<!-- Open Graph (Kakao preview) -->
-<meta content="연애 테스트 - 나의 상대 유형은?" name="vibecoding:title"/><meta content="love" name="vibecoding:group"/></head>
+<meta charset="utf-8">
+
+    <!-- Open Graph (Kakao preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="loveother 테스트" />
+    <meta property="og:description" content="loveother 바이브코딩 테스트" />
+    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/loveother/" />
+    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter (optional, helps some previews) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="loveother 테스트" />
+    <meta name="twitter:description" content="loveother 바이브코딩 테스트" />
+    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>연애 테스트 - 나의 상대 유형은?</title>
+
+  <!-- OG(스크랩/공유용) -->
+
+
+
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"></script>
+
+<style>
+
+/* === Global Center Fix (auto) === */
+html, body { height: 100%; }
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.pageCenter{
+  width:100%;
+  max-width:450px;
+}
+
+:root{
+  --bg:#f6f7fb;
+  --card:#fff;
+  --line:#e7e8f0;
+
+  --text:#22232a;
+  --muted:#6b6f7a;
+
+  --primary:#5a5cff;
+  --primaryText:#fff;
+
+  --hover:#f2f3ff;
+
+  --kakao:#ffdf00;
+  --blue:#2f7bff;
+  --red:#ff3b3b;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  background:var(--bg);
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:16px;
+  color:var(--text);
+}
+
+.wrap{ width:min(680px, 100%); }
+
+.shell{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:14px;
+  overflow:hidden;
+}
+
+.header{
+  padding:18px 16px 14px;
+  text-align:center;
+  border-bottom:1px solid var(--line);
+}
+.badge{
+  display:inline-block;
+  font-size:12px;
+  font-weight:900;
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--line);
+  color:var(--muted);
+  background:#fff;
+}
+h1{
+  margin:10px 0 6px;
+  font-size:22px;
+  font-weight:1000;
+  letter-spacing:-.4px;
+}
+.sub{
+  margin:0;
+  font-size:14px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.content{ padding:16px; }
+
+.center{ text-align:center; }
+
+.progress{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:12px;
+}
+.pill{
+  font-size:12px;
+  font-weight:900;
+  color:var(--muted);
+}
+.bar{
+  width:min(240px, 55vw);
+  height:8px;
+  border-radius:999px;
+  background:#eef0f6;
+  overflow:hidden;
+}
+.bar > div{
+  height:100%;
+  width:0%;
+  background:var(--primary);
+  transition:width .25s ease;
+}
+
+.q{
+  text-align:center;
+  font-size:17px;
+  font-weight:1000;
+  letter-spacing:-.3px;
+  line-height:1.55;
+  margin:6px 0 12px;
+}
+
+.choice{
+  width:100%;
+  text-align:left;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:12px;
+  margin:10px 0;
+  cursor:pointer;
+}
+.choice:hover{ background:var(--hover); }
+.choice .t{
+  font-size:15px;
+  font-weight:950;
+  line-height:1.4;
+}
+.choice .s{
+  margin-top:6px;
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.55;
+}
+
+.btnStack{ display:grid; gap:10px; margin-top:12px; }
+
+.btn{
+  width:100%;
+  border:none;
+  border-radius:12px;
+  padding:12px;
+  font-size:15px;
+  font-weight:950;
+  cursor:pointer;
+}
+.btnPrimary{ background:var(--primary); color:var(--primaryText); }
+.btnKakao{ background:var(--kakao); }
+.btnBlog{ background:var(--blue); color:#fff; }
+.btnRetry{ background:var(--red); color:#fff; }
+
+.resultEmoji{ font-size:44px; margin:2px 0 8px; }
+.resultTitle{
+  font-size:19px;
+  font-weight:1000;
+  letter-spacing:-.3px;
+  margin:0 0 8px;
+}
+.resultDesc{
+  margin:0;
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.7;
+}
+.note{
+  margin-top:12px;
+  font-size:13px;
+  color:var(--muted);
+  line-height:1.6;
+}
+
+/* confetti */
+#confetti{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  display:none;
+  z-index:9999;
+}
+</style>
+</head>
+
 <body>
+<div class=\"pageCenter\">
 <canvas id="confetti"></canvas>
+
 <div class="wrap">
-<div class="shell">
-<div class="header">
-<span class="badge">💗 연애 테스트</span>
-<h1>나의 상대 유형은?</h1>
-<p class="sub">첫 느낌으로 선택</p>
+  <div class="shell">
+    <div class="header">
+      <span class="badge">💗 연애 테스트</span>
+      <h1>나의 상대 유형은?</h1>
+      <p class="sub">첫 느낌으로 선택</p>
+    </div>
+
+    <div class="content" id="app"></div>
+  </div>
 </div>
-<div class="content" id="app"></div>
-</div>
-</div>
+
 <script>
 /* ✅ 블로그 주소 변경 반영 */
 const BLOG_URL="https://blog.naver.com/forgiven_77/224195220807";
@@ -263,7 +482,8 @@ function stopConfetti(){
 
 reset();
 </script>
-
+  <script src="../assets/kakao-share.js"></script>
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
-<button id="kakaoShareBtn">카카오톡 공유하기</button><script src="../js/kakao-share.js"></script></body>
+</div>
+</body>
 </html>

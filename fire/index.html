@@ -1,13 +1,30 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8"/><meta content="website" property="og:type"/><meta content="나의 연애 온도 테스트" property="og:title"/><meta content="결과를 확인하고 바로 공유해보세요." property="og:description"/><meta content="./" property="og:url"/><meta content="og.png" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/><meta content="나의 연애 온도 테스트" name="twitter:title"/><meta content="결과를 확인하고 바로 공유해보세요." name="twitter:description"/><meta content="og.png" name="twitter:image"/>
-<meta content="width=device-width,initial-scale=1" name="viewport"/>
-<title>나의 연애 온도 테스트</title>
-<!-- Kakao SDK -->
-<script crossorigin="anonymous" integrity="sha384-+g1l7Gkq8gk9u1rTgkL8CkQ7QK8u0c8m8xQ1GQm0o0g8o0g0g0g0g0g0g0g0g0g" src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"></script>
-<style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>나의 연애 온도 테스트</title>
+
+  <!-- Kakao SDK -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+    integrity="sha384-+g1l7Gkq8gk9u1rTgkL8CkQ7QK8u0c8m8xQ1GQm0o0g8o0g0g0g0g0g0g0g0g0g"
+    crossorigin="anonymous"></script>
+
+  <style>
+
+/* === Global Center Fix (auto) === */
+html, body { height: 100%; }
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.pageCenter{
+  width:100%;
+  max-width:450px;
+}
+
     :root{
       --bg:#ffd6e7;
       --card:#ff9fc7;
@@ -262,62 +279,77 @@
       font-weight:800;
     }
   </style>
-<meta content="나의 연애 온도 테스트" name="vibecoding:title"/><meta content="etc" name="vibecoding:group"/></head>
+</head>
 <body>
-<canvas id="fx"></canvas>
-<div class="wrap">
-<div class="card">
-<div id="screenStart">
-<div class="badge">💗 vibe test</div>
-<h1 class="title">나의 연애 온도 테스트</h1>
-<p class="sub">
+<div class=\"pageCenter\">
+  <canvas id="fx"></canvas>
+
+  <div class="wrap">
+    <div class="card">
+      <div id="screenStart">
+        <div class="badge">💗 vibe test</div>
+        <h1 class="title">나의 연애 온도 테스트</h1>
+        <p class="sub">
           연애할 때 나는<br/>
           따뜻한 편일까, 차가운 편일까?<br/>
           지금 분위기대로 가볍게 골라주세요 🙂
         </p>
-<div class="startHint">
+
+        <div class="startHint">
           ✅ 질문은 총 8개예요<br/>
           ✅ 선택지는 항상 4개예요<br/>
           ✅ 질문/선택지 순서는 랜덤이에요
         </div>
-<div class="center">
-<button class="btn primary" id="btnStart">시작하기</button>
-</div>
-</div>
-<div class="hide" id="screenQuiz">
-<div class="badge">🔥 연애 온도 측정중</div>
-<div class="progress"><div class="bar" id="bar"></div></div>
-<div class="q" id="qText"></div>
-<div class="answers" id="answers"></div>
-</div>
-<div class="hide" id="screenResult">
-<div class="badge">🎉 결과</div>
-<div class="divider"></div>
-<div class="resultHero">
-<div class="resultTop">
-<div>
-<p class="resultName" id="rName"></p>
-</div>
-<div class="resultMeter" id="rMeter"></div>
-</div>
-<div class="chips" id="rChips"></div>
-<p class="resultDesc" id="rDesc"></p>
-<div class="tipBox">
-<p class="tipTitle">💡 TIP</p>
-<p class="tipText" id="rTip"></p>
-</div>
-</div>
-<div class="ctaRow">
-<button class="cta kakao" id="btnKakao">카카오톡 공유하기</button>
-<button class="cta other" id="btnOther">다른 테스트 해보기</button>
-<button class="cta retry" id="btnRetry">테스트 다시하기</button>
-</div>
-<!-- Kakao createDefaultButton 방식용 숨김 버튼 -->
-<button class="hide" id="kakaoHidden">hidden</button>
-<div class="footer">© vibe test</div>
-</div>
-</div>
-</div>
+
+        <div class="center">
+          <button class="btn primary" id="btnStart">시작하기</button>
+        </div>
+      </div>
+
+      <div id="screenQuiz" class="hide">
+        <div class="badge">🔥 연애 온도 측정중</div>
+        <div class="progress"><div class="bar" id="bar"></div></div>
+        <div class="q" id="qText"></div>
+        <div class="answers" id="answers"></div>
+      </div>
+
+      <div id="screenResult" class="hide">
+        <div class="badge">🎉 결과</div>
+
+        <div class="divider"></div>
+
+        <div class="resultHero">
+          <div class="resultTop">
+            <div>
+              <p class="resultName" id="rName"></p>
+            </div>
+            <div class="resultMeter" id="rMeter"></div>
+          </div>
+
+          <div class="chips" id="rChips"></div>
+
+          <p class="resultDesc" id="rDesc"></p>
+
+          <div class="tipBox">
+            <p class="tipTitle">💡 TIP</p>
+            <p class="tipText" id="rTip"></p>
+          </div>
+        </div>
+
+        <div class="ctaRow">
+          <button class="cta kakao" id="btnKakao">카카오톡 공유하기</button>
+          <button class="cta other" id="btnOther">다른 테스트 해보기</button>
+          <button class="cta retry" id="btnRetry">테스트 다시하기</button>
+        </div>
+
+        <!-- Kakao createDefaultButton 방식용 숨김 버튼 -->
+        <button id="kakaoHidden" class="hide">hidden</button>
+
+        <div class="footer">© vibe test</div>
+      </div>
+    </div>
+  </div>
+
 <script>
 /** =============================
  *  기본 설정
@@ -779,5 +811,6 @@ window.addEventListener("resize", ()=>{
  * ============================= */
 showStart();
 </script>
-<button id="kakaoShareBtn">카카오톡 공유하기</button><script src="https://developers.kakao.com/sdk/js/kakao.js"></script><script src="../js/kakao-share.js"></script></body>
+</div>
+</body>
 </html>

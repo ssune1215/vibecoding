@@ -1,29 +1,94 @@
 <!DOCTYPE html>
-
 <html lang="ko">
 <head>
-<meta charset="utf-8"/><meta content="website" property="og:type"/><meta content="심장쫄깃 점심 슬롯" property="og:title"/><meta content="결과를 확인하고 바로 공유해보세요." property="og:description"/><meta content="./" property="og:url"/><meta content="og.png" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/><meta content="심장쫄깃 점심 슬롯" name="twitter:title"/><meta content="결과를 확인하고 바로 공유해보세요." name="twitter:description"/><meta content="og.png" name="twitter:image"/>
-<!-- Open Graph (Kakao preview) -->
-<meta content="심장쫄깃 점심 슬롯" name="vibecoding:title"/><meta content="etc" name="vibecoding:group"/></head>
+    <meta charset="UTF-8">
+    
+    <!-- Open Graph (Kakao preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="roulette 테스트" />
+    <meta property="og:description" content="roulette 바이브코딩 테스트" />
+    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/roulette/" />
+    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter (optional, helps some previews) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="roulette 테스트" />
+    <meta name="twitter:description" content="roulette 바이브코딩 테스트" />
+    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>심장쫄깃 점심 슬롯</title>
+
+  <!-- OG(스크랩/공유용) -->
+
+
+
+<style>
+
+/* === Global Center Fix (auto) === */
+html, body { height: 100%; }
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.pageCenter{
+  width:100%;
+  max-width:450px;
+}
+
+        :root { --primary: #ff4757; --stop: #2ed573; --gold: #ffd700; --bg: #f8f9fa; }
+        body { font-family: 'Pretendard', sans-serif; background: var(--bg); display: flex; flex-direction: column; align-items: center; padding: 20px; }
+        .container { background: white; border-radius: 24px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); padding: 25px; width: 100%; max-width: 450px; text-align: center; }
+        
+        .input-group { margin-bottom: 20px; text-align: left; background: #eee; padding: 15px; border-radius: 12px; }
+        input { width: 100%; padding: 12px; border: 2px solid #ccc; border-radius: 8px; box-sizing: border-box; margin-top: 5px; font-weight: bold; }
+
+        /* 슬롯 디자인 */
+        .slot-machine { display: flex; gap: 8px; background: #111; border: 8px solid var(--gold); border-radius: 20px; padding: 15px; margin-bottom: 20px; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
+        .slot-column { flex: 1; height: 120px; background: white; border-radius: 10px; overflow: hidden; position: relative; border: 1px solid #333; }
+        .reel { transition: transform 0.5s linear; } 
+        .item { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 1rem; font-weight: 900; color: #222; text-align: center; line-height: 1.2; word-break: keep-all; }
+        
+        /* 버튼 스타일 */
+        .btn-main { background: var(--primary); color: white; border: none; padding: 20px; border-radius: 15px; font-size: 1.3rem; font-weight: bold; cursor: pointer; width: 100%; box-shadow: 0 6px 0 #b33939; transition: 0.1s; }
+        .btn-stop { background: var(--stop); box-shadow: 0 6px 0 #26af5a; display: none; }
+        .btn-main:active { transform: translateY(3px); box-shadow: 0 3px 0 #b33939; }
+        
+        /* 결과 화면 */
+        #result-box { margin-top: 20px; padding: 25px; background: #fff9db; border-radius: 20px; border: 3px dashed #fab005; display: none; animation: finalPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes finalPop { from {transform: scale(0.5); opacity:0;} to {transform: scale(1); opacity:1;} }
+        .share-btn { background: #1e90ff; color: white; border: none; padding: 15px; border-radius: 10px; width: 100%; margin-top: 15px; cursor: pointer; font-weight: bold; font-size: 1rem; }
+    </style>
+</head>
 <body>
+<div class=\"pageCenter\">
+
 <div class="container">
-<h1 style="color:#222; margin-top:0; font-size: 1.6rem;">🎰 인생역전 점심 슬롯</h1>
-<div class="input-group">
-<label style="font-size:0.85rem; font-weight:bold;">👥 함께하는 동료들 (쉼표로 구분)</label>
-<input id="memberInput" type="text" value="김대리, 이과장, 박사원, 최팀장, 나"/>
+    <h1 style="color:#222; margin-top:0; font-size: 1.6rem;">🎰 인생역전 점심 슬롯</h1>
+    <div class="input-group">
+        <label style="font-size:0.85rem; font-weight:bold;">👥 함께하는 동료들 (쉼표로 구분)</label>
+        <input type="text" id="memberInput" value="김대리, 이과장, 박사원, 최팀장, 나">
+    </div>
+
+    <div class="slot-machine">
+        <div class="slot-column"><div id="reel1" class="reel"></div></div>
+        <div class="slot-column"><div id="reel2" class="reel"></div></div>
+        <div class="slot-column"><div id="reel3" class="reel"></div></div>
+    </div>
+
+    <button id="spinBtn" class="btn-main" onclick="startSpin()">🎲 운명의 레버 당기기!</button>
+    <button id="stopBtn" class="btn-main btn-stop" onclick="stopSpin()">🛑 STOP!!!!! (멈춰!)</button>
+
+    <div id="result-box">
+        <div id="result-text" style="font-size: 1.15rem; line-height: 1.8;"></div>
+        <button class="share-btn" onclick="copyResult()">📋 결과 복사해서 공유하기</button>
+    </div>
 </div>
-<div class="slot-machine">
-<div class="slot-column"><div class="reel" id="reel1"></div></div>
-<div class="slot-column"><div class="reel" id="reel2"></div></div>
-<div class="slot-column"><div class="reel" id="reel3"></div></div>
-</div>
-<button class="btn-main" id="spinBtn" onclick="startSpin()">🎲 운명의 레버 당기기!</button>
-<button class="btn-main btn-stop" id="stopBtn" onclick="stopSpin()">🛑 STOP!!!!! (멈춰!)</button>
-<div id="result-box">
-<div id="result-text" style="font-size: 1.15rem; line-height: 1.8;"></div>
-<button class="share-btn" onclick="copyResult()">📋 결과 복사해서 공유하기</button>
-</div>
-</div>
+
 <script>
     const menus = ["마라탕", "김치찌개", "돈까스", "초밥", "제육볶음", "쌀국수", "햄버거", "샌드위치", "비빔밥", "짜장면", "짬뽕", "부대찌개", "순대국", "뼈해장국", "텐동", "라멘", "파스타", "피자", "냉면", "칼국수", "닭갈비", "찜닭", "보쌈", "족발", "분식", "된장찌개", "카레", "회덮밥", "서브웨이", "순두부", "설렁탕", "갈비탕", "육개장", "국밥", "솥밥", "포케", "타코", "딤섬", "떡볶이", "우동", "스테이크", "물회", "삼겹살", "콩국수", "소바", "죽", "토스트", "고기국수", "알탕", "국수"];
     
@@ -131,5 +196,7 @@
         setupReel('reel3', ["이름1", "이름2", "이름3"]);
     };
 </script>
-<button id="kakaoShareBtn">카카오톡 공유하기</button><script src="https://developers.kakao.com/sdk/js/kakao.js"></script><script src="../js/kakao-share.js"></script></body>
+
+</div>
+</body>
 </html>

@@ -1,28 +1,50 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8"/><meta content="website" property="og:type"/><meta content="🌓 나는 겉과 속이 얼마나 다를까?" property="og:title"/><meta content="결과를 확인하고 바로 공유해보세요." property="og:description"/><meta content="./" property="og:url"/><meta content="og.png" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/><meta content="🌓 나는 겉과 속이 얼마나 다를까?" name="twitter:title"/><meta content="결과를 확인하고 바로 공유해보세요." name="twitter:description"/><meta content="og.png" name="twitter:image"/>
-<!-- Open Graph (Kakao preview) -->
+  <meta charset="utf-8" />
+  
+    <!-- Open Graph (Kakao preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="blackandwhite 테스트" />
+    <meta property="og:description" content="blackandwhite 바이브코딩 테스트" />
+    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/blackandwhite/" />
+    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter (optional, helps some previews) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="blackandwhite 테스트" />
+    <meta name="twitter:description" content="blackandwhite 바이브코딩 테스트" />
+    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>🌓 나는 겉과 속이 얼마나 다를까?</title>
+  <meta name="description" content="겉으로 보이는 나와 속마음의 나. 그 사이의 간격을 부드럽게 확인해보세요." />
+
+  <!-- OG (카톡/SNS) -->
 
 
 
 
-
-
-
-<!-- Twitter (optional, helps some previews) -->
-
-
-
-
-<meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
-<title>🌓 나는 겉과 속이 얼마나 다를까?</title>
-<meta content="겉으로 보이는 나와 속마음의 나. 그 사이의 간격을 부드럽게 확인해보세요." name="description"/>
-<!-- OG (카톡/SNS) -->
 <!-- Kakao SDK -->
-<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
-<style>
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+
+  <style>
+
+/* === Global Center Fix (auto) === */
+html, body { height: 100%; }
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.pageCenter{
+  width:100%;
+  max-width:450px;
+}
+
     :root{
       --bg:#000000;
       --card:#ffffff;
@@ -325,51 +347,68 @@
       .title .icon{ font-size: 21px; }
     }
   </style>
-<meta content="🌓 나는 겉과 속이 얼마나 다를까?" name="vibecoding:title"/><meta content="etc" name="vibecoding:group"/></head>
+</head>
+
 <body>
-<div class="wrap">
-<div class="card" id="app">
-<!-- START -->
-<section id="startView">
-<div class="title"><span class="icon">🌓</span><span>나는 겉과 속이 얼마나 다를까?</span></div>
-<!-- 시작 멘트 3줄 -->
-<div class="sub">🖤 오늘의 나는, 겉으로 먼저 보일 수 있어요.
+<div class=\"pageCenter\">
+  <div class="wrap">
+    <div class="card" id="app">
+
+      <!-- START -->
+      <section id="startView">
+        <div class="title"><span class="icon">🌓</span><span>나는 겉과 속이 얼마나 다를까?</span></div>
+
+        <!-- 시작 멘트 3줄 -->
+        <div class="sub">🖤 오늘의 나는, 겉으로 먼저 보일 수 있어요.
 🤍 속마음은 천천히 드러나기도 하고요.
 ✨ 부담 없이, 첫 느낌대로 골라주세요.</div>
-<div class="divider"></div>
-<button class="btn" id="startBtn">테스트 시작하기</button>
-</section>
-<!-- TEST -->
-<section class="hidden" id="testView">
-<div aria-label="progress" class="progressBar">
-<div class="progressFill" id="progressFill"></div>
-</div>
-<div class="q" id="questionText"></div>
-<div class="answers" id="answers"></div>
-<div class="divider"></div>
-<button class="btn secondary" id="backBtn">이전 문항</button>
-</section>
-<!-- RESULT -->
-<section class="hidden" id="resultView">
-<div class="resultTitle">✨ 결과</div>
-<div class="resultCard">
-<div class="badgeRow" id="badgeRow"></div>
-<div class="resultMain" id="resultMain"></div>
-<p class="resultText" id="resultText"></p>
-</div>
-<div class="ctaRow">
-<button class="cta kakao" id="kakaoShareBtn">카카오톡 공유하기</button>
-<button class="cta blue" id="otherTestBtn">다른 테스트 해보기</button>
-<button class="cta red" id="restartBtn">테스트 다시하기</button>
-</div>
-<div class="footerNote">결과 화면에서 공유하면 더 깔끔합니다.</div>
-</section>
-</div>
-</div>
-<div class="confetti" id="confetti"></div>
-<!-- createDefaultButton 숨김 버튼 -->
-<a href="javascript:void(0)" id="kakaoHiddenBtn" style="display:none;"></a>
-<script>
+
+        <div class="divider"></div>
+
+        <button class="btn" id="startBtn">테스트 시작하기</button>
+      </section>
+
+      <!-- TEST -->
+      <section id="testView" class="hidden">
+        <div class="progressBar" aria-label="progress">
+          <div class="progressFill" id="progressFill"></div>
+        </div>
+
+        <div class="q" id="questionText"></div>
+        <div class="answers" id="answers"></div>
+
+        <div class="divider"></div>
+        <button class="btn secondary" id="backBtn">이전 문항</button>
+      </section>
+
+      <!-- RESULT -->
+      <section id="resultView" class="hidden">
+        <div class="resultTitle">✨ 결과</div>
+
+        <div class="resultCard">
+          <div class="badgeRow" id="badgeRow"></div>
+          <div class="resultMain" id="resultMain"></div>
+          <p class="resultText" id="resultText"></p>
+        </div>
+
+        <div class="ctaRow">
+          <button class="cta kakao" id="kakaoShareBtn">카카오톡 공유하기</button>
+          <button class="cta blue" id="otherTestBtn">다른 테스트 해보기</button>
+          <button class="cta red" id="restartBtn">테스트 다시하기</button>
+        </div>
+
+        <div class="footerNote">결과 화면에서 공유하면 더 깔끔합니다.</div>
+      </section>
+
+    </div>
+  </div>
+
+  <div class="confetti" id="confetti"></div>
+
+  <!-- createDefaultButton 숨김 버튼 -->
+  <a id="kakaoHiddenBtn" href="javascript:void(0)" style="display:none;"></a>
+
+  <script>
     /***********************
      * 0) 설정
      ************************/
@@ -762,5 +801,6 @@
       window.open(OTHER_TEST_URL, "_blank", "noopener,noreferrer");
     });
   </script>
-<script src="https://developers.kakao.com/sdk/js/kakao.js"></script><script src="../js/kakao-share.js"></script></body>
+</div>
+</body>
 </html>

@@ -1,28 +1,50 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8"/><meta content="website" property="og:type"/><meta content="내 애인은 어떤 스타일???" property="og:title"/><meta content="결과를 확인하고 바로 공유해보세요." property="og:description"/><meta content="./" property="og:url"/><meta content="og.png" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/><meta content="내 애인은 어떤 스타일???" name="twitter:title"/><meta content="결과를 확인하고 바로 공유해보세요." name="twitter:description"/><meta content="og.png" name="twitter:image"/>
-<!-- Open Graph (Kakao preview) -->
+  <meta charset="UTF-8" />
+  
+    <!-- Open Graph (Kakao preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="lovertest 테스트" />
+    <meta property="og:description" content="lovertest 바이브코딩 테스트" />
+    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/lovertest/" />
+    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter (optional, helps some previews) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="lovertest 테스트" />
+    <meta name="twitter:description" content="lovertest 바이브코딩 테스트" />
+    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>내 애인은 어떤 스타일???</title>
+
+  <!-- OG(스크랩/공유용) -->
 
 
 
+<meta name="description" content="내 애인은 어떤 스타일인지 알아보는 테스트"/>
 
+  <!-- Kakao SDK -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script>
 
+  <style>
 
+/* === Global Center Fix (auto) === */
+html, body { height: 100%; }
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.pageCenter{
+  width:100%;
+  max-width:450px;
+}
 
-<!-- Twitter (optional, helps some previews) -->
-
-
-
-
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>내 애인은 어떤 스타일???</title>
-<!-- OG(스크랩/공유용) -->
-<meta content="내 애인은 어떤 스타일인지 알아보는 테스트" name="description"/>
-<!-- Kakao SDK -->
-<script crossorigin="anonymous" src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"></script>
-<style>
     :root{
       --text:#1f2430;
       --muted:#6b7280;
@@ -248,40 +270,49 @@
       .divider{margin: 18px -22px 22px;}
     }
   </style>
-<meta content="내 애인은 어떤 스타일???" name="vibecoding:title"/><meta content="love" name="vibecoding:group"/></head>
+</head>
+
 <body>
-<div class="wrap">
-<div class="card" id="card">
-<div class="center">
-<div class="pill">💘 연애 테스트</div>
-</div>
-<h1 class="title" id="mainTitle">나의 숨겨진 연애 본능 진단</h1>
-<p class="subtitle" id="subTitle">현실 고증 200%, 과몰입 주의!</p>
-<div id="startView">
-<button class="btn btnPrimary" id="startBtn">진단 시작하기</button>
-</div>
-<div id="testView" style="display:none;">
-<div class="progressWrap"><div class="progress" id="progress"></div></div>
-<div class="qbox">
-<h2 class="qTitle" id="qTitle"></h2>
-<div id="options"></div>
-</div>
-</div>
-<div id="resultView" style="display:none;">
-<div class="result">
-<div class="emoji" id="resultEmoji">❤️</div>
-<div class="resultName" id="resultName">결과</div>
-<p class="desc" id="resultDesc"></p>
-<ul class="bullets" id="resultBullets"></ul>
-<div class="btnRow" style="margin-top:18px;">
-<button class="btn btnYellow" id="kakaoBtn">💬 카톡 공유</button>
-<button class="btn btnGray" id="copyBtn">🔗 링크 복사</button>
-</div>
-<div class="foot">※ 결과는 재미로만! 근데 은근 맞을 수도 있음 😁</div>
-</div>
-</div>
-</div>
-</div>
+<div class=\"pageCenter\">
+  <div class="wrap">
+    <div class="card" id="card">
+      <div class="center">
+        <div class="pill">💘 연애 테스트</div>
+      </div>
+
+      <h1 class="title" id="mainTitle">나의 숨겨진 연애 본능 진단</h1>
+      <p class="subtitle" id="subTitle">현실 고증 200%, 과몰입 주의!</p>
+
+      <div id="startView">
+        <button class="btn btnPrimary" id="startBtn">진단 시작하기</button>
+      </div>
+
+      <div id="testView" style="display:none;">
+        <div class="progressWrap"><div class="progress" id="progress"></div></div>
+        <div class="qbox">
+          <h2 class="qTitle" id="qTitle"></h2>
+          <div id="options"></div>
+        </div>
+      </div>
+
+      <div id="resultView" style="display:none;">
+        <div class="result">
+          <div class="emoji" id="resultEmoji">❤️</div>
+          <div class="resultName" id="resultName">결과</div>
+          <p class="desc" id="resultDesc"></p>
+          <ul class="bullets" id="resultBullets"></ul>
+
+          <div class="btnRow" style="margin-top:18px;">
+            <button class="btn btnYellow" id="kakaoBtn">💬 카톡 공유</button>
+            <button class="btn btnGray" id="copyBtn">🔗 링크 복사</button>
+          </div>
+
+          <div class="foot">※ 결과는 재미로만! 근데 은근 맞을 수도 있음 😁</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <script>
 /* =========================================================
    ✅ 공통 카카오 설정 (그대로 복붙)
@@ -503,5 +534,7 @@ startBtn.addEventListener("click", startTest);
 kakaoBtn.addEventListener("click", kakaoShare);
 copyBtn.addEventListener("click", copyLink);
 </script>
-<button id="kakaoShareBtn">카카오톡 공유하기</button><script src="https://developers.kakao.com/sdk/js/kakao.js"></script><script src="../js/kakao-share.js"></script></body>
+
+</div>
+</body>
 </html>

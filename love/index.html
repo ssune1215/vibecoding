@@ -1,29 +1,51 @@
 <!DOCTYPE html>
-
 <html lang="ko">
 <head>
-<meta charset="utf-8"/><meta content="website" property="og:type"/><meta content="나의 숨겨진 연애 본능 진단" property="og:title"/><meta content="결과를 확인하고 바로 공유해보세요." property="og:description"/><meta content="./" property="og:url"/><meta content="og.png" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/><meta content="나의 숨겨진 연애 본능 진단" name="twitter:title"/><meta content="결과를 확인하고 바로 공유해보세요." name="twitter:description"/><meta content="og.png" name="twitter:image"/>
-<!-- Open Graph (Kakao preview) -->
+  <meta charset="UTF-8" />
+  
+    <!-- Open Graph (Kakao preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="love 테스트" />
+    <meta property="og:description" content="love 바이브코딩 테스트" />
+    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/love/" />
+    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter (optional, helps some previews) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="love 테스트" />
+    <meta name="twitter:description" content="love 바이브코딩 테스트" />
+    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>나의 숨겨진 연애 본능 진단</title>
+
+  <!-- OG(스크랩/공유용) -->
 
 
 
-
-
-
-
-<!-- Twitter (optional, helps some previews) -->
-
-
-
-
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>나의 숨겨진 연애 본능 진단</title>
-<!-- OG(스크랩/공유용) -->
 <!-- Kakao SDK -->
-<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
-<!-- Confetti (선택) -->
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-<style>
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+
+  <!-- Confetti (선택) -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <style>
+
+/* === Global Center Fix (auto) === */
+html, body { height: 100%; }
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.pageCenter{
+  width:100%;
+  max-width:450px;
+}
+
     :root{
       --primary:#FF6B6B;
       --primary2:#FF4FA3;
@@ -221,58 +243,71 @@
 
     .hide{display:none !important}
   </style>
-<meta content="나의 숨겨진 연애 본능 진단" name="vibecoding:title"/><meta content="love" name="vibecoding:group"/></head>
+</head>
+
 <body>
-<div class="wrap">
-<div class="card">
-<!-- START -->
-<section id="startSection">
-<div class="hero">
-<div class="emoji">💘</div>
-<h1>나의 숨겨진<br/>연애 본능 진단</h1>
-<p class="sub">현실 고증 200%, 과몰입 주의!<br/>몇 가지 선택으로 내 연애 본능을 확인해요.</p>
-<div class="divider"></div>
-</div>
-<div class="body">
-<button class="btn btn-primary" id="startBtn">진단 시작하기</button>
-<div class="tiny">※ 결과는 재미로만! 다만 은근 맞을 수도 😏</div>
-</div>
-</section>
-<!-- QUIZ -->
-<section class="hide" id="quizSection">
-<div class="hero" style="padding-bottom:14px;">
-<span class="pill">💗 Love 테스트</span>
-<div class="divider"></div>
-</div>
-<div class="body">
-<div class="progress"><div class="bar" id="bar"></div></div>
-<div class="qTitle" id="qTitle"></div>
-<div class="choices" id="choices"></div>
-<div class="tiny" style="margin-top:16px;">선택은 “당장 내 마음” 기준으로 고르면 정확도가 올라가요.</div>
-</div>
-</section>
-<!-- RESULT -->
-<section class="hide" id="resultSection">
-<div class="resultHead">
-<span class="pill">💘 결과</span>
-<div class="resultType" id="resultType"></div>
-<p class="resultDesc" id="resultDesc"></p>
-<!-- 공유용 텍스트 (카카오 카드에 그대로 사용) -->
-<div id="shareTitle" style="display:none;"></div>
-<div id="shareDesc" style="display:none;"></div>
-</div>
-<div class="resultBox">
-<div style="font-weight:900; margin-bottom:8px;">요약</div>
-<ul class="bullets" id="resultBullets"></ul>
-</div>
-<div class="btnRow">
-<button class="btn btn-yellow" id="kakaoBtn">💬 카톡 공유</button>
-<button class="btn btn-blue" id="otherBtn">🔎 다른 테스트 해보기</button>
-<button class="btn btn-red" id="restartBtn">🔁 테스트 다시하기</button>
-</div>
-</section>
-</div>
-</div>
+<div class=\"pageCenter\">
+  <div class="wrap">
+    <div class="card">
+
+      <!-- START -->
+      <section id="startSection">
+        <div class="hero">
+          <div class="emoji">💘</div>
+          <h1>나의 숨겨진<br/>연애 본능 진단</h1>
+          <p class="sub">현실 고증 200%, 과몰입 주의!<br/>몇 가지 선택으로 내 연애 본능을 확인해요.</p>
+          <div class="divider"></div>
+        </div>
+        <div class="body">
+          <button id="startBtn" class="btn btn-primary">진단 시작하기</button>
+          <div class="tiny">※ 결과는 재미로만! 다만 은근 맞을 수도 😏</div>
+        </div>
+      </section>
+
+      <!-- QUIZ -->
+      <section id="quizSection" class="hide">
+        <div class="hero" style="padding-bottom:14px;">
+          <span class="pill">💗 Love 테스트</span>
+          <div class="divider"></div>
+        </div>
+
+        <div class="body">
+          <div class="progress"><div id="bar" class="bar"></div></div>
+
+          <div id="qTitle" class="qTitle"></div>
+          <div id="choices" class="choices"></div>
+
+          <div class="tiny" style="margin-top:16px;">선택은 “당장 내 마음” 기준으로 고르면 정확도가 올라가요.</div>
+        </div>
+      </section>
+
+      <!-- RESULT -->
+      <section id="resultSection" class="hide">
+        <div class="resultHead">
+          <span class="pill">💘 결과</span>
+          <div id="resultType" class="resultType"></div>
+          <p id="resultDesc" class="resultDesc"></p>
+
+          <!-- 공유용 텍스트 (카카오 카드에 그대로 사용) -->
+          <div id="shareTitle" style="display:none;"></div>
+          <div id="shareDesc" style="display:none;"></div>
+        </div>
+
+        <div class="resultBox">
+          <div style="font-weight:900; margin-bottom:8px;">요약</div>
+          <ul id="resultBullets" class="bullets"></ul>
+        </div>
+
+        <div class="btnRow">
+          <button id="kakaoBtn" class="btn btn-yellow">💬 카톡 공유</button>
+          <button id="otherBtn" class="btn btn-blue">🔎 다른 테스트 해보기</button>
+          <button id="restartBtn" class="btn btn-red">🔁 테스트 다시하기</button>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
 <script>
 /** =========================
  *  설정
@@ -622,5 +657,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 </script>
-<button id="kakaoShareBtn">카카오톡 공유하기</button><script src="https://developers.kakao.com/sdk/js/kakao.js"></script><script src="../js/kakao-share.js"></script></body>
+</div>
+</body>
 </html>

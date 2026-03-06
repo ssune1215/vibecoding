@@ -1,16 +1,33 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8"/><meta content="website" property="og:type"/><meta content="🏝️ 무인도 생존 확률 테스트" property="og:title"/><meta content="결과를 확인하고 바로 공유해보세요." property="og:description"/><meta content="./" property="og:url"/><meta content="og.png" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/><meta content="🏝️ 무인도 생존 확률 테스트" name="twitter:title"/><meta content="결과를 확인하고 바로 공유해보세요." name="twitter:description"/><meta content="og.png" name="twitter:image"/>
-<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>🏝️ 무인도 생존 확률 테스트</title>
 
-
+<meta property="og:title" content="🏝️ 무인도 생존 확률 테스트">
+<meta property="og:description" content="무인도에 떨어지면 당신의 생존 확률은?">
+<meta property="og:image" content="../assets/share-thumb.jpg">
 
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script src="../js/kakao-share.js"></script>
 
 <style>
+
+/* === Global Center Fix (auto) === */
+html, body { height: 100%; }
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.pageCenter{
+  width:100%;
+  max-width:450px;
+}
+
 
 :root{
 --sea1:#9fe3ff;
@@ -178,47 +195,75 @@ cursor:pointer;
 .screen.active{display:block}
 
 </style>
-<meta content="🏝️ 무인도 생존 확률 테스트" name="vibecoding:title"/><meta content="etc" name="vibecoding:group"/></head>
+</head>
+
 <body>
+<div class=\"pageCenter\">
+
 <div class="wrap">
 <div class="card">
-<section class="screen active" id="start">
+
+<section id="start" class="screen active">
+
 <div class="pill">🏝 Island Survival</div>
 <h1>무인도에 떨어졌다!</h1>
 <p>내 생존 확률은 얼마나 될까?</p>
+
 <button class="btn" onclick="start()">테스트 시작하기</button>
+
 </section>
-<section class="screen" id="quiz">
+
+<section id="quiz" class="screen">
+
 <div class="progressWrap">
 <div class="progressBar" id="bar"></div>
 </div>
+
 <h2 id="q"></h2>
+
 <div class="answers" id="answers"></div>
+
 </section>
-<section class="screen" id="result">
+
+<section id="result" class="screen">
+
 <div class="hero">
+
 <h2 id="rt"></h2>
+
 <div class="levelRow">
 <span class="chip" id="rl"></span>
 <span class="chip" id="rk"></span>
 </div>
+
 <p id="rd"></p>
+
 <div class="tipBox" id="tip"></div>
+
 </div>
+
 <div class="actions">
+
 <button class="actionBtn kakao" id="kakaoShareBtn">
 카카오톡 공유하기
 </button>
-<button class="actionBtn other" onclick="location.href='https://blog.naver.com/forgiven_77/224195220807'">
+
+<button class="actionBtn other"
+onclick="location.href='https://blog.naver.com/forgiven_77/224195220807'">
 다른 테스트 해보기
 </button>
+
 <button class="actionBtn retry" onclick="restart()">
 테스트 다시하기
 </button>
+
 </div>
+
 </section>
+
 </div>
 </div>
+
 <script>
 
 function shuffle(a){
@@ -438,5 +483,7 @@ show("start")
 }
 
 </script>
-<script src="../js/kakao-share.js"></script></body>
+
+</div>
+</body>
 </html>
