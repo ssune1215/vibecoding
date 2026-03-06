@@ -252,7 +252,7 @@ h1{
 </head>
 
 <body>
-<div class=\"pageCenter\">
+<div class="pageCenter">
 <canvas id="confetti"></canvas>
 
 <div class="wrap">
@@ -445,7 +445,7 @@ function renderResult(){
         <p class="note">친구랑 같이 해보고 결과를 비교해보세요 🙂</p>
 
         <div class="btnStack">
-          <button class="btn btnKakao" id="btnKakao">💬 카톡 공유</button>
+          <button class="btn btnKakao" id="kakaoShareBtn">💬 카톡 공유</button>
           <button class="btn btnBlog" id="btnBlog">🔵 다른 테스트</button>
           <button class="btn btnRetry" id="btnRetry">🔁 다시 하기</button>
         </div>
@@ -463,12 +463,11 @@ function renderResult(){
 
   document.getElementById("btnRetry").addEventListener("click", reset);
   document.getElementById("btnBlog").addEventListener("click", ()=> window.open(BLOG_URL, "_blank"));
-  document.getElementById("btnKakao").addEventListener("click", () => shareKakaoFromDOM("/loveother/"));
+  // kakaoShareBtn is handled by ../assets/kakao-share.js
 }
 
 function shareKakao(){
-  // (구버전 호환) 공통 공유로 연결
-  shareKakaoFromDOM('/loveother/');
+  // 공통 공유 스크립트 사용
 }
 
 /* 가벼운 컨페티 */
@@ -520,7 +519,6 @@ function stopConfetti(){
 reset();
 </script>
   <script src="../assets/kakao-share.js"></script>
-<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 </div>
 </body>
 </html>

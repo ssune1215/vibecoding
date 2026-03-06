@@ -45,7 +45,17 @@ function shareKakao() {
   });
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const btn = document.getElementById("kakaoShareBtn");
-  if (btn) btn.addEventListener("click", shareKakao);
-});
+
+function bindKakaoShareButton(){
+  const btn = document.getElementById('kakaoShareBtn');
+  if (btn && !btn.dataset.kakaoBound) {
+    btn.dataset.kakaoBound='1';
+    btn.addEventListener('click', shareKakao);
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bindKakaoShareButton);
+} else {
+  bindKakaoShareButton();
+}
