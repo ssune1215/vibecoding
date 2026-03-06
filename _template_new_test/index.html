@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>새 테스트 제목</title>
+
+  <!-- (권장) 빌드 스크립트가 tests.json 자동생성을 위해 읽습니다 -->
+  <meta name="vibecoding:title" content="새 테스트 제목">
+  <meta name="vibecoding:group" content="etc">
+
+  <!-- OG/Twitter: 빌드에서 누락 시 자동 보강되지만, 기본값으로 넣어두면 안정적입니다 -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:title" content="새 테스트 제목"/>
+  <meta property="og:description" content="결과를 확인하고 바로 공유해보세요."/>
+  <meta property="og:url" content="./"/>
+  <meta property="og:image" content="og.png"/>
+  <meta property="og:image:width" content="1200"/>
+  <meta property="og:image:height" content="630"/>
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="새 테스트 제목"/>
+  <meta name="twitter:description" content="결과를 확인하고 바로 공유해보세요."/>
+  <meta name="twitter:image" content="og.png"/>
+
+  <link rel="stylesheet" href="../common.css">
+</head>
+<body>
+
+  <!-- 여기에 테스트 UI를 넣으세요 -->
+  <main class="card">
+    <h1>새 테스트 제목</h1>
+    <p>테스트 내용을 여기에 작성하세요.</p>
+
+    <button id="kakaoShareBtn">카카오톡 공유하기</button>
+  </main>
+
+  <!-- 카카오 SDK + 공통 공유 스크립트 (개별 init 금지) -->
+  <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+  <script src="../js/kakao-share.js"></script>
+</body>
+</html>

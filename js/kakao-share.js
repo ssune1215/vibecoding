@@ -12,37 +12,19 @@ function initKakao() {
 function shareKakao() {
   if (!initKakao()) return;
 
-  const shareUrl = location.href; // ✅ 지금 접속 중인 URL 그대로
+  const shareUrl = location.href.split('#')[0]; // ✅ 지금 접속 중인 URL 그대로
   const title = document.title || "연애 온도 테스트";
   const desc =
     document.querySelector('meta[property="og:description"]')?.content ||
     "내 연애 온도는 몇 도일까? 지금 바로 테스트";
 
-  const img =
+    const rawImg =
     document.querySelector('meta[property="og:image"]')?.content ||
-    (location.origin + "/assets/thumb.png"); // ✅ 공통 썸네일 경로(권장)
+    "/assets/thumb.png";
 
-  Kakao.Share.sendDefault({
-    objectType: "feed",
-    content: {
-      title,
-      description: desc,
-      imageUrl: img,
-      link: {
-        mobileWebUrl: shareUrl,
-        webUrl: shareUrl,
-      },
-    },
-    buttons: [
-      {
-        title: "테스트 하러가기",
-        link: {
-          mobileWebUrl: shareUrl,
-          webUrl: shareUrl,
-        },
-      },
-    ],
-  });
+  // Kakao requires an absolute image URL
+  const img = new URL(rawImg, location.href).href;
+
 }
 
 document.addEventListener("DOMContentLoaded", () => {

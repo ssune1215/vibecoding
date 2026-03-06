@@ -1,87 +1,34 @@
 <!DOCTYPE html>
+
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    
-    <!-- Open Graph (Kakao preview) -->
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="balance 테스트" />
-    <meta property="og:description" content="balance 바이브코딩 테스트" />
-    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/balance/" />
-    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-
-    <!-- Twitter (optional, helps some previews) -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="balance 테스트" />
-    <meta name="twitter:description" content="balance 바이브코딩 테스트" />
-    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
-    
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>직장인 대환장 밸런스 게임</title>
-
-  <!-- OG(스크랩/공유용) -->
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    <style>
-        body { font-family: 'Pretendard', sans-serif; background: #f8fafc; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
-        .container { background: white; width: 90%; max-width: 450px; padding: 35px 25px; border-radius: 30px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); text-align: center; }
-        
-        /* 메인 대문 스타일 */
-        #start-area img { width: 100px; margin-bottom: 20px; }
-        .main-title { font-size: 1.8rem; font-weight: 800; color: #1e293b; margin-bottom: 15px; word-break: keep-all; }
-        .sub-title { font-size: 1rem; color: #64748b; margin-bottom: 30px; line-height: 1.5; }
-        
-        /* 공통 버튼 스타일 */
-        .btn-primary { background: #3b82f6; color: white; border: none; padding: 20px 40px; font-size: 1.3rem; font-weight: bold; border-radius: 20px; cursor: pointer; transition: 0.2s; width: 100%; box-shadow: 0 8px 0 #2563eb; }
-        .btn-primary:active { transform: translateY(4px); box-shadow: 0 4px 0 #2563eb; }
-        
-        /* 게임 및 결과 영역 숨김 */
-        #game-area, #result-area { display: none; }
-        
-        /* 게임 화면 스타일 */
-        .progress-bar { background: #e2e8f0; height: 8px; border-radius: 4px; margin-bottom: 25px; overflow: hidden; }
-        .progress-fill { background: #3b82f6; height: 100%; width: 0%; transition: 0.3s; }
-        .q-text { font-size: 1.3rem; font-weight: 700; color: #1e293b; margin-bottom: 30px; word-break: keep-all; min-height: 3.5rem; display: flex; align-items: center; justify-content: center; }
-        .choice-btn { background: #f8fafc; border: 2px solid #e2e8f0; padding: 18px; border-radius: 15px; width: 100%; margin-bottom: 12px; cursor: pointer; font-size: 1rem; font-weight: 600; color: #475569; transition: 0.2s; word-break: keep-all; }
-        .choice-btn:hover { background: #eff6ff; border-color: #3b82f6; color: #3b82f6; }
-        
-        /* 결과 스타일 */
-        .res-type { font-size: 1.8rem; font-weight: 800; color: #3b82f6; margin: 20px 0; }
-        .res-desc { color: #64748b; line-height: 1.6; margin-bottom: 30px; background: #f1f5f9; padding: 20px; border-radius: 15px; }
-    </style>
-</head>
+<meta charset="utf-8"/><meta content="website" property="og:type"/><meta content="직장인 대환장 밸런스 게임" property="og:title"/><meta content="결과를 확인하고 바로 공유해보세요." property="og:description"/><meta content="./" property="og:url"/><meta content="og.png" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/><meta content="직장인 대환장 밸런스 게임" name="twitter:title"/><meta content="결과를 확인하고 바로 공유해보세요." name="twitter:description"/><meta content="og.png" name="twitter:image"/>
+<!-- Open Graph (Kakao preview) -->
+<meta content="직장인 대환장 밸런스 게임" name="vibecoding:title"/><meta content="etc" name="vibecoding:group"/></head>
 <body>
-
-    <div class="container">
-        <div id="start-area">
-            <div style="font-size: 50px; margin-bottom: 10px;">😱</div>
-            <div class="main-title">직장인 대환장<br>밸런스 게임</div>
-            <p class="sub-title">당신을 기다리는 10가지 지옥의 선택지!<br>끝까지 살아남아 유형을 확인하세요.</p>
-            <button class="btn-primary" onclick="startGame()">시작하기!</button>
-        </div>
-
-        <div id="game-area">
-            <div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
-            <div id="q-number" style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Question 1/10</div>
-            <div class="q-text" id="question">질문 불러오는 중...</div>
-            <button class="choice-btn" id="btnA" onclick="nextQuestion('A')"></button>
-            <button class="choice-btn" id="btnB" onclick="nextQuestion('B')"></button>
-        </div>
-
-        <div id="result-area">
-            <div style="font-size: 50px; margin-bottom: 10px;">🏆</div>
-            <div class="main-title">분석 결과</div>
-            <div class="res-type" id="res-type"></div>
-            <div class="res-desc" id="res-desc"></div>
-            <button class="btn-primary" onclick="location.reload()">다시 도전하기</button>
-        </div>
-    </div>
-
-    <script>
+<div class="container">
+<div id="start-area">
+<div style="font-size: 50px; margin-bottom: 10px;">😱</div>
+<div class="main-title">직장인 대환장<br/>밸런스 게임</div>
+<p class="sub-title">당신을 기다리는 10가지 지옥의 선택지!<br/>끝까지 살아남아 유형을 확인하세요.</p>
+<button class="btn-primary" onclick="startGame()">시작하기!</button>
+</div>
+<div id="game-area">
+<div class="progress-bar"><div class="progress-fill" id="progress"></div></div>
+<div id="q-number" style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 10px;">Question 1/10</div>
+<div class="q-text" id="question">질문 불러오는 중...</div>
+<button class="choice-btn" id="btnA" onclick="nextQuestion('A')"></button>
+<button class="choice-btn" id="btnB" onclick="nextQuestion('B')"></button>
+</div>
+<div id="result-area">
+<div style="font-size: 50px; margin-bottom: 10px;">🏆</div>
+<div class="main-title">분석 결과</div>
+<div class="res-type" id="res-type"></div>
+<div class="res-desc" id="res-desc"></div>
+<button class="btn-primary" onclick="location.reload()">다시 도전하기</button>
+</div>
+</div>
+<script>
         let questions = [
             { q: "오늘의 점심 파트너, 당신의 선택은?", a: "침묵하는 팀장님과 1:1 식사", b: "자랑 가득한 부장님과 단체 식사" },
             { q: "더 싫은 상사의 행동은?", a: "정해줬더니 '그건 좀..' 거절하기", b: "식당 갈 때까지 '아무거나' 반복하기" },
@@ -155,5 +102,5 @@
             document.getElementById('res-desc').innerText = desc;
         }
     </script>
-</body>
+<button id="kakaoShareBtn">카카오톡 공유하기</button><script src="https://developers.kakao.com/sdk/js/kakao.js"></script><script src="../js/kakao-share.js"></script></body>
 </html>
