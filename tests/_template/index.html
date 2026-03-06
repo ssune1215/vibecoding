@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>새 테스트</title>
+
+  <!-- OG (공통 썸네일) -->
+  <meta property="og:title" content="새 테스트" />
+  <meta property="og:description" content="5문항으로 가볍게 해보는 테스트" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="/assets/thumb.png" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="/assets/thumb.png" />
+
+  <!-- Kakao SDK -->
+  <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+  <!-- Shared Kakao share logic (프로젝트 공통) -->
+  <script src="../../js/kakao-share.js"></script>
+
+  <style>
+    :root{
+      --bg:#fafafa;
+      --card:#ffffff;
+      --line:#e7e7e7;
+      --text:#222;
+      --sub:#666;
+      --pink:#ff8fa3;
+      --yellow:#FEE500;
+      --blue:#3b82f6;
+      --red:#ef4444;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      padding:28px 14px;
+    }
+    .wrap{max-width:520px;margin:0 auto;}
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:18px;
+      box-shadow:0 10px 24px rgba(0,0,0,0.05);
+    }
+    h1{margin:0 0 8px;font-size:22px;line-height:1.25;}
+    .desc{margin:0 0 14px;color:var(--sub);font-size:14px;line-height:1.55;}
+    .muted{color:var(--sub);font-size:13px;margin:10px 0 0;}
+    .btn{
+      width:100%;
+      border:0;
+      border-radius:12px;
+      padding:14px 14px;
+      font-size:16px;
+      cursor:pointer;
+      transition:transform 0.04s ease, box-shadow 0.1s ease;
+      box-shadow:0 10px 18px rgba(0,0,0,0.08);
+    }
+    .btn:active{transform:translateY(1px);box-shadow:0 6px 12px rgba(0,0,0,0.10);}
+    .btn.start{background:var(--pink);color:#fff;}
+    .btn.choice{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+      box-shadow:none;
+      margin:10px 0 0;
+      text-align:left;
+    }
+    .progress{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin:0 0 10px;
+      font-size:13px;
+      color:var(--sub);
+    }
+    .bar{
+      height:8px;
+      width:100%;
+      background:#f1f1f1;
+      border-radius:999px;
+      overflow:hidden;
+      margin:10px 0 0;
+    }
+    .bar > div{
+      height:100%;
+      width:0%;
+      background:var(--pink);
+      border-radius:999px;
+      transition:width 0.25s ease;
+    }
+    #questionText{margin:0 0 6px;font-size:18px;line-height:1.35;}
+    .resultTitle{margin:0 0 6px;font-size:18px;}
+    .resultDesc{margin:0;color:var(--sub);line-height:1.6;}
+    .actions{margin-top:14px;display:grid;gap:10px;}
+    #kakaoShareBtn{background:var(--yellow);color:#111;}
+    .linkbtn{
+      display:inline-block;
+      width:100%;
+      text-decoration:none;
+      text-align:center;
+      border-radius:12px;
+      padding:14px 14px;
+      font-size:16px;
+      box-shadow:0 10px 18px rgba(0,0,0,0.08);
+    }
+    .linkbtn.blue{background:var(--blue);color:#fff;}
+    .linkbtn.red{background:var(--red);color:#fff;}
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="card">
+      <div id="screenStart">
+        <h1 id="title">새 테스트</h1>
+        <p class="desc">문항은 5개로 고정입니다. 선택지는 항상 4개입니다.</p>
+        <button class="btn start" type="button" onclick="startTest()">테스트 시작</button>
+        <p class="muted">※ 새 테스트 제작 시, 질문/선택지/결과만 교체해서 사용하세요.</p>
+      </div>
+
+      <div id="screenQ" style="display:none;">
+        <div class="progress">
+          <span id="progressText">1 / 5</span>
+          <span id="progressHint">선택지를 골라주세요</span>
+        </div>
+        <h2 id="questionText"></h2>
+        <div class="bar"><div id="barFill"></div></div>
+        <div id="choices"></div>
+      </div>
+
+      <div id="screenR" style="display:none;">
+        <h2 class="resultTitle" id="resultTitle"></h2>
+        <p class="resultDesc" id="resultDesc"></p>
+
+        <div class="actions">
+          <button id="kakaoShareBtn" type="button">카카오톡 공유하기</button>
+          <a class="linkbtn blue" href="https://blog.naver.com/forgiven_77/224195220807">다른 테스트 해보기</a>
+          <a class="linkbtn red" href="./">테스트 다시하기</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /**
+     * ✅ 고정 규칙
+     * - questions: 반드시 5개
+     * - 각 질문의 선택지: 반드시 4개
+     * - 결과 타입: 주제에 따라 6~8개 권장
+     * - 기본값: 질문/선택지 랜덤 섞기 ON
+     */
+
+    const questions = [
+      { q: "질문 1을 입력하세요", a: ["선택지 1", "선택지 2", "선택지 3", "선택지 4"] },
+      { q: "질문 2를 입력하세요", a: ["선택지 1", "선택지 2", "선택지 3", "선택지 4"] },
+      { q: "질문 3을 입력하세요", a: ["선택지 1", "선택지 2", "선택지 3", "선택지 4"] },
+      { q: "질문 4를 입력하세요", a: ["선택지 1", "선택지 2", "선택지 3", "선택지 4"] },
+      { q: "질문 5를 입력하세요", a: ["선택지 1", "선택지 2", "선택지 3", "선택지 4"] }
+    ];
+
+    // 결과는 6~8개 권장 (예시는 6개)
+    const results = [
+      { title: "결과 1", desc: "결과 설명을 입력하세요." },
+      { title: "결과 2", desc: "결과 설명을 입력하세요." },
+      { title: "결과 3", desc: "결과 설명을 입력하세요." },
+      { title: "결과 4", desc: "결과 설명을 입력하세요." },
+      { title: "결과 5", desc: "결과 설명을 입력하세요." },
+      { title: "결과 6", desc: "결과 설명을 입력하세요." }
+    ];
+
+    // ---- 유틸: 셔플 ----
+    function shuffle(arr){
+      for(let i=arr.length-1;i>0;i--){
+        const j = Math.floor(Math.random()*(i+1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    function validate(){
+      if (questions.length !== 5){
+        console.warn("questions는 반드시 5개여야 합니다. 현재:", questions.length);
+      }
+      questions.forEach((q, idx)=>{
+        if (!q.a || q.a.length !== 4){
+          console.warn(`Q${idx+1} 선택지는 반드시 4개여야 합니다. 현재:`, q.a ? q.a.length : "없음");
+        }
+      });
+    }
+
+    function randomize(){
+      // 질문/선택지 랜덤 섞기
+      shuffle(questions);
+      questions.forEach(q => shuffle(q.a));
+    }
+
+    // ---- 상태 ----
+    let current = 0;
+
+    function startTest(){
+      validate();
+      randomize();
+
+      current = 0;
+      document.getElementById("screenStart").style.display="none";
+      document.getElementById("screenR").style.display="none";
+      document.getElementById("screenQ").style.display="block";
+      renderQuestion();
+    }
+
+    function renderQuestion(){
+      const total = 5;
+      const q = questions[current];
+
+      document.getElementById("progressText").innerText = `${current+1} / ${total}`;
+      document.getElementById("questionText").innerText = q.q;
+
+      const fill = Math.round(((current)/total)*100);
+      document.getElementById("barFill").style.width = `${fill}%`;
+
+      const choices = document.getElementById("choices");
+      choices.innerHTML = "";
+
+      q.a.forEach((txt)=>{
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "btn choice";
+        btn.innerText = txt;
+        btn.onclick = onAnswer;
+        choices.appendChild(btn);
+      });
+    }
+
+    function onAnswer(){
+      current += 1;
+      if (current < 5){
+        renderQuestion();
+      }else{
+        showResult();
+      }
+    }
+
+    function showResult(){
+      document.getElementById("screenQ").style.display="none";
+      document.getElementById("screenR").style.display="block";
+
+      // 예시: 랜덤 결과 (원하시면 여기만 '점수/가중치' 방식으로 바꾸면 됩니다)
+      const r = results[Math.floor(Math.random()*results.length)];
+
+      document.getElementById("resultTitle").innerText = r.title;
+      document.getElementById("resultDesc").innerText = r.desc;
+
+      // 진행바 100%
+      document.getElementById("barFill").style.width = "100%";
+    }
+  </script>
+</body>
+</html>

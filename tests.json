@@ -1,42 +1,52 @@
 [
   {
-    "title": "💘 연애 MBTI 테스트",
-    "path": "./lovembti/",
-    "group": "love"
-  },
-  {
-    "title": "💘 Love 테스트",
-    "path": "./love/",
-    "group": "love"
-  },
-  {
-    "title": "💞 Love Other",
-    "path": "./loveother/",
-    "group": "love"
-  },
-  {
-    "title": "💍 Lover Test",
-    "path": "./lovertest/",
-    "group": "love"
-  },
-  {
-    "title": "🖤 Black & White",
-    "path": "./blackandwhite/",
+    "title": "🌓 나는 겉과 속이 얼마나 다를까?",
+    "path": "./tests/blackandwhite/",
     "group": "etc"
   },
   {
-    "title": "🍜 점심 추천",
-    "path": "./lunch/",
+    "title": "🏝️ 무인도 생존 확률 테스트",
+    "path": "./tests/island/",
     "group": "etc"
   },
   {
-    "title": "🎯 룰렛",
-    "path": "./roulette/",
+    "title": "balance",
+    "path": "./tests/balance/",
     "group": "etc"
   },
   {
-    "title": "⚖️ Balance",
-    "path": "./balance/",
+    "title": "lunch",
+    "path": "./tests/lunch/",
     "group": "etc"
+  },
+  {
+    "title": "roulette",
+    "path": "./tests/roulette/",
+    "group": "etc"
+  },
+  {
+    "title": "나의 연애 온도 테스트",
+    "path": "./tests/fire/",
+    "group": "etc"
+  },
+  {
+    "title": "loveother",
+    "path": "./tests/loveother/",
+    "group": "love"
+  },
+  {
+    "title": "나의 숨겨진 연애 본능 진단",
+    "path": "./tests/love/",
+    "group": "love"
+  },
+  {
+    "title": "내 애인은 어떤 스타일???",
+    "path": "./tests/lovertest/",
+    "group": "love"
+  },
+  {
+    "title": "연애 MBTI 테스트",
+    "path": "./tests/lovembti/",
+    "group": "love"
   }
 ]

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/><meta content="website" property="og:type"/><meta content="심장쫄깃 점심 슬롯" property="og:title"/><meta content="결과를 확인하고 바로 공유해보세요." property="og:description"/><meta content="./" property="og:url"/><meta content="og.png" property="og:image"/><meta content="1200" property="og:image:width"/><meta content="630" property="og:image:height"/><meta content="summary_large_image" name="twitter:card"/><meta content="심장쫄깃 점심 슬롯" name="twitter:title"/><meta content="결과를 확인하고 바로 공유해보세요." name="twitter:description"/><meta content="og.png" name="twitter:image"/>
+<!-- Open Graph (Kakao preview) -->
+<meta content="심장쫄깃 점심 슬롯" name="vibecoding:title"/><meta content="etc" name="vibecoding:group"/></head>
+<body>
+<div class="container">
+<h1 style="color:#222; margin-top:0; font-size: 1.6rem;">🎰 인생역전 점심 슬롯</h1>
+<div class="input-group">
+<label style="font-size:0.85rem; font-weight:bold;">👥 함께하는 동료들 (쉼표로 구분)</label>
+<input id="memberInput" type="text" value="김대리, 이과장, 박사원, 최팀장, 나"/>
+</div>
+<div class="slot-machine">
+<div class="slot-column"><div class="reel" id="reel1"></div></div>
+<div class="slot-column"><div class="reel" id="reel2"></div></div>
+<div class="slot-column"><div class="reel" id="reel3"></div></div>
+</div>
+<button class="btn-main" id="spinBtn" onclick="startSpin()">🎲 운명의 레버 당기기!</button>
+<button class="btn-main btn-stop" id="stopBtn" onclick="stopSpin()">🛑 STOP!!!!! (멈춰!)</button>
+<div id="result-box">
+<div id="result-text" style="font-size: 1.15rem; line-height: 1.8;"></div>
+<button class="share-btn" onclick="copyResult()">📋 결과 복사해서 공유하기</button>
+</div>
+</div>
+<script>
+    const menus = ["마라탕", "김치찌개", "돈까스", "초밥", "제육볶음", "쌀국수", "햄버거", "샌드위치", "비빔밥", "짜장면", "짬뽕", "부대찌개", "순대국", "뼈해장국", "텐동", "라멘", "파스타", "피자", "냉면", "칼국수", "닭갈비", "찜닭", "보쌈", "족발", "분식", "된장찌개", "카레", "회덮밥", "서브웨이", "순두부", "설렁탕", "갈비탕", "육개장", "국밥", "솥밥", "포케", "타코", "딤섬", "떡볶이", "우동", "스테이크", "물회", "삼겹살", "콩국수", "소바", "죽", "토스트", "고기국수", "알탕", "국수"];
+    
+    let timerIds = [null, null, null];
+    let finalIndices = [0, 0, 0];
+    let currentMembers = [];
+
+    function setupReel(reelId, items) {
+        const reel = document.getElementById(reelId);
+        let html = '';
+        for(let i=0; i<40; i++) { // 시각적 풍성함을 위해 40배 생성
+            items.forEach(item => { html += `<div class="item">${item}</div>`; });
+        }
+        reel.innerHTML = html;
+        reel.style.transition = "none";
+        reel.style.transform = "translateY(0)";
+    }
+
+    function startSpin() {
+        currentMembers = document.getElementById('memberInput').value.split(',').map(s => s.trim()).filter(s => s !== '');
+        if(currentMembers.length < 1) { alert("이름을 입력해주세요!"); return; }
+
+        // 슬롯 세팅
+        setupReel('reel1', menus);
+        setupReel('reel2', currentMembers);
+        setupReel('reel3', currentMembers);
+
+        document.getElementById('spinBtn').style.display = 'none';
+        document.getElementById('stopBtn').style.display = 'block';
+        document.getElementById('result-box').style.display = 'none';
+
+        // 버튼 누르자마자 즉시 회전 시작
+        startInfiniteScroll(0, menus);
+        startInfiniteScroll(1, currentMembers);
+        startInfiniteScroll(2, currentMembers);
+    }
+
+    function startInfiniteScroll(idx, dataArr) {
+        const reel = document.getElementById(`reel${idx+1}`);
+        let pos = 0;
+        timerIds[idx] = setInterval(() => {
+            pos++;
+            if(pos >= dataArr.length) pos = 0;
+            reel.style.transition = "none";
+            reel.style.transform = `translateY(-${pos * 120}px)`;
+            finalIndices[idx] = pos;
+        }, 35); // 회전 속도 (더 빠르게)
+    }
+
+    function stopSpin() {
+        document.getElementById('stopBtn').disabled = true;
+
+        // 딜레이 대폭 강화 (1.1초 -> 2.1초 -> 4.2초)
+        setTimeout(() => stopReel(0, menus, 1.5), 0);
+        setTimeout(() => stopReel(1, currentMembers, 1.5), 2100); 
+        setTimeout(() => stopReel(2, currentMembers, 1.5), 4200); 
+    }
+
+    function stopReel(idx, dataArr, duration) {
+        clearInterval(timerIds[idx]);
+        const reel = document.getElementById(`reel${idx+1}`);
+        
+        // 현재 위치에서 더 돌다가 서서히 멈춤
+        const extraTurns = dataArr.length * 2; 
+        const stopTarget = finalIndices[idx] + extraTurns; 
+        
+        reel.style.transition = `transform ${duration}s cubic-bezier(0.1, 0.9, 0.3, 1)`;
+        reel.style.transform = `translateY(-${stopTarget * 120}px)`;
+        
+        finalIndices[idx] = stopTarget % dataArr.length;
+
+        if (idx === 2) {
+            setTimeout(showResult, duration * 1000 + 300);
+        }
+    }
+
+    function showResult() {
+        const res1 = menus[finalIndices[0]];
+        const res2 = currentMembers[finalIndices[1]];
+        const res3 = currentMembers[finalIndices[2]];
+
+        document.getElementById('result-text').innerHTML = `
+            <span style="font-size: 0.9rem; color: #666;">--- 오늘의 운명 ---</span><br>
+            🍴 오늘의 메뉴: <strong>${res1}</strong><br>
+            💸 점심 결제: <span style="color:#ff4757; font-size:1.4rem; font-weight:900;">${res2}</span><br>
+            ☕️ 커피 결제: <span style="color:#1e90ff; font-size:1.4rem; font-weight:900;">${res3}</span><br>
+            <span style="font-size: 0.85rem; color: #888; display:block; margin-top:10px;">결과에 불복 시 한 판 더?</span>
+        `;
+        document.getElementById('result-box').style.display = 'block';
+        document.getElementById('spinBtn').style.display = 'block';
+        document.getElementById('stopBtn').style.display = 'none';
+        document.getElementById('stopBtn').disabled = false;
+    }
+
+    function copyResult() {
+        const text = document.getElementById('result-text').innerText.replace('--- 오늘의 운명 ---', '').trim();
+        navigator.clipboard.writeText(text + "\n#점심슬롯 #운명에맡겨 #블로그이벤트").then(() => {
+            alert("결과가 복사되었습니다! 댓글에 남겨주세요!");
+        });
+    }
+
+    window.onload = () => {
+        setupReel('reel1', menus);
+        setupReel('reel2', ["이름1", "이름2", "이름3"]);
+        setupReel('reel3', ["이름1", "이름2", "이름3"]);
+    };
+</script>
+<button id="kakaoShareBtn">카카오톡 공유하기</button><script src="https://developers.kakao.com/sdk/js/kakao.js"></script><script src="../../js/kakao-share.js"></script></body>
+</html>
