@@ -81,6 +81,9 @@ body{
   border:1px solid var(--line);
   border-radius:14px;
   overflow:hidden;
+  min-height:760px;
+  display:flex;
+  flex-direction:column;
 }
 
 .header{
@@ -111,7 +114,18 @@ h1{
   line-height:1.6;
 }
 
-.content{ padding:16px; }
+.content{
+  padding:16px;
+  flex:1;
+  display:flex;
+}
+
+#app{
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
 
 .center{ text-align:center; }
 
@@ -148,6 +162,10 @@ h1{
   letter-spacing:-.3px;
   line-height:1.55;
   margin:6px 0 12px;
+  min-height:56px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
 .choice{
@@ -159,6 +177,10 @@ h1{
   padding:12px;
   margin:10px 0;
   cursor:pointer;
+  min-height:78px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 .choice:hover{ background:var(--hover); }
 .choice .t{
@@ -207,6 +229,15 @@ h1{
   font-size:13px;
   color:var(--muted);
   line-height:1.6;
+}
+
+.startView,
+.quizView,
+.resultView{
+  min-height:100%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 
 /* confetti */
@@ -338,13 +369,15 @@ function reset(){
 
 function renderStart(){
   app.innerHTML = `
-    <div class="center">
-      <div id="shareTitle" style="display:none;"></div>
-      <div id="shareDesc" style="display:none;"></div>
-      <div class="q" style="margin-top:0;">내 연애 리듬을 가볍게 체크해볼까요?</div>
-      <p class="sub" style="margin:0;">가볍게 해보기</p>
-      <div class="btnStack">
-        <button class="btn btnPrimary" id="btnStart">테스트 시작</button>
+    <div class="startView">
+      <div class="center">
+        <div id="shareTitle" style="display:none;"></div>
+        <div id="shareDesc" style="display:none;"></div>
+        <div class="q" style="margin-top:0;">내 연애 리듬을 가볍게 체크해볼까요?</div>
+        <p class="sub" style="margin:0;">가볍게 해보기</p>
+        <div class="btnStack">
+          <button class="btn btnPrimary" id="btnStart">테스트 시작</button>
+        </div>
       </div>
     </div>
   `;
@@ -360,19 +393,21 @@ function renderQuiz(){
   const q=quiz[idx];
 
   app.innerHTML = `
-    <div class="progress">
-      <span class="pill">Q ${idx+1}/${total}</span>
-      <div class="bar"><div style="width:${progress}%"></div></div>
+    <div class="quizView">
+      <div class="progress">
+        <span class="pill">Q ${idx+1}/${total}</span>
+        <div class="bar"><div style="width:${progress}%"></div></div>
+      </div>
+
+      <div class="q">${q.q}</div>
+
+      ${q.choices.map((c,i)=>`
+        <button class="choice" data-i="${i}">
+          <div class="t">${c.t}</div>
+          <div class="s">${c.s}</div>
+        </button>
+      `).join("")}
     </div>
-
-    <div class="q">${q.q}</div>
-
-    ${q.choices.map((c,i)=>`
-      <button class="choice" data-i="${i}">
-        <div class="t">${c.t}</div>
-        <div class="s">${c.s}</div>
-      </button>
-    `).join("")}
   `;
   [...app.querySelectorAll(".choice")].forEach(btn=>{
     btn.addEventListener("click", ()=> pick(Number(btn.dataset.i)));
@@ -399,19 +434,21 @@ function topType(){
 function renderResult(){
   const r=TYPES[topType()];
   app.innerHTML = `
-    <div class="center">
-      <div id="shareTitle" style="display:none;"></div>
-      <div id="shareDesc" style="display:none;"></div>
-      <div class="resultEmoji">${r.emoji}</div>
-      <div class="resultTitle">${r.title}</div>
-      <p class="resultDesc">${r.desc}</p>
+    <div class="resultView">
+      <div class="center">
+        <div id="shareTitle" style="display:none;"></div>
+        <div id="shareDesc" style="display:none;"></div>
+        <div class="resultEmoji">${r.emoji}</div>
+        <div class="resultTitle">${r.title}</div>
+        <p class="resultDesc">${r.desc}</p>
 
-      <p class="note">친구랑 같이 해보고 결과를 비교해보세요 🙂</p>
+        <p class="note">친구랑 같이 해보고 결과를 비교해보세요 🙂</p>
 
-      <div class="btnStack">
-        <button class="btn btnKakao" id="btnKakao">💬 카톡 공유</button>
-        <button class="btn btnBlog" id="btnBlog">🔵 다른 테스트</button>
-        <button class="btn btnRetry" id="btnRetry">🔁 다시 하기</button>
+        <div class="btnStack">
+          <button class="btn btnKakao" id="btnKakao">💬 카톡 공유</button>
+          <button class="btn btnBlog" id="btnBlog">🔵 다른 테스트</button>
+          <button class="btn btnRetry" id="btnRetry">🔁 다시 하기</button>
+        </div>
       </div>
     </div>
   `;
