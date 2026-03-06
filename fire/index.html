@@ -11,6 +11,20 @@
     crossorigin="anonymous"></script>
 
   <style>
+
+/* === Global Center Fix (auto) === */
+html, body { height: 100%; }
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.pageCenter{
+  width:100%;
+  max-width:450px;
+}
+
     :root{
       --bg:#ffd6e7;
       --card:#ff9fc7;
@@ -267,6 +281,7 @@
   </style>
 </head>
 <body>
+<div class=\"pageCenter\">
   <canvas id="fx"></canvas>
 
   <div class="wrap">
@@ -796,5 +811,6 @@ window.addEventListener("resize", ()=>{
  * ============================= */
 showStart();
 </script>
+</div>
 </body>
 </html>

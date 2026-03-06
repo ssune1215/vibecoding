@@ -9,19 +9,16 @@ function initKakao() {
   return true;
 }
 
-function getShareMeta() {
-  const shareUrl = location.href;
-  const title = document.querySelector('meta[property="og:title"]')?.content || document.title || "테스트";
-  const desc = document.querySelector('meta[property="og:description"]')?.content || "지금 바로 테스트해보세요.";
-  let img = document.querySelector('meta[property="og:image"]')?.content || (location.origin + "/assets/thumb.png");
-  if (img && img.startsWith('/')) img = location.origin + img;
-  return { shareUrl, title, desc, img };
-}
-
-function shareKakao(customPath) {
+function shareKakao() {
   if (!initKakao()) return;
-  const { shareUrl, title, desc, img } = getShareMeta();
-  const finalUrl = customPath ? new URL(customPath, location.origin).href : shareUrl;
+
+  const shareUrl = location.href; // ✅ 지금 접속 중인 URL 그대로
+  const title = document.title || "연애 온도 테스트";
+  const desc =
+    document.querySelector('meta[property="og:description"]')?.content ||
+    "내 연애 온도는 몇 도일까? 지금 바로 테스트";
+
+  const img = location.origin + '/assets/thumb-share-1200x630.jpg?v=3';
 
   Kakao.Share.sendDefault({
     objectType: "feed",
@@ -30,38 +27,33 @@ function shareKakao(customPath) {
       description: desc,
       imageUrl: img,
       link: {
-        mobileWebUrl: finalUrl,
-        webUrl: finalUrl,
+        mobileWebUrl: shareUrl,
+        webUrl: shareUrl,
       },
     },
     buttons: [
       {
         title: "테스트 하러가기",
         link: {
-          mobileWebUrl: finalUrl,
-          webUrl: finalUrl,
+          mobileWebUrl: shareUrl,
+          webUrl: shareUrl,
         },
       },
     ],
   });
 }
 
-function shareKakaoFromDOM(customPath) {
-  shareKakao(customPath);
-}
 
-function bindKakaoShareButtons() {
-  document.addEventListener('click', (e) => {
-    const btn = e.target.closest('#kakaoShareBtn, #btnKakao');
-    if (!btn) return;
-    e.preventDefault();
-    const customPath = btn.dataset.sharePath || undefined;
-    shareKakao(customPath);
-  });
+function bindKakaoShareButton(){
+  const btn = document.getElementById('kakaoShareBtn');
+  if (btn && !btn.dataset.kakaoBound) {
+    btn.dataset.kakaoBound='1';
+    btn.addEventListener('click', shareKakao);
+  }
 }
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', bindKakaoShareButtons, { once: true });
+  document.addEventListener('DOMContentLoaded', bindKakaoShareButton);
 } else {
-  bindKakaoShareButtons();
+  bindKakaoShareButton();
 }

@@ -15,6 +15,20 @@
 
 <style>
 
+/* === Global Center Fix (auto) === */
+html, body { height: 100%; }
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.pageCenter{
+  width:100%;
+  max-width:450px;
+}
+
+
 :root{
 --sea1:#9fe3ff;
 --sea2:#5cc4ec;
@@ -184,6 +198,7 @@ cursor:pointer;
 </head>
 
 <body>
+<div class=\"pageCenter\">
 
 <div class="wrap">
 <div class="card">
@@ -469,5 +484,6 @@ show("start")
 
 </script>
 
+</div>
 </body>
 </html>

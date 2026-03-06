@@ -31,6 +31,20 @@
   <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script>
 
   <style>
+
+/* === Global Center Fix (auto) === */
+html, body { height: 100%; }
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.pageCenter{
+  width:100%;
+  max-width:450px;
+}
+
     :root{
       --text:#1f2430;
       --muted:#6b7280;
@@ -259,6 +273,7 @@
 </head>
 
 <body>
+<div class=\"pageCenter\">
   <div class="wrap">
     <div class="card" id="card">
       <div class="center">
@@ -520,5 +535,6 @@ kakaoBtn.addEventListener("click", kakaoShare);
 copyBtn.addEventListener("click", copyLink);
 </script>
 
+</div>
 </body>
 </html>
