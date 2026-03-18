@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>연애할 때 나는 어떤 동물일까? 연애 동물 테스트</title>
+    <title>연애 동물 테스트 | 나의 야생적 연애 본능은? 🦊</title>
     
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="연애할 때 나는 어떤 동물일까? 연애 동물 테스트" />
-    <meta property="og:description" content="내 연애 세포에 숨겨진 동물의 본능을 5가지 상황으로 알아봅니다! 당신은 어떤 동물일까요?" />
+    <meta property="og:title" content="연애 동물 테스트 | 나는 어떤 동물일까?" />
+    <meta property="og:description" content="본능에 충실한 나의 연애 스타일! 동물 유형으로 확인해보세요." />
     <meta property="og:url" content="./" />
     <meta property="og:image" content="../assets/share-thumb.jpg" />
 
     <link rel="stylesheet" href="../assets/vibe-theme.css">
     <style>
         :root {
-            --main-color: #f59e0b; /* 앰버 */
+            --main-color: #f59e0b; /* 앰버/오렌지 */
             --bg-light: #fffbeb;
             --border-color: #fef3c7;
-            --btn-hover-shadow: rgba(245, 158, 11, 0.3);
+            --btn-hover-shadow: rgba(245, 158, 11, 0.2);
         }
     </style>
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
@@ -29,36 +29,36 @@
 
 <div class="card">
     <div id="start-area">
-        <div class="result-image">🦊💕</div>
-        <h1 class="title">연애할 때<br>나는 어떤 동물일까?</h1>
-        <p class="description">내 연애 세포에 숨겨진 동물의 본능을<br>5가지 상황으로 알아봅니다!</p>
-        <button class="btn-start" onclick="startTest()">테스트 시작하기 🚀</button>
+        <div class="result-image">🦁🦒</div>
+        <h1 class="title">나의 야생적 본능<br>연애 동물 테스트</h1>
+        <p class="description">당신이 한 마리의 동물이 되어 숲을 다닌다면?<br>본능적인 선택으로 알아보는 연애 스타일!</p>
+        <button class="btn-start" onclick="startTest()">본능 탐험 시작 🚀</button>
     </div>
 
     <div id="quiz-area" style="display: none;">
         <div class="progress-bar"><div class="progress" id="progress"></div></div>
         <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700;">Question 1 / 5</div>
-        <div class="title" id="question-text" style="font-size: 20px;">질문 불러오는 중...</div>
+        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.5;">야생의 감각 깨우는 중...</div>
         <div id="options-container"></div>
     </div>
 
     <div id="result-area" style="display: none;">
-        <div class="tiny" style="font-weight: 700;">나의 연애 동물 결과</div>
-        <div id="res-image" class="result-image">🐶</div>
+        <div class="tiny" style="font-weight: 700;">당신을 상징하는 연애 동물은?</div>
+        <div id="res-image" class="result-image">🦊</div>
         <div id="res-name" class="result-title">결과 이름</div>
         
         <div class="result-box">
-            <span class="result-box-title">🐾 연애 동물 분석 보고서</span>
+            <span class="result-box-title">🐾 야생 본능 리포트</span>
             <div id="res-desc" class="result-desc">결과 설명이 여기에 나옵니다.</div>
         </div>
 
         <div class="action-btns">
             <button class="btn-kakao">
                 <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
-                내 결과 카톡으로 공유하기
+                내 동물 결과 공유하기
             </button>
-            <a href="https://blog.naver.com/forgiven_77/224195220807" target="_blank" class="btn-blog">
-                👀 다른 재미있는 테스트 구경가기
+            <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog">
+                👀 다른 테스트 구경가기
             </a>
             <button class="btn-retry" onclick="location.reload()">🔄 다시 테스트하기</button>
         </div>
@@ -70,60 +70,58 @@
     let score = 0;
 
     const questions = [
-        { 
-            q: "마음에 드는 이성 발견! 스캔을 마친 나의 첫 행동은?", 
+        {
+            q: "당신은 한 마리의 동물이 되어 미지의 숲을 여행하고 있습니다. 길을 가다가 아주 매콤하고 자극적인 냄새가 나는 희귀한 열매를 발견했습니다. 당신의 첫 번째 반응은?",
             options: [
-                { text: "멀리서 눈으로만 슬쩍슬쩍 염탐한다.", point: 0 },
-                { text: "'오늘 스타일 좋다!' 은근슬쩍 플러팅을 던진다.", point: 1 },
-                { text: "카톡부터 따내고 그날 저녁 바로 연락.", point: 2 },
-                { text: "직진! '주말에 뭐해? 시간 비워놔.'", point: 3 }
+                { text: "무슨 맛일까? 호기심을 참지 못하고 일단 한입 크게 베어 물어본다.", point: 3 },
+                { text: "위험할지도 몰라. 충분히 냄새를 맡아보고 안전한지 확인한 뒤 조금만 먹어본다.", point: 1 },
+                { text: "이 좋은 걸 나만 먹을 수 없지! 무리 친구들을 불러서 같이 나눠먹자고 제안한다.", point: 2 },
+                { text: "열매 따위엔 관심 없다. 더 짜릿하고 흥미로운 사냥감을 찾아 계속 정글을 누빈다.", point: 3 }
             ]
         },
-        { 
-            q: "그 사람과 드디어 첫 데이트! 밥 먹고 난 다음 코스는?", 
+        {
+            q: "숲속에서 무리와 떨어져 처음 가보는 동굴에서 잠을 자게 되었습니다. 어둠 속에서 당신은 어떤 방식으로 휴식을 취하나요?",
             options: [
-                { text: "예쁜 카페에서 조용히 대화를 나눈다.", point: 0 },
-                { text: "가벼운 칵테일 바에서 살짝 알코올을 빌린다.", point: 1 },
-                { text: "'우리 드라이브 갈래?' 은밀히 둘만의 공간으로!", point: 2 },
-                { text: "방 잡고 넷플릭스 고? 홈 데이트.", point: 3 }
+                { text: "나를 완벽하게 숨길 수 있는 가장 깊숙하고 좁은 구석을 찾아 몸을 웅크린다.", point: 1 },
+                { text: "동굴 입구 근처에서 언제든 적의 습격에 대비하며 뜬눈으로 밤을 지새운다.", point: 2 },
+                { text: "다른 동물의 온기나 흔적이 느껴지는 아늑한 장소를 찾아 기어코 찾아낸다.", point: 2 },
+                { text: "내가 제일 강하니까! 동굴 한복판에서 대자로 누워 당당하게 코를 골며 잔다.", point: 3 }
             ]
         },
-        { 
-            q: "분위기가 무르익고, 첫 스킨십 타이밍이 왔다! 나의 스탠스는?", 
+        {
+            q: "드디어 마음에 쏙 드는 매력적인 이성 동물을 발견했습니다! 당신만이 가진 본능적인 유혹의 기술은 무엇인가요?",
             options: [
-                { text: "부끄러워서 뚝딱거리며 상대가 리드하길 기다린다.", point: 0 },
-                { text: "손을 슬쩍 잡거나 어깨를 기대며 간을 본다.", point: 1 },
-                { text: "눈 돌아서 내가 먼저 리드! 분위기를 확 잡는다.", point: 2 },
-                { text: "'키스해도 돼?' 거침없이 돌직구를 날린다.", point: 3 }
+                { text: "멀리서 지켜보다가 그가 곤란한 상황에 처했을 때 나타나서 듬직하게 도와준다.", point: 2 },
+                { text: "화려한 깃털을 뽐내거나 강력한 울음소리를 내어 내 존재감을 확실히 어필한다.", point: 3 },
+                { text: "수줍게 가장 맛있는 먹이를 물어다 주며 내 진심 어린 마음을 은근하게 표현한다.", point: 1 },
+                { text: "먼저 다가가 장난을 치거나 가벼운 스킨십으로 자연스럽게 분위기를 리드한다.", point: 3 }
             ]
         },
-        { 
-            q: "썸남/썸녀 폰에 '전연인' 이름으로 카톡이 뜬 걸 봤다.", 
+        {
+            q: "사랑하는 짝꿍이 다른 경쟁 동물과 함께 있는 모습을 목격했습니다. 이때 당신의 가슴 속에서 끓어오르는 감정은?",
             options: [
-                { text: "모른 척 넘어가지만 속으로는 오만 가지 소설을 쓴다.", point: 0 },
-                { text: "'오, 아직 연락하나 봐?' 티 나게 꼽을 준다.", point: 1 },
-                { text: "아무렇지 않게 누구냐고 물어보며 진실의 방을 연다.", point: 2 },
-                { text: "'나야 저 사람이야?' 그 자리에서 결판을 낸다.", point: 3 }
+                { text: "당장 뛰어가서 내 짝꿍임을 선포하고 상대 동물을 내쫓아버린다.", point: 3 },
+                { text: "조용히 다가가 연인의 눈을 마주치며 나만 바라보게 만드는 묘한 압박을 준다.", point: 2 },
+                { text: "일단 멀리서 상황을 지켜보고, 나중에 둘만 있을 때 서운함을 조곤조곤 이야기한다.", point: 1 },
+                { text: "상관없어. 내 매력이 더 넘친다면 결국 나에게 돌아올 거라는 근거 있는 자신감을 갖는다.", point: 2 }
             ]
         },
-        { 
-            q: "나에게 '사랑'이란?", 
+        {
+            q: "당신이 생각하는 가장 이상적인 '야생의 연애' 모습은 어떤 쪽인가요?",
             options: [
-                { text: "천천히 스며드는 안정적이고 편안한 휴식.", point: 0 },
-                { text: "적당한 텐션과 밀당이 공존하는 짜릿한 게임.", point: 1 },
-                { text: "한 번 빠지면 내 모든 걸 다 내어주는 헌신.", point: 2 },
-                { text: "오늘만 사는 것처럼 뜨겁게 불태우는 본능!", point: 3 }
+                { text: "한 번 맺은 인연은 죽을 때까지 지키는 숭고하고 지고지순한 순애보.", point: 1 },
+                { text: "각자의 영역을 존중하면서도 필요할 때 서로를 지켜주는 쿨한 동맹 관계.", point: 2 },
+                { text: "매일매일이 새롭고 짜릿한 도파민 폭발! 불꽃 같은 뜨거운 사랑.", point: 3 },
+                { text: "서로의 털을 골라주며 소소한 일상을 공유하는 평화로운 공생 관계.", point: 2 }
             ]
         }
     ];
 
     const results = [
-        { min: 0, max: 2, name: "철벽 폭발 뚝딱이\n나무늘보", img: "🦥", desc: "연애 세포 가뭄 상태! 다가와도 철벽을 치거나 너무 조심스러워서 썸만 타다 증발할 확률이 높아요. 하지만 한 번 마음을 열면 누구보다 편안한 안식처가 되어주는 은근한 진국 스타일입니다." },
-        { min: 3, max: 5, name: "겉바속촉 앙큼\n고양이", img: "🐈", desc: "겉으로는 새침하고 관심 없는 척하지만 속으로는 '날 좀 꼬셔봐' 모드인 당신! 안달 나게 만드는 치명적인 매력이 넘칩니다. 막상 사귀면 앙큼하게 잘 챙겨주는 마성의 매력을 가졌네요." },
-        { min: 6, max: 8, name: "밀당 만렙 여우\n플라밍고", img: "🦩", desc: "화려하게 플러팅은 잘 날리지만 정작 진짜 자기 패는 잘 안 보여주는 연애 고수! 다이나믹한 텐션을 즐기는 편입니다. 너무 밀어내기만 하면 상대가 지칠 수 있으니 가끔은 솔직해지자구요." },
-        { min: 9, max: 11, name: "눈먼 해바라기\n리트리버 댕댕이", img: "🐕", desc: "밀당 그게 뭔데? 한 번 꽂히면 이성 잃고 올인하는 찐 사랑꾼! 간이고 쓸개고 다 빼주는 스타일이라 가끔 상처받을 때도 있지만, 그만큼 투명하고 예쁜 사랑을 할 줄 아는 사람입니다." },
-        { min: 12, max: 14, name: "노빠꾸 직진 불도저\n코뿔소", img: "🦏", desc: "좋으면 들이받고 보는 불도저. 스킨십도 진도도 엄청 빠름! 애매한 관계를 가장 싫어하며 '일단 사귀고 맞춰가자'는 시크하면서도 뜨거운 상남자/상여자 스타일입니다." },
-        { min: 15, max: 15, name: "야성미 폭발 19금\n마라맛 흑표범", img: "🐆", desc: "오늘 밤의 주인공은 나! 야성미 폭발, 19금 로맨스의 주인공급 텐션. 원하는 게 생기면 무조건 쟁취해야 직성이 풀리는 마라맛 연애 고수입니다. 당신의 눈빛 한 방면 다들 쓰러질걸요?" }
+        { min: 0, max: 4, name: "평화를 사랑하는 순둥이\n느림보 나무늘보형", img: "🦥💚", desc: "연애 세포 가뭄 상태! 다가오는 기회도 철벽을 치거나 너무 조심스러워서 썸만 타다 증발할 확률이 높아요. 하지만 한 번 마음을 열면 누구보다 편안한 안식처가 되어주는 은근한 진국 스타일입니다. 당신의 따뜻함에 스며들면 빠져나오기 힘들걸요?" },
+        { min: 5, max: 8, name: "앙큼하고 치명적인 밀당러\n까칠 도도 고양이형", img: "🐈💎", desc: "겉으로는 새침하고 관심 없는 척하지만 속으로는 '날 좀 꼬셔봐' 모드인 당신! 안달 나게 만드는 치명적인 매력이 넘칩니다. 막상 사귀면 앙큼하게 잘 챙겨주는 마성의 소유자군요. 당신의 유혹 기술은 야생에서도 단연 톱클래스!" },
+        { min: 9, max: 12, name: "사랑밖에 모르는 바보\n온리유 리트리버 댕댕이형", img: "🐕💖", desc: "밀당 그게 뭔데? 한 번 꽂히면 이성 잃고 올인하는 찐 사랑꾼! 온 마음을 다해 헌신하는 스타일이라 가끔 상처받을 때도 있지만, 그 투명하고 예쁜 마음이야말로 당신을 가장 빛나게 만드는 무기입니다. 당신의 꼬리 흔들기에 안 넘어올 동물이 없네요." },
+        { min: 13, max: 15, name: "야성미 폭발 불도저\n카리스마 흑표범형", img: "🐆🔥", desc: "오늘 밤의 주인공은 나! 원하는 게 생기면 무조건 쟁취해야 직성이 풀리는 마라맛 연애 고수입니다. 당신의 강렬한 눈빛과 노빠꾸 직진 본능은 상대를 단숨에 제압해버리죠. 당신과 함께하는 연애는 매일매일이 액션 영화처럼 짜릿할 거예요!" }
     ];
 
     function shuffle(array) {
