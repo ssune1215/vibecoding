@@ -25,6 +25,11 @@
     "group": "psy"
   },
   {
+    "title": "🌈 나의 감정 색깔 테스트",
+    "path": "./emotional-color/",
+    "group": "psy"
+  },
+  {
     "title": "🏝️ 무인도 생존 심리 테스트",
     "path": "./balance/",
     "group": "psy"

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나의 감정 색깔 테스트 | 내 내면의 색은 무엇일까?</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="나의 감정 색깔 테스트 | 나의 내면은 어떤 색일까요?" />
+    <meta property="og:description" content="평소 나의 선택으로 알아보는 내 안의 진짜 컬러! 지금 바로 확인해보세요." />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            --main-color: #6366f1; /* 초기값: 인디고 */
+            --bg-light: #f5f3ff;
+            --border-color: #e0e7ff;
+            --btn-hover-shadow: rgba(99, 102, 241, 0.2);
+        }
+    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
+</head>
+<body>
+
+<div class="card">
+    <div id="start-area">
+        <div class="result-image">🎨✨</div>
+        <h1 class="title">나의 감정 색깔<br>심리 테스트</h1>
+        <p class="description">평소 나의 선택으로 알아보는<br>내 안의 숨겨진 컬러를 찾아드려요.</p>
+        <button class="btn-start" onclick="startTest()">내 컬러 찾기 시작 🚀</button>
+    </div>
+
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700;">Question 1 / 5</div>
+        <div class="title" id="question-text" style="font-size: 20px;">질문을 불러오고 있습니다...</div>
+        <div id="options-container"></div>
+    </div>
+
+    <div id="result-area" style="display: none;">
+        <div class="tiny" style="font-weight: 700;">내 안의 진짜 컬러는?</div>
+        <div id="res-image" class="result-image">🌈</div>
+        <div id="res-name" class="result-title">결과 이름</div>
+        
+        <div class="result-box">
+            <span class="result-box-title">🎨 감정 컬러 분석</span>
+            <div id="res-desc" class="result-desc">결과 설명이 여기에 나옵니다.</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                내 컬러 결과 공유하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog">
+                👀 다른 테스트 해보기
+            </a>
+            <button class="btn-retry" onclick="location.reload()">🔄 다시 테스트하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentQ = 0;
+    let score = { R: 0, B: 0, Y: 0, P: 0, G: 0 };
+
+    const questions = [
+        {
+            q: "새로운 사람을 만났을 때, 당신의 첫 반응은?",
+            options: [
+                { text: "먼저 다가가 밝게 인사를 건넨다", type: 'Y' },
+                { text: "상대방이 먼저 말을 걸 때까지 기다린다", type: 'B' },
+                { text: "미소를 지으며 분위기를 살핀다", type: 'G' },
+                { text: "강렬한 첫인상을 남기려 노력한다", type: 'R' }
+            ]
+        },
+        {
+            q: "주말에 갑자기 잡혀있던 약속이 취소되었다면?",
+            options: [
+                { text: "오히려 좋아! 혼자만의 시간을 즐긴다", type: 'P' },
+                { text: "아쉽지만 다른 친구에게 연락해본다", type: 'Y' },
+                { text: "못다 한 일이나 공부를 하며 보낸다", type: 'B' },
+                { text: "심심해서 집안을 뒤집으며 청소한다", type: 'R' }
+            ]
+        },
+        {
+            q: "어려운 과제가 생겼을 때 나의 스타일은?",
+            options: [
+                { text: "일단 몸으로 부딪치며 해결책을 찾는다", type: 'R' },
+                { text: "철저하게 계획을 세워 하나씩 처리한다", type: 'B' },
+                { text: "주변에 도움을 청해 함께 해결한다", type: 'G' },
+                { text: "창의적이고 독특한 방법을 구상한다", type: 'P' }
+            ]
+        },
+        {
+            q: "슬픈 영화를 볼 때 당신의 모습은?",
+            options: [
+                { text: "주인공의 감정에 푹 빠져 펑펑 운다", type: 'G' },
+                { text: "슬프지만 덤덤하게 영화의 연출을 감상한다", type: 'B' },
+                { text: "옆 사람과 감상을 공유하며 이야기한다", type: 'Y' },
+                { text: "나중에 다시 볼 때를 대비해 기억해둔다", type: 'P' }
+            ]
+        },
+        {
+            q: "지금 당신의 가방 속은 어떤 모습인가요?",
+            options: [
+                { text: "필요한 것들만 각 맞춰 정리되어 있다", type: 'B' },
+                { text: "온갖 물건이 뒤섞여 있지만 다 쓸모 있다", type: 'Y' },
+                { text: "영수증과 잡동사니로 가득해 정신없다", type: 'R' },
+                { text: "꼭 필요한 몇 가지만 들어간 심플함", type: 'G' }
+            ]
+        }
+    ];
+
+    const results = {
+        Y: { name: "따스한 햇살 같은\n서니 옐로우 (Sunny Yellow)", img: "💛", color: "#eab308", desc: "당신은 주변을 밝게 만드는 에너자이저입니다! 긍정적이고 사교적인 성격으로 어디서나 환대받는 스타일이군요. 당신의 밝음이 타인에게 위로가 됩니다." },
+        B: { name: "차분하고 견고한\n스카이 블루 (Sky Blue)", img: "💙", color: "#3b82f6", desc: "당신은 지적이고 냉철한 분석가 스타일입니다! 어떤 위기 상황에서도 흔들리지 않는 침착함이 당신의 큰 강점이군요. 신뢰받는 리더의 자질을 갖추고 있습니다." },
+        R: { name: "열정 가득한\n에너제틱 레드 (Energetic Red)", img: "❤️", color: "#ef4444", desc: "당신은 행동력이 넘치는 열정적인 사람입니다! 하고 싶은 일은 거침없이 실행에 옮기는 모습이 인상적이군요. 당신의 열정이 주변 사람들의 가슴도 뛰게 만듭니다." },
+        P: { name: "신비로운 꿈을 꾸는\n미스틱 퍼플 (Mystic Purple)", img: "💜", color: "#a855f7", desc: "당신은 독창적이고 섬세한 감각을 지닌 예술가 스타일입니다! 남들과는 다른 당신만의 세계관이 매력적이군요. 당신의 상상력이 세상을 더 아름답게 바꿀 수 있습니다." },
+        G: { name: "평온하고 듬직한\n에코 그린 (Echo Green)", img: "💚", color: "#10b981", desc: "당신은 조화를 중요시하는 평화주의자입니다! 타인의 이야기를 잘 들어주며 안정감을 주는 듬직한 사람이군요. 당신과 함께라면 누구든 편안해질 수 있습니다." }
+    };
+
+    function startTest() {
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let percent = (currentQ / questions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        document.getElementById('q-number').innerText = `Question ${currentQ + 1} / ${questions.length}`;
+        let currentData = questions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
+        let container = document.getElementById('options-container');
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.type);
+            container.appendChild(btn);
+        });
+    }
+
+    function nextQuestion(type) {
+        score[type]++;
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        
+        // 가장 많이 나온 타입 선정
+        let finalType = Object.keys(score).reduce((a, b) => score[a] >= score[b] ? a : b);
+        let resultData = results[finalType];
+
+        document.getElementById('res-image').innerText = resultData.img;
+        document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
+        document.getElementById('res-desc').innerHTML = resultData.desc;
+        
+        // 결과에 따라 테마 색상 동적 변경 (동적인 재미 요소)
+        document.documentElement.style.setProperty('--main-color', resultData.color);
+    }
+</script>
+</body>
+</html>
