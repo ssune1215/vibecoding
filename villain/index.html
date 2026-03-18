@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 안에 숨겨진 빌런 테스트 | 당신의 진짜 본능은?</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="당신의 진짜 빌런 등급은? | 내 안의 빌런 테스트" />
+    <meta property="og:description" content="세상을 뒤집어놓을 당신의 숨겨진 본능! 만약 당신이 영화 속 악당이라면?" />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            --main-color: #4b5563; /* 다크 그레이 */
+            --bg-light: #f3f4f6;
+            --border-color: #e5e7eb;
+            --btn-hover-shadow: rgba(75, 85, 99, 0.2);
+        }
+        .result-box-title { color: #dc2626; font-weight: 900; }
+        .quote { font-style: italic; color: #6b7280; font-size: 14px; margin-top: 10px; border-left: 3px solid #dc2626; padding-left: 10px; }
+    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
+</head>
+<body>
+
+<div class="card">
+    <div id="start-area">
+        <div class="result-image">👿🗡️</div>
+        <h1 class="title">내 안에 숨겨진<br>빌런(Villain) 테스트</h1>
+        <p class="description">당신이 평소 눌러왔던 진짜 본성...<br>만약 당신이 영화 속 악당이라면 어떨까요?</p>
+        <button class="btn-start" onclick="startTest()">악당 본능 깨우기 🚀</button>
+    </div>
+
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700;">Question 1 / 5</div>
+        <div class="title" id="question-text" style="font-size: 18px; line-height: 1.5; margin-bottom: 25px;">상황 로딩 중...</div>
+        <div id="options-container"></div>
+    </div>
+
+    <div id="result-area" style="display: none;">
+        <div class="tiny" style="font-weight: 700; color: #dc2626;">🔍 위험 등급 분석 완료</div>
+        <div id="res-image" class="result-image">🔥</div>
+        <div id="res-name" class="result-title">빌런 유형 이름</div>
+        
+        <div class="result-box">
+            <span class="result-box-title">💀 위험한 본능 리포트</span>
+            <div id="res-desc" class="result-desc">결과 설명이 여기에 나옵니다.</div>
+            <div id="res-quote" class="quote">"당신의 가좌적 대사"</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                내 악당 등급 공유하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog">
+                👀 다른 테스트 구경가기
+            </a>
+            <button class="btn-retry" onclick="location.reload()">🔄 다시 테스트하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentQ = 0;
+    let score = { A: 0, B: 0, C: 0, D: 0 };
+
+    const questions = [
+        {
+            q: "평화로운 주말, 카페에서 쉬고 있는데 옆자리 사람이 전화로 아주 크고 무례하게 떠들기 시작합니다. 당신의 첫 번째 머릿속 생각은?",
+            options: [
+                { text: "아, 소음 공해... 사장님께 조용히 말씀드려서 해결하는 게 좋겠어.", type: 'D' },
+                { text: "저 사람의 무례함을 아주 창의적이고 우아하게 응징해버리고 싶다.", type: 'C' },
+                { text: "무슨 저속한 이야기를 저렇게 크게 하는 거지? 나도 모르게 내용을 관찰하게 된다.", type: 'A' },
+                { text: "카페 테이블을 엎어버리고 싶은 충동을 꾹 누르고 째려본다.", type: 'B' }
+            ]
+        },
+        {
+            q: "당신은 영화 속 주인공이 되어 악당과 마주쳤습니다. 그가 '나와 손을 잡으면 세상을 지배하게 해주겠다'고 제안한다면?",
+            options: [
+                { text: "제안이 꽤 매력적인데? 일단 수락하고 뒤에서 통제권을 뺏을 계획을 짠다.", type: 'A' } ,
+                { text: "지배 같은 건 귀찮아. 그냥 세상을 다 부숴버리고 싶은 마음뿐이야.", type: 'B' },
+                { text: "우아하지 못한 제안이군. 난 지배보다 사람들의 마음을 훔치는 게 더 좋아.", type: 'C' },
+                { text: "정당하지 못한 지배는 반드시 무너지는 법. 효율적인 원칙이 있는지 따져본다.", type: 'D' }
+            ]
+        },
+        {
+            q: "여행 중 예약한 숙소가 사진과 엉망입니다. 친구들이 당황할 때 당신이 취할 행동은?",
+            options: [
+                { text: "이 상황에서 가장 합리적으로 해결할 수 있는 치밀한 복수 전략을 세운다.", type: 'A' },
+                { text: "사장 나오라고 그래! 오늘 여기서 끝장을 보고 환불 받아낸다.", type: 'B' },
+                { text: "엉망인 곳에서도 즐길 거리를 찾지만, 나중에 아주 고상한 언어로 리뷰 테러를 한다.", type: 'C' },
+                { text: "이미 벌어진 일은 어쩔 수 없지. 시스템적인 결함을 분석해서 다시는 이런 일 없게 한다.", type: 'D' }
+            ]
+        },
+        {
+            q: "누구에게도 들키지 않고 나쁜 짓을 딱 하나만 할 수 있는 절대적인 기회가 생긴다면?",
+            options: [
+                { text: "세상의 시끄러운 소리를 다 없애버리고 나만의 고요한 왕국을 만든다.", type: 'D' },
+                { text: "평소 얄미웠던 사람의 모든 비밀을 해킹해서 익명으로 세상에 공개한다.", type: 'A' },
+                { text: "은행 금고를 털어 가장 화려한 명품으로 내 몸을 치장하고 사라진다.", type: 'C' },
+                { text: "그냥 눈에 보이는 걸 다 폭파해보고 싶은 원초적 욕구가 든다.", type: 'B' }
+            ]
+        },
+        {
+            q: "드디어 당신의 정체가 만천하에 밝혀지는 순간! 사람들이 경악하며 당신을 볼 때 내뱉을 마지막 대사는?",
+            options: [
+                { text: "\"후후... 이제야 알겠나? 이 모든 건 처음부터 내 계획대로였다.\"", type: 'A' },
+                { text: "\"어차피 다 엉망이야! 그냥 다 같이 무너지는 걸 보는 게 더 재밌지 않겠어?\"", type: 'B' },
+                { text: "\"내가 왜 이런 짓을 했냐고? 그저 내 우아한 취미 생활이었을 뿐인데...\"", type: 'C' },
+                { text: "\"감정적인 동요는 삼가라구. 이건 세상의 질서를 바로잡기 위한 필요악이었으니까.\"", type: 'D' }
+            ]
+        }
+    ];
+
+    const results = {
+        A: { 
+            name: "치밀하고 냉혹한\n전략가형 흑막 (Mastermind)", 
+            img: "👁️‍🗨️", color: "#1e293b", quote: "당신의 모든 발버둥은 내 계획의 일부였을 뿐이다.",
+            desc: "당신은 드러나지 않게 뒤에서 모든 판을 짜는 천재적인 지략가입니다. 한 걸음 뒤에서 미소 지으며 모두를 조종하는 당신의 치밀함과 냉정함은 누구도 따라올 수 없죠. 가장 위험한 악당 등급 S급입니다!" 
+        },
+        B: { 
+            name: "통제 불능의 파괴자\n고강도 빌런 (Destroyer)", 
+            img: "💥", color: "#b91c1c", quote: "규칙? 질서? 그런 지루한 건 다 불태워버려야 제맛이지!",
+            desc: "당신은 원초적인 분노와 에너지가 넘치는 폭풍 같은 악당입니다. 예측할 수 없는 즐거움과 혼돈 그 자체를 사랑하는 당신은 통제 불가능한 에너지를 가졌군요. 마주치는 순간 도망가는 게 상책입니다." 
+        },
+        C: { 
+            name: "우아하고 치명적인\n괴도형 매력남녀 (Phantom)", 
+            img: "🎭", color: "#7c3aed", quote: "나쁜 짓도 우아해야 하는 법. 당신의 마음을 훔친 건 죄가 아니지.",
+            desc: "당신은 무례함은 절대 참지 않는 고상하고 매력적인 악당입니다. 가장 세련된 방식으로 사람들을 현혹하고 이용하는 당신은 악당이라기엔 너무나 치명적인 매력을 가졌군요. 당신의 유혹에 빠지면 빠져나올 수 없습니다." 
+        },
+        D: { 
+            name: "냉철한 질서의 수호자\n고지능 독재자 (Dictator)", 
+            img: "📏", color: "#065f46", quote: "감상은 필요 없다. 오직 결과와 효율만이 세상을 구할 뿐.",
+            desc: "당신은 감정보다 원칙을 우선시하는 냉혈한 질서주의자입니다. 자신의 목표를 위해서라면 소수의 희생쯤은 필요악이라고 생각하는 무서운 소신을 가졌군요. 당신의 논리 정연한 압박은 상대를 숨 막히게 할 것입니다." 
+        }
+    };
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let percent = (currentQ / questions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        document.getElementById('q-number').innerText = `Question ${currentQ + 1} / ${questions.length}`;
+        let currentData = questions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
+        let container = document.getElementById('options-container');
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.type);
+            container.appendChild(btn);
+        });
+    }
+
+    function nextQuestion(type) {
+        score[type]++;
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        
+        // 최빈값 계산
+        let finalType = Object.keys(score).reduce((a, b) => score[a] >= score[b] ? a : b);
+        let resultData = results[finalType];
+
+        document.getElementById('res-image').innerText = resultData.img;
+        document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
+        document.getElementById('res-desc').innerHTML = resultData.desc;
+        document.getElementById('res-quote').innerText = resultData.quote;
+        
+        // 테마 색상 동적 변경
+        document.documentElement.style.setProperty('--main-color', resultData.color);
+    }
+</script>
+</body>
+</html>

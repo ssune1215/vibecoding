@@ -10,14 +10,9 @@
     "group": "love"
   },
   {
-    "title": "💞 Love Other",
-    "path": "./loveother/",
-    "group": "love"
-  },
-  {
-    "title": "💍 Lover Test",
-    "path": "./lovertest/",
-    "group": "love"
+    "title": "🌈 나의 감정 색깔 테스트",
+    "path": "./emotional-color/",
+    "group": "psy"
   },
   {
     "title": "🎭 겉과 속 (본심 테스트)",
@@ -25,8 +20,8 @@
     "group": "psy"
   },
   {
-    "title": "🌈 나의 감정 색깔 테스트",
-    "path": "./emotional-color/",
+    "title": "👿 내 안의 빌런 테스트",
+    "path": "./villain/",
     "group": "psy"
   },
   {
@@ -37,6 +32,11 @@
   {
     "title": "🦊 연애 동물 테스트",
     "path": "./loveanimal/",
+    "group": "love"
+  },
+  {
+    "title": "💍 Lover Test",
+    "path": "./lovertest/",
     "group": "love"
   },
   {
