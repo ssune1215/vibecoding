@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+
+    <!-- Open Graph (Kakao preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="loveother 테스트" />
+    <meta property="og:description" content="loveother 바이브코딩 테스트" />
+    <meta property="og:url" content="/loveother/" />
+    <meta property="og:image" content="/assets/thumb-share-1200x630.jpg?v=3" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter (optional, helps some previews) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="loveother 테스트" />
+    <meta name="twitter:description" content="loveother 바이브코딩 테스트" />
+    <meta name="twitter:image" content="/assets/thumb-share-1200x630.jpg?v=3" />
+    
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>연애 테스트 - 나의 상대 유형은?</title>
+
+  <!-- OG(스크랩/공유용) -->
+
+
+
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"></script>
+
+<link rel="stylesheet" href="../assets/vibe-theme.css">
+<style>
+  :root {
+    --main-color: #6366f1; /* 인디고 */
+    --bg-light: #eef2ff;
+    --card-bg: #ffffff;
+    --text-dark: #334155;
+    --border-color: #e0e7ff;
+    --btn-hover-shadow: rgba(99, 102, 241, 0.3);
+  }
+  html, body { min-height: 100vh; margin: 0; }
+  /* loveother mapping */
+  .shell { background: var(--card-bg); width: 100%; max-width: 450px; border-radius: 28px; box-shadow: 0 15px 35px var(--btn-hover-shadow); border: 1px solid var(--border-color); display: flex; flex-direction: column; overflow: hidden; min-height: 600px; }
+  .header { padding: 35px 20px 20px; text-align: center; border-bottom: 1px dashed var(--border-color); }
+  .badge { color: var(--main-color); background: var(--bg-light); padding: 6px 14px; border-radius: 20px; font-weight: 800; font-size: 14px; display: inline-block; margin-bottom: 15px; }
+  h1 { color: var(--main-color); font-size: 26px; font-weight: 800; margin: 0 0 10px; line-height: 1.4; word-break: keep-all; }
+  .sub { font-size: 15px; color: #64748b; line-height: 1.6; margin: 0; word-break: keep-all; }
+  .content { padding: 25px 20px; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+  .progress { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 20px; }
+  .pill { font-size: 13px; font-weight: 800; color: #94a3b8; }
+  .bar { flex: 1; height: 8px; border-radius: 10px; background: var(--border-color); overflow: hidden; }
+  .bar > div { height: 100%; background: var(--main-color); transition: width 0.3s ease; }
+  .q { font-size: 20px; font-weight: 800; color: var(--main-color); margin-bottom: 20px; line-height: 1.4; text-align: center; word-break: keep-all; }
+  
+  .choice { width: 100%; padding: 18px; margin-bottom: 12px; border: 1px solid var(--border-color); border-radius: 16px; background: #ffffff; cursor: pointer; text-align: left; transition: 0.2s; box-shadow: 0 2px 5px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: center; }
+  .choice:hover { background: var(--main-color); border-color: var(--main-color); transform: translateY(-2px); box-shadow: 0 4px 15px var(--btn-hover-shadow); }
+  .choice .t { font-size: 15px; font-weight: 800; color: #475569; margin-bottom: 6px; }
+  .choice:hover .t { color: white; }
+  .choice .s { font-size: 13px; color: #94a3b8; }
+  .choice:hover .s { color: rgba(255,255,255,0.8); }
+
+  .btnStack { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+  .btn { width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 800; font-size: 16px; cursor: pointer; transition: 0.2s; }
+  .btnPrimary { background: var(--main-color); color: white; box-shadow: 0 6px 20px var(--btn-hover-shadow); }
+  .btnPrimary:hover { transform: translateY(-2px); }
+  .btnKakao { background: #FEE500; color: #3A1D1D; }
+  .btnKakao:hover { background: #e5cd00; transform: translateY(-1px); }
+  .btnBlog { background: #3b82f6; color: white; }
+  .btnBlog:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
+  .btnRetry { background: #ef4444; color: white; }
+  .btnRetry:hover { background: #dc2626; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3); }
+
+  .resultEmoji { font-size: 65px; text-align: center; margin-bottom: 15px; }
+  .resultTitle { font-size: 24px; font-weight: 800; color: var(--main-color); text-align: center; margin-bottom: 15px; word-break: keep-all; }
+  .resultDesc { font-size: 16px; color: #475569; line-height: 1.6; text-align: center; word-break: keep-all; background: var(--bg-light); border-radius: 16px; padding: 20px; border: 1px solid var(--border-color); }
+  .note { margin-top: 20px; font-size: 13px; color: #94a3b8; text-align: center; }
+
+  #confetti { position: fixed; inset: 0; pointer-events: none; display: none; z-index: 9999; }
+</style>
+</head>
+
+<body>
+<div class="pageCenter">
+<canvas id="confetti"></canvas>
+
+<div class="card">
+    <!-- 시작 화면 -->
+    <div id="app">
+        <div class="result-image">💘</div>
+        <h1 class="title">나의 상대 유형은?</h1>
+        <p class="description">내 연애 리듬을 가볍게 체크해볼까요?<br>첫 느낌 그대로 선택해보세요!</p>
+        <button class="btn-start" id="btnStart">테스트 시작 🚀</button>
+        <div class="tiny" style="margin-top:20px; color:#94a3b8; font-size:13px;">• 결과는 재미로만! 과몰입 주의</div>
+    </div>
+</div>
+
+<script>
+/* ✅ 블로그 주소 변경 반영 */
+const BLOG_URL="https://blog.naver.com/forgiven_77/224195220807";
+
+const TYPES={
+  bear:{emoji:"🐻",title:"미련 곰탱이 1호",desc:"헤어진 지가 언젠데 아직도 전남친/전여친 인스타 염탐 중? 추억에 잠겨 혼자 눈물 찔끔 짜는 감성봇입니다. 새로운 사랑이 찾아와도 '그 사람은 이랬는데..' 하며 비교하다 기회 다 놓치는 타입!"},
+  cool:{emoji:"😎",title:"쿨병 말기 환자",desc:"'난 괜찮아'를 입에 달고 살지만 실상은 속박하고 싶은 마음을 억누르는 중. 겉으로는 세상 쿨한 척 다 하지만, 밤마다 슬픈 노래 들으면서 이불킥 하는 스타일입니다."},
+  transfer:{emoji:"🏎️",title:"환승 이별 마스터",desc:"이별은 또 다른 사랑의 시작? 슬퍼할 시간에 예쁜/멋진 사람 한 명이라도 더 찾는 실속파입니다. 회복 탄력성이 어마어마해서 주변 사람들을 당황하게 만드는 연애 능력자!"},
+  pro:{emoji:"🎭",title:"짝사랑 프로 선수",desc:"상대방은 관심도 없는데 혼자 손자 이름까지 다 지어놓는 망상 대잔치! 고백했다가 관계 깨질까 봐 전전긍긍하며 '친구'라는 이름 뒤에 숨어 만족하는 자발적 고문 전문가입니다."}
+};
+
+const QUESTIONS=[
+  { q:"헤어진 연인의 SNS에 새로운 게시물이 올라왔다! 나의 행동은?",
+    choices:[
+      {t:"아이디 차단해서 안 봄. 하지만 부계정으로 몰래 본다.", s:"미련이 뚝뚝..", p:{bear:2}},
+      {t:"전혀 관심 없음. 내 인생 살기 바쁨.", s:"이미 마음 정리 끝!", p:{transfer:2}},
+      {t:"'잘 사네?' 비웃어주고 바로 내 잘나온 사진 업로드.", s:"지기 싫어하는 타입.", p:{cool:2}},
+      {t:"옆에 있는 사람이 누구인지 지구 끝까지 추적한다.", s:"수사관 빙의.", p:{pro:1, bear:1}},
+    ]
+  },
+  { q:"술기운에 짝사랑 상대(또는 전애인)에게 전화가 걸렸다! 내 반응은?",
+    choices:[
+      {t:"'어.. 미안해 잘못 걸었어' 하고 0.1초 만에 끊고 이불킥.", s:"쪽팔림은 나의 몫.", p:{bear:2}},
+      {t:"받으면 '자니? 보고 싶다'라고 일단 뱉고 본다.", s:"에라 모르겠다 직진!", p:{pro:2}},
+      {t:"그냥 끊고 '아무 일 없었다'는 듯 다음 날 연락 씹음.", s:"기억 상실증 코스프레.", p:{cool:2}},
+      {t:"이미 다른 사람이랑 술 마시는 중이라 전화 온 줄도 모름.", s:"바쁘다 바빠 현대사회.", p:{transfer:2}},
+    ]
+  },
+  { q:"짝사랑하는 사람에게 고백하기 딱 좋은 타이밍! 나의 전략은?",
+    choices:[
+      {t:"술의 힘을 빌려 '나 너 좋아하냐?' 은근슬쩍 플러팅.", s:"취중진담 스킬.", p:{cool:2}},
+      {t:"손편지나 진심 어린 카톡 장문으로 마음을 전한다.", s:"정공법 로맨티스트.", p:{bear:2}},
+      {t:"부담스럽지 않게 '우리 오늘부터 1일?' 돌직구를 날린다.", s:"노빠꾸 불도저.", p:{transfer:2}},
+      {t:"까질까 봐 겁나서 그냥 평생 친구로 남기로 한다.", s:"자발적 호구 모드.", p:{pro:2}},
+    ]
+  },
+  { q:"내가 생각하는 '환승 이별'에 대한 견해는?",
+    choices:[
+      {t:"절대 용납 못함. 최소한의 예의는 지켜야지!", s:"도덕책 그 자체.", p:{bear:2}},
+      {t:"마음 떠나면 끝이지. 언제까지 기다려 줘야 해?", s:"현실주의자.", p:{transfer:2}},
+      {t:"환승 당하면 지구 끝까지 쫓아가서 복수한다.", s:"복수혈전 주인공.", p:{pro:1, bear:1}},
+      {t:"나도 환승할 사람 있으면 당차게 갈아탄다.", s:"실속 제일주의.", p:{cool:2}},
+    ]
+  },
+  { q:"이별 후 가장 빨리 극복하는 나만의 방법은?",
+    choices:[
+      {t:"당장 헌팅포차나 클럽 가서 도파민 샤워를 한다.", s:"외로움은 사람으로.", p:{transfer:2}},
+      {t:"운동에 미치거나 일에 몰두해서 몸을 혹사시킨다.", s:"갓생 살기 프로젝트.", p:{cool:2}},
+      {t:"슬픈 영화 보면서 일주일간 펑펑 운다.", s:"감성 충전기.", p:{bear:2}},
+      {t:"혹시 연락 올까 봐 폰만 붙잡고 기다린다.", s:"기다림의 미학.", p:{pro:2}},
+    ]
+  },
+];
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+let stage="start";
+let quiz=[];
+let idx=0;
+let score={puppy:0,cat:0,bear:0,fox:0,butterfly:0};
+
+const app=document.getElementById("app");
+
+function initQuiz(){
+  quiz = shuffle(QUESTIONS).map(q => ({...q, choices: shuffle(q.choices)}));
+  idx=0;
+  score={puppy:0,cat:0,bear:0,fox:0,butterfly:0};
+}
+
+function reset(){
+  stage="start";
+  initQuiz();
+  stopConfetti();
+  renderStart();
+}
+
+function renderStart(){
+  app.innerHTML = `
+    <div class="startView">
+      <div class="center">
+        <div id="shareTitle" style="display:none;"></div>
+        <div id="shareDesc" style="display:none;"></div>
+        <div class="q" style="margin-top:0;">내 연애 리듬을 가볍게 체크해볼까요?</div>
+        <p class="sub" style="margin:0;">가볍게 해보기</p>
+        <div class="btnStack">
+          <button class="btn btnPrimary" id="btnStart">테스트 시작</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById("btnStart").addEventListener("click", ()=>{
+    stage="quiz";
+    renderQuiz();
+  });
+}
+
+function renderQuiz(){
+  const total=quiz.length;
+  const progress=Math.round((idx/total)*100);
+  const q=quiz[idx];
+
+  app.innerHTML = `
+    <div class="quizView">
+      <div class="progress">
+        <span class="pill">Q ${idx+1}/${total}</span>
+        <div class="bar"><div style="width:${progress}%"></div></div>
+      </div>
+
+      <div class="q">${q.q}</div>
+
+      ${q.choices.map((c,i)=>`
+        <button class="choice" data-i="${i}">
+          <div class="t">${c.t}</div>
+          <div class="s">${c.s}</div>
+        </button>
+      `).join("")}
+    </div>
+  `;
+  [...app.querySelectorAll(".choice")].forEach(btn=>{
+    btn.addEventListener("click", ()=> pick(Number(btn.dataset.i)));
+  });
+}
+
+function pick(i){
+  const c=quiz[idx].choices[i];
+  for(const k in c.p){ score[k]=(score[k]||0)+c.p[k]; }
+  idx++;
+  if(idx>=quiz.length){ stage="result"; renderResult(); }
+  else renderQuiz();
+}
+
+function topType(){
+  let best="puppy", bestV=-1e9;
+  for(const k of Object.keys(score)){
+    if(score[k]>bestV){ bestV=score[k]; best=k; }
+  }
+  const tied=Object.keys(score).filter(k=>score[k]===bestV);
+  return tied.length>1 ? tied[Math.floor(Math.random()*tied.length)] : best;
+}
+
+function renderResult(){
+  const r=TYPES[topType()];
+  app.innerHTML = `
+    <div class="resultView">
+      <div class="center">
+        <div id="shareTitle" style="display:none;"></div>
+        <div id="shareDesc" style="display:none;"></div>
+        <div class="resultEmoji">${r.emoji}</div>
+        <div class="resultTitle">${r.title}</div>
+        <p class="resultDesc">${r.desc}</p>
+
+        <p class="note">친구랑 같이 해보고 결과를 비교해보세요 🙂</p>
+
+        <div class="btnStack">
+          <button class="btn btnKakao" id="kakaoShareBtn">💬 카톡 공유</button>
+          <button class="btn btnBlog" id="btnBlog">🔵 다른 테스트</button>
+          <button class="btn btnRetry" id="btnRetry">🔁 다시 하기</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  startConfettiLite();
+
+  // 공유 카드용 텍스트(통일)
+  const st=document.getElementById('shareTitle');
+  const sd=document.getElementById('shareDesc');
+  if(st) st.textContent='연애 테스트 - 나의 상대 유형은?';
+  if(sd) sd.textContent=`${r.emoji} ${r.title} — ${r.desc}`;
+
+  document.getElementById("btnRetry").addEventListener("click", reset);
+  document.getElementById("btnBlog").addEventListener("click", ()=> window.open(BLOG_URL, "_blank"));
+  // kakaoShareBtn is handled by ../assets/kakao-share.js
+}
+
+function shareKakao(){
+  // 공통 공유 스크립트 사용
+}
+
+/* 가벼운 컨페티 */
+const canvas=document.getElementById("confetti");
+const ctx=canvas.getContext("2d");
+let confTimer=null;
+
+function startConfettiLite(){
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  canvas.style.display="block";
+  canvas.width = Math.floor(window.innerWidth * dpr);
+  canvas.height = Math.floor(window.innerHeight * dpr);
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  const pieces=[];
+  const COUNT=55;
+  for(let i=0;i<COUNT;i++){
+    pieces.push({
+      x:Math.random()*window.innerWidth,
+      y:-10-Math.random()*180,
+      vx:-0.8+Math.random()*1.6,
+      vy:2+Math.random()*3,
+      s:4+Math.random()*4,
+      life:0
+    });
+  }
+
+  let frame=0;
+  clearInterval(confTimer);
+  confTimer=setInterval(()=>{
+    frame++;
+    ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+    for(const p of pieces){
+      p.x+=p.vx; p.y+=p.vy; p.life++;
+      ctx.globalAlpha=Math.max(0, 1-(p.life/130));
+      const hue=(p.life*2+p.x)%360;
+      ctx.fillStyle=`hsl(${hue},40%,78%)`;
+      ctx.fillRect(p.x,p.y,p.s,p.s);
+    }
+    if(frame>130) stopConfetti();
+  },16);
+}
+function stopConfetti(){
+  clearInterval(confTimer); confTimer=null;
+  ctx.clearRect(0,0,window.innerWidth, window.innerHeight);
+  canvas.style.display="none";
+}
+
+reset();
+</script>
+  <script src="../assets/kakao-share.js"></script>
+</div>
+</body>
+</html>

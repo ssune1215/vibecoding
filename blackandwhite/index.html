@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>바이브 코딩 | 겉과 속이 다른 나의 진짜 심리</title>
+  
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="겉과 속이 다른 나의 진짜 심리" />
+  <meta property="og:description" content="사람들 앞에서의 나와 혼자 있을 때의 나, 얼마나 다를까요? 당신의 숨겨진 본심을 스캔합니다." />
+  <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/blackandwhite/" />
+  <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg" />
+
+  <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/vibe-theme.css">
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+  
+  <style>
+    :root {
+      --main-color: #334155; /* 슬레이트 그레이 */
+      --bg-light: #f8fafc;
+      --card-bg: #ffffff;
+      --text-dark: #1e293b;
+      --border-color: #e2e8f0;
+      --btn-hover-shadow: rgba(51, 65, 85, 0.3);
+    }
+  </style>
+</head>
+
+<body>
+<div class="card">
+    <!-- 시작 화면 -->
+    <div id="start-area">
+        <div style="font-size: 50px; margin-bottom: 20px;">🎭</div>
+        <div class="title">겉과 속이 다른<br>나의 진짜 심리 테스트</div>
+        <p class="description">사람들 앞에서의 '나'와 혼자 있을 때의 '나',<br>얼마나 다를까요? 당신의 숨겨진 본심을 스캔합니다.</p>
+        <button class="btn-start" onclick="startTest()">본심 스캔 시작 🔍</button>
+    </div>
+
+    <!-- 질문 영역 -->
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <div id="q-number" style="color: #94a3b8; font-size: 14px; font-weight: 700; margin-bottom: 10px;">Question 1 / 5</div>
+        <div class="title" id="question-text" style="font-size: 20px;">질문 불러오는 중...</div>
+        <div id="options-container"></div>
+    </div>
+
+    <!-- 결과 영역 -->
+    <div id="result-area" style="display: none;">
+        <div style="color: #94a3b8; font-size: 14px; font-weight: 700;">본심 스캐닝 완료</div>
+        <div class="result-image">🌓</div>
+        <div id="res-type" class="result-title">결과 유형</div>
+        
+        <div class="result-box">
+            <span class="result-box-title" id="res-badge">결과 배지</span>
+            <div id="res-desc" class="result-desc">결과 설명이 여기에 나옵니다.</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao" onclick="shareKakao()">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                내 본심 결과 친구에게 보내기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224195220807" target="_blank" class="btn-blog">
+                👀 다른 재미있는 테스트 구경가기
+            </a>
+            <button class="btn-retry" onclick="location.reload()">다시 테스트하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const KAKAO_KEY = "b30b6d088f5b3551adc2890111d071fc";
+    const SITE_URL = window.location.href;
+
+    if (!Kakao.isInitialized()) Kakao.init(KAKAO_KEY);
+
+    const questions = [
+        {
+            q: "친구들이 모인 자리에서 분위기가 갑자기 썰렁해졌다. 나의 속마음은?",
+            options: [
+                { id: 'F', text: "내가 뭐라도 해서 띄워야 하나? (안절부절)" },
+                { id: 'T', text: "이 상황 개웃기네 ㅋㅋ 관찰 모드 돌입" },
+                { id: 'T', text: "누가 똥 쌌냐? 왜 이렇게 조용해?" },
+                { id: 'F', text: "집에 가고 싶다. 침대가 그립다." }
+            ]
+        },
+        {
+            q: "누군가 내 의견에 대놓고 트집을 잡으며 비난할 때, 나의 첫 표정은?",
+            options: [
+                { id: 'F', text: "일단 억지 미소 지으며 상황을 모면한다." },
+                { id: 'T', text: "논리로 발라버리기 위해 미간을 살짝 찌푸린다." },
+                { id: 'F', text: "동공지진... 머릿속이 하얘진다." },
+                { id: 'T', text: "어이없어서 헛웃음이 나온다." }
+            ]
+        },
+        {
+            q: "정말 가기 싫은 모임에 억지로 참석했다. 나의 행동은?",
+            options: [
+                { id: 'F', text: "세상 즐거운 척 분위기 메이커 노릇을 한다." },
+                { id: 'T', text: "구석에서 조용히 핸드폰만 보며 기회를 노린다." },
+                { id: 'F', text: "영혼 없는 리액션 자판기가 되어준다." },
+                { id: 'T', text: "솔직하게 피곤한 기색을 적당히 비춘다." }
+            ]
+        },
+        {
+            q: "친한 친구가 내가 잘못한 일을 진지하게 조언해줄 때 속마음은?",
+            options: [
+                { id: 'F', text: "'맞아, 날 위해 하는 말이지' 감동받고 반성한다." },
+                { id: 'T', text: "'근데 니는 잘하냐?' 라는 생각이 0.1초 든다." },
+                { id: 'F', text: "미안해서 고개를 못 들고 자책한다." },
+                { id: 'T', text: "팩트 체크 들어간다. 틀린 말 있으면 반박 준비." }
+            ]
+        },
+        {
+            q: "큰 마음 먹고 산 옷을 입었는데, 반응이 별로라면?",
+            options: [
+                { id: 'F', text: "겉으론 웃지만 하루 종일 자존감이 낮아진다." },
+                { id: 'T', text: "너네가 유행을 모르는 거라며 속으로 무시한다." },
+                { id: 'F', text: "그럴 줄 알았다며 옷장에 박아둘 생각을 한다." },
+                { id: 'T', text: "그냥 '아 그래?' 하고 바로 잊어버린다." }
+            ]
+        }
+    ];
+
+    const results = {
+        TT: {
+            badge: "T식 쿨내 + T식 본심",
+            title: "유리 멘탈로 무장한<br>팩트 폭격기",
+            desc: "겉보기엔 강철 멘탈 같지만, 사실 논리로 스스로를 보호하고 있는 타입입니다. 남의 시선 따위 신경 안 쓰는 척하지만, 사실 효율적이지 못한 상황을 견디지 못하는 것뿐이죠. 당신의 본심은 누구보다 냉철한 분석가입니다."
+        },
+        FF: {
+            badge: "F식 공감 + F식 본심",
+            title: "감성 과부하 걸린<br>파스텔톤 솜사탕 영혼",
+            desc: "겉도 따뜻하고 속도 따뜻해서 탈입니다. 남의 감정을 너무 잘 캐치해서 자기 감정은 뒷전일 때가 많네요. 본심은 누구보다 순수하고 여리기에, 가끔은 스스로를 위한 방어기제가 필요해 보입니다."
+        },
+        TF: {
+            badge: "T식 차가움 + F식 따뜻함",
+            title: "겉은 시크한 얼음성<br>속은 보글보글 온돌방",
+            desc: "첫인상은 차갑고 무뚝뚝해 보이지만, 친해지면 이보다 더 따뜻할 수 없습니다. 속정이 깊어서 겉으로 내뱉는 냉소적인 말들이 사실은 수줍음의 표현일 때가 많이죠. 반전 매력의 소유자!"
+        },
+        FT: {
+            badge: "F식 미소 + T식 냉철함",
+            title: "웃으며 뼈 때리는<br>고단수 전략가",
+            desc: "상냥한 미소 뒤에 날카로운 칼(?)을 숨기고 있는 타입입니다. 사회생활 만렙! 주위 사람들과는 잘 지내지만 머릿속으로는 상황을 아주 객관적으로 판단하고 있죠. 무서운 사람... 하지만 매력적입니다."
+        }
+    };
+
+    // Kakao share (hidden createDefaultButton)
+    function initKakao(){
+      try{
+        if(window.Kakao && !window.Kakao.isInitialized()){
+          window.Kakao.init(KAKAO_JS_KEY);
+        }
+        return !!(window.Kakao && window.Kakao.isInitialized());
+      }catch(e){
+        return false;
+      }
+    }
+    const kakaoReady = initKakao();
+
+    function prepareKakaoShare(resultTitle){
+      const shareUrl = SITE_URL;
+      const hiddenBtn = document.getElementById("kakaoHiddenBtn");
+
+      if(kakaoReady && window.Kakao){
+        hiddenBtn.innerHTML = "";
+        window.Kakao.Share.createDefaultButton({
+          container: "#kakaoHiddenBtn",
+          objectType: "feed",
+          content: {
+            title: "나는 겉과 속이 얼마나 다를까?",
+            description: "내 결과: " + resultTitle,
+            imageUrl: OG_IMAGE_URL,
+            link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
+          },
+          buttons: [
+            { title: "나도 해보기", link: { mobileWebUrl: shareUrl, webUrl: shareUrl } },
+            { title: "다른 테스트 구경하기", link: { mobileWebUrl: "https://blog.naver.com/forgiven_77/224195220807", webUrl: "https://blog.naver.com/forgiven_77/224195220807" } }
+          ]
+        });
+        kakaoShareBtn.onclick = () => hiddenBtn.click();
+      }else{
+        kakaoShareBtn.onclick = () => {
+          copyToClipboard(shareUrl);
+          alert("카카오 공유 설정이 완전하지 않아 링크를 복사했습니다. 카톡에 붙여넣어 공유해 주세요.");
+        };
+      }
+    }
+
+    function copyToClipboard(text){
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).catch(()=>fallbackCopy(text));
+      }else{
+        fallbackCopy(text);
+      }
+    }
+    function fallbackCopy(text){
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    }
+
+    startBtn.addEventListener("click", () => {
+      idx = 0;
+      history = [];
+      score = { A:0, B:0, C:0, D:0 };
+      show(testView);
+      renderQuestion();
+    });
+
+    backBtn.addEventListener("click", () => {
+      if(idx === 0) return;
+      idx -= 1;
+      renderQuestion();
+    });
+
+    restartBtn.addEventListener("click", resetAll);
+
+    otherTestBtn.addEventListener("click", () => {
+      window.open(OTHER_TEST_URL, "_blank", "noopener,noreferrer");
+    });
+  </script>
+</div>
+</body>
+</html>

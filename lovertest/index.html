@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  
+    <!-- Open Graph (Kakao preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="lovertest 테스트" />
+    <meta property="og:description" content="lovertest 바이브코딩 테스트" />
+    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/lovertest/" />
+    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter (optional, helps some previews) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="lovertest 테스트" />
+    <meta name="twitter:description" content="lovertest 바이브코딩 테스트" />
+    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>내 애인은 어떤 스타일???</title>
+
+  <!-- OG(스크랩/공유용) -->
+
+
+
+<meta name="description" content="내 애인은 어떤 스타일인지 알아보는 테스트"/>
+
+  <!-- Kakao SDK -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script>
+
+  <link rel="stylesheet" href="../assets/vibe-theme.css">
+  <style>
+    :root {
+      --main-color: #ff4fa3; /* 핫핑크 */
+      --bg-light: #fff0f5;
+      --card-bg: #ffffff;
+      --text-dark: #334155;
+      --border-color: #ffe4e6;
+      --btn-hover-shadow: rgba(255, 79, 163, 0.3);
+    }
+    html, body { min-height: 100vh; margin: 0; }
+  </style>
+</head>
+
+<body>
+<div class="card">
+    <div id="startView">
+        <div class="result-image">💘</div>
+        <h1 class="title">내 집착과 바람기는<br>어느 정도일까? 👀</h1>
+        <p class="description">현실 고증 200%, 과몰입 주의!<br>나의 진짜 연애 스타일을 진단해봐요.</p>
+        <button class="btn-start" id="startBtn">진단 시작하기 🔍</button>
+        <div class="tiny" style="margin-top:20px; color:#94a3b8; font-size:13px;">※ 결과는 재미로만! 은근 맞을 수도 있음 😏</div>
+    </div>
+
+    <div id="testView" style="display:none;">
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <div class="title" id="qTitle" style="font-size: 20px;">질문 불러오는 중...</div>
+        <div id="options"></div>
+    </div>
+
+    <div id="resultView" style="display:none;">
+        <div style="color: #94a3b8; font-size: 14px; font-weight: 700;">당신의 연애 성향은?</div>
+        <div id="resultEmoji" class="result-image">❤️</div>
+        <div id="resultName" class="result-title">결과 이름</div>
+        
+        <div class="result-box">
+            <span class="result-box-title">🔎 정밀 진단 보고서</span>
+            <div id="resultDesc" class="result-desc"></div>
+        </div>
+
+        <div class="result-box" style="background: white;">
+          <span class="result-box-title" style="background: #f1f5f9; color: #475569;">📌 주요 특징</span>
+          <ul id="resultBullets" class="bullets" style="margin-top:10px;"></ul>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao" id="kakaoBtn">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                친구들에게 내 본성 자랑하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224195220807" target="_blank" class="btn-blog">👀 다른 테스트 구경하기</a>
+            <button class="btn-retry" id="retryBtn">다시 테스트하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+/* =========================================================
+   ✅ 공통 카카오 설정 (그대로 복붙)
+   - 키 하나로 통일
+   - 공통 썸네일: /assets/share-thumb.jpg
+   - 버튼 문구: "테스트 해보기"
+   ========================================================= */
+const KAKAO_APP_KEY = "b30b6d088f5b3551adc2890111d071fc";
+const BASE_URL = (window.location.origin + window.location.pathname).replace(/\/?$/, "/");
+const SHARE_THUMB = window.location.origin + "/assets/share-thumb.jpg";
+
+/* =========================================================
+   ✅ Love 테스트 로직 (간단형)
+   ========================================================= */
+const questions = [
+  { q:"애인의 핸드폰이 계속 울린다. 슬쩍 보니 이름없는 번호. 내 반응은?", a:[
+    {t:"'누구야?' 바로 캐묻고 폰을 뺏어서 본다.", s:{OBSESS:1, FLIRT:0, WALL:0, SAINT:0}},
+    {t:"'안 받아도 돼?' 물어보며 상대 반응을 은근슬쩍 떠본다.", s:{OBSESS:0, FLIRT:1, WALL:0, SAINT:0}},
+    {t:"신경 안 쓴다. 내 폰 하거나 딴청 피운다.", s:{OBSESS:0, FLIRT:0, WALL:1, SAINT:0}},
+    {t:"'누구 전화 길래 안 받아~' 장난치고 만다.", s:{OBSESS:0, FLIRT:0, WALL:0, SAINT:1}},
+  ]},
+  { q:"내가 술자리에서 매력적인 이성에게 번호를 따인다면?", a:[
+    {t:"절대 안 주거나, 주고 바로 애인한테 보고한다.", s:{OBSESS:1, FLIRT:0, WALL:0, SAINT:0}},
+    {t:"일단 주고 본다. 사람 일은 모르는 거니까.", s:{OBSESS:0, FLIRT:1, WALL:0, SAINT:0}},
+    {t:"귀찮다. '저 애인 있어요' 하고 단칼에 거절.", s:{OBSESS:0, FLIRT:0, WALL:1, SAINT:0}},
+    {t:"정중하게 거절하지만 기분은 좋아서 혼자 뿌듯해한다.", s:{OBSESS:0, FLIRT:0, WALL:0, SAINT:1}},
+  ]},
+  { q:"애인이 나 몰래 1박 2일 동성 친구들과 놀러 간 걸 들켰다.", a:[
+    {t:"바로 짐 싸서 쫓아감. 넌 이제 죽었어.", s:{OBSESS:1, FLIRT:0, WALL:0, SAINT:0}},
+    {t:"'오, 나도 오늘 자유네?' 바로 친구들 불러서 클럽 감.", s:{OBSESS:0, FLIRT:1, WALL:0, SAINT:0}},
+    {t:"'왜 거짓말했어?' 이성적으로 따지고 헤어질 준비를 한다.", s:{OBSESS:0, FLIRT:0, WALL:1, SAINT:0}},
+    {t:"'재밌게 놀다 와~ 대신 다음 번엔 솔직하게 말해줄래?'", s:{OBSESS:0, FLIRT:0, WALL:0, SAINT:1}},
+  ]},
+  { q:"이상적인 연애의 거리감은 어느 정도라고 생각하나?", a:[
+    {t:"24시간 내내 붙어 있어야 연애지! 일심동체!", s:{OBSESS:1, FLIRT:0, WALL:0, SAINT:0}},
+    {t:"나 구속하는 건 싫지만, 상대는 나만 봤으면 좋겠어.", s:{OBSESS:0, FLIRT:1, WALL:0, SAINT:0}},
+    {t:"각자 사생활 100% 존중. 언제 자는지만 말해줘.", s:{OBSESS:0, FLIRT:0, WALL:1, SAINT:0}},
+    {t:"믿음이 있다면 몸이 멀어져도 마음은 안 멀어진다.", s:{OBSESS:0, FLIRT:0, WALL:0, SAINT:1}},
+  ]},
+  { q:"과거 연애사에 대한 나의 태도는?", a:[
+    {t:"누구야? 언제 사귀었어? 카톡 다 뒤지고 인스타 염탐함.", s:{OBSESS:1, FLIRT:0, WALL:0, SAINT:0}},
+    {t:"아 그래? 나도 예전에 만났던 애가~ 하면서 내 썰도 풂.", s:{OBSESS:0, FLIRT:1, WALL:0, SAINT:0}},
+    {t:"굳이 알고 싶지 않다. 말 안 했으면 좋겠다.", s:{OBSESS:0, FLIRT:0, WALL:1, SAINT:0}},
+    {t:"누구나 과거는 있지. 묻어두고 앞으로가 중요하지.", s:{OBSESS:0, FLIRT:0, WALL:0, SAINT:1}},
+  ]}
+];
+
+const results = {
+  OBSESS:{
+    emoji:"👁️",
+    name:"CCTV급 맑은눈의 광인\n집착광공",
+    desc:"질투심과 소유욕의 끝판왕! 사랑하는 만큼 상대방의 모든 것을 알아야 직성이 풀리는 무서운 집착의 소유자입니다. '너는 내 거, 나도 내 거'라는 마인드로 가끔은 상대방을 옥죄일 수도 있어요. 하지만 그만큼 당신의 사랑은 무겁고 진실됩니다.",
+    bullets:["전 애인 염탐은 흐린 눈으로 매일 함", "답장 1분 늦으면 혼자 100가지 상상함", "바람피우면 진짜 큰일 날 수도 있는 무서운 사람"]
+  },
+  FLIRT:{
+    emoji:"🦋",
+    name:"잡을 수 없는 매력\n자유영혼 바람둥이",
+    desc:"선수 등장! 아슬아슬하게 선을 타며 스릴을 즐기는 본투비 플러팅 장인입니다. 매력이 넘치지만, 정착하기엔 세상에 재미있는 일(과 사람)이 너무 많습니다. 구속받는 것을 극도로 싫어하며 '나만 바라봐'라는 말에 거부감을 느낍니다.",
+    bullets:["나는 되지만 넌 안돼. 내로남불 기질 100%", "새로운 자극에 금방 끌리는 금사빠", "항상 플랜 B를 은연중에 남겨두는 묘한 태도"]
+  },
+  WALL:{
+    emoji:"🧱",
+    name:"나 홀로 평온한\n무심한 철벽왕",
+    desc:"'어쩌라고?' 마인드의 소유자. 연애를 해도 내 일상이 1순위인 독립적인 타입입니다. 애인이 바람을 피워도 '오케이, 거기까지' 하고 미련 없이 돌아서는 냉철함(?)을 가졌죠. 연인 입장에서는 가끔 서운할 수 있습니다.",
+    bullets:["연락 집착 극혐. 생존 신고 정도면 충분", "상대의 자유를 100% 존중하지만 나도 간섭 안 받을 거임", "환승이나 바람 걸리면 국물도 없음. 바로 차단"]
+  },
+  SAINT:{
+    emoji:"🙏",
+    name:"모든 걸 초월한\n살아있는 보살",
+    desc:"이보다 더 넓은 마음이 있을까요? 웬만한 잘못은 '그럴 수 있지' 로 넘기는 태평양 같은 마음의 소유자. 바람기도 전혀 없고 상대에 대한 집착도 없습니다. 당신의 헌신과 믿음에 상대방은 딴짓을 할 수가 없습니다.",
+    bullets:["신뢰 기반 연애 교과서의 정석", "다툴 때도 이성적이고 차분하게 접근", "너무 배려하다 가끔 호구 잡힐 수 있으니 주의!"]
+  }
+};
+
+let idx = 0;
+let score = {OBSESS:0, FLIRT:0, WALL:0, SAINT:0};
+let lastResultKey = null;
+
+const startView = document.getElementById("startView");
+const testView  = document.getElementById("testView");
+const resultView= document.getElementById("resultView");
+
+const startBtn = document.getElementById("startBtn");
+const qTitle   = document.getElementById("qTitle");
+const options  = document.getElementById("options");
+const progress = document.getElementById("progress");
+
+const resultEmoji   = document.getElementById("resultEmoji");
+const resultName    = document.getElementById("resultName");
+const resultDesc    = document.getElementById("resultDesc");
+const resultBullets = document.getElementById("resultBullets");
+
+const kakaoBtn = document.getElementById("kakaoBtn");
+const copyBtn  = document.getElementById("copyBtn");
+
+function ensureKakaoInit(){
+  if(!window.Kakao){
+    alert("카카오 SDK 로딩이 안 됐어요.");
+    return false;
+  }
+  if(!Kakao.isInitialized()) Kakao.init(KAKAO_APP_KEY);
+  return true;
+}
+
+/* ✅ 카카오 공유 (썸네일/버튼 통일 + 캐시 회피) */
+function kakaoShare(){
+  if(!ensureKakaoInit()) return;
+
+  const key = lastResultKey || "SAINT";
+  const shareUrl = BASE_URL + "?v=" + Date.now();
+  const resultLabel = (results[key]?.name) ? results[key].name.replace('\n', ' ') : "";
+
+  Kakao.Share.sendDefault({
+    objectType: "feed",
+    content: {
+      title: resultLabel ? `내 집착과 바람기는 어느정도일까? 👀 (내 결과: ${resultLabel})` : "내 연애 스타일은 어떤 스타일??? 👀",
+      description: resultLabel ? `내 결과는 "${resultLabel}"! 너도 테스트 해봐 👀` : "너도 테스트 해봐 👀",
+      imageUrl: SHARE_THUMB,
+      link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
+    },
+    buttons: [
+      { title:"이 테스트 하기", link:{ mobileWebUrl: shareUrl, webUrl: shareUrl } },
+      { title:"총테스트 모음글", link:{ mobileWebUrl: 'https://blog.naver.com/forgiven_77/224195220807', webUrl: 'https://blog.naver.com/forgiven_77/224195220807' } }
+    ]
+  });
+}
+
+function copyLink(){
+  const url = window.location.href;
+  navigator.clipboard?.writeText(url).then(()=>{
+    alert("링크가 복사됐어요!");
+  }).catch(()=>{
+    prompt("복사 실패! 아래 링크를 복사하세요:", url);
+  });
+}
+
+function renderQuestion(){
+  const total = questions.length;
+  const q = questions[idx];
+  qTitle.textContent = q.q;
+  options.innerHTML = "";
+  progress.style.width = Math.round((idx/total)*100) + "%";
+
+  q.a.forEach((opt)=>{
+    const b = document.createElement("button");
+    b.className = "opt";
+    b.type = "button";
+    b.textContent = opt.t;
+    b.onclick = ()=>{
+      Object.entries(opt.s).forEach(([k,v])=> score[k]+=v);
+      idx++;
+      if(idx >= total){
+        showResult();
+      }else{
+        renderQuestion();
+      }
+    };
+    options.appendChild(b);
+  });
+}
+
+function calcResultKey(){
+  let maxKey = "OBSESS";
+  let maxVal = -1;
+  for(const [k, v] of Object.entries(score)) {
+    if(v > maxVal) { maxVal = v; maxKey = k; }
+  }
+  return maxKey;
+}
+
+function showResult(){
+  testView.style.display = "none";
+  resultView.style.display = "block";
+  progress.style.width = "100%";
+
+  lastResultKey = calcResultKey();
+  const r = results[lastResultKey];
+
+  resultEmoji.textContent = r.emoji;
+  resultName.textContent  = r.name;
+  resultDesc.textContent  = r.desc;
+
+  resultBullets.innerHTML = "";
+  r.bullets.forEach(t=>{
+    const li = document.createElement("li");
+    li.textContent = t;
+    resultBullets.appendChild(li);
+  });
+}
+
+function startTest(){
+  idx = 0;
+  score = {WARM:0, COOL:0};
+  lastResultKey = null;
+
+  startView.style.display = "none";
+  resultView.style.display = "none";
+  testView.style.display  = "block";
+  renderQuestion();
+}
+
+/* ✅ URL로 결과 바로 보기 지원 (?result=WARM) */
+(function initFromQuery(){
+  // ✅ 공유 링크는 기본적으로 "테스트 시작" 화면으로 오픈합니다.
+  // - 결과 바로 보기는 showResult=1이 있을 때만 허용
+  const params = new URLSearchParams(location.search);
+  const r = params.get("result");
+  const show = params.get("showResult") === "1";
+  if(show && r && results[r]){
+    startView.style.display = "none";
+    testView.style.display = "none";
+    resultView.style.display = "block";
+    lastResultKey = r;
+
+    const rr = results[r];
+    resultEmoji.textContent = rr.emoji;
+    resultName.textContent  = rr.name;
+    resultDesc.textContent  = rr.desc;
+
+    resultBullets.innerHTML = "";
+    rr.bullets.forEach(t=>{
+      const li = document.createElement("li");
+      li.textContent = t;
+      resultBullets.appendChild(li);
+    });
+  }
+})();
+
+startBtn.addEventListener("click", startTest);
+kakaoBtn.addEventListener("click", kakaoShare);
+copyBtn.addEventListener("click", copyLink);
+</script>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,57 @@
+[
+  {
+    "title": "💘 연애 MBTI 테스트",
+    "path": "./lovembti/",
+    "group": "love"
+  },
+  {
+    "title": "💘 Love 테스트",
+    "path": "./love/",
+    "group": "love"
+  },
+  {
+    "title": "💞 Love Other",
+    "path": "./loveother/",
+    "group": "love"
+  },
+  {
+    "title": "💍 Lover Test",
+    "path": "./lovertest/",
+    "group": "love"
+  },
+  {
+    "title": "🎭 겉과 속 (본심 테스트)",
+    "path": "./blackandwhite/",
+    "group": "etc"
+  },
+  {
+    "title": "🍜 점심 추천",
+    "path": "./lunch/",
+    "group": "etc"
+  },
+  {
+    "title": "🎯 룰렛",
+    "path": "./roulette/",
+    "group": "etc"
+  },
+  {
+    "title": "🏝️ 무인도 생존 (밸런스)",
+    "path": "./balance/",
+    "group": "etc"
+  },
+  {
+    "title": "🦊 연애 동물 테스트",
+    "path": "./loveanimal/",
+    "group": "love"
+  },
+  {
+    "title": "😏 음란마귀 테스트",
+    "path": "./eros/",
+    "group": "etc"
+  },
+  {
+    "title": "✨ 첫인상 스캐너 (Vibe Check)",
+    "path": "./firstimpression/",
+    "group": "etc"
+  }
+]

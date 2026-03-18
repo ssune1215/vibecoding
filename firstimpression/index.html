@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>바이브 코딩 | 첫인상 스캐너 (Vibe Check)</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="내가 남들에게 주는 첫인상은?">
+    <meta property="og:description" content="3초면 끝! 내 외면에 서린 바이브를 스캔해드립니다.">
+    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg">
+
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    
+    <style>
+        :root {
+            --main-color: #6366f1; /* 인디고 */
+            --bg-light: #f8fafc;
+            --card-bg: #ffffff;
+            --text-dark: #334155;
+            --border-color: #e2e8f0;
+            --btn-hover-shadow: rgba(99, 102, 241, 0.3);
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <!-- 시작 화면 -->
+    <div id="start-area">
+        <div class="result-image">✨👀</div>
+        <h1 class="title">나의 첫인상은<br>어떤 바이브일까?</h1>
+        <p class="description">상대방이 나를 처음 봤을 때 느끼는<br>솔직한 느낌을 5가지 질문으로 스캔합니다!</p>
+        <button class="btn-start" onclick="startTest()">스캐너 가동하기 🚀</button>
+        <div class="tiny" style="margin-top:20px; color:#94a3b8; font-size:13px;">※ 결과는 재미로만! 당신은 언제나 매력적입니다 😏</div>
+    </div>
+
+    <!-- 질문 영역 -->
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <div id="q-number" style="color: #94a3b8; font-size: 14px; font-weight: 700; margin-bottom: 10px;">Question 1 / 5</div>
+        <div class="title" id="question-text" style="font-size: 20px;">질문 불러오는 중...</div>
+        <div id="options-container"></div>
+    </div>
+
+    <!-- 결과 영역 -->
+    <div id="result-area" style="display: none;">
+        <div style="color: #94a3b8; font-size: 14px; font-weight: 700;">스캔 결과 분석 완료!</div>
+        <div id="res-image" class="result-image">✨</div> 
+        <div id="res-name" class="result-title">결과 이름</div>
+        
+        <div class="result-box">
+            <span class="result-box-title">🔍 첫인상 포트폴리오</span>
+            <div id="res-desc" class="result-desc">결과 설명이 여기에 나옵니다.</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao" onclick="shareKakao()">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                내 첫인상 바이브 공유하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224195220807" target="_blank" class="btn-blog">
+                👀 다른 재미있는 테스트 구경가기
+            </a>
+            <button class="btn-retry" onclick="location.reload()">다시 테스트하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const KAKAO_KEY = "b30b6d088f5b3551adc2890111d071fc";
+    const SITE_URL = window.location.href;
+
+    if (!Kakao.isInitialized()) Kakao.init(KAKAO_KEY);
+
+    let currentQ = 0;
+    let score = { A: 0, B: 0, C: 0, D: 0 };
+
+    const questions = [
+        { 
+            q: "낯선 사람과 처음 만났을 때, 내가 가장 먼저 신경 쓰는 것은?", 
+            options: [
+                { text: "내 옷차림과 머리 스타일 (비주얼 파)", type: "A" },
+                { text: "상대방의 표정과 말투 (분위기 파)", type: "B" },
+                { text: "'무슨 말을 해야 하지?' 하는 주제 (대화 파)", type: "C" },
+                { text: "'빨리 집에 가고 싶다'는 생각 (기빨림 파)", type: "D" }
+            ]
+        },
+        { 
+            q: "첫 대화에서 내가 주로 듣는 말은?", 
+            options: [
+                { text: "차가워 보였는데 의외로 웃기네요?", type: "A" },
+                { text: "인상이 너무 좋으셔서 다가가기 편했어요!", type: "B" },
+                { text: "말씀 하시는 게 되게 조리 있고 똑똑해 보여요.", type: "C" },
+                { text: "묘한 매력이 있으신 것 같아요.", type: "D" }
+            ]
+        },
+        { 
+            q: "새로운 모임에 갔을 때 나의 포지션은?", 
+            options: [
+                { text: "구석에서 핸드폰 보다가 눈 마주치면 움찔함", type: "D" },
+                { text: "중간에서 리액션 혜자로 해주며 분위기 맞춤", type: "B" },
+                { text: "내가 먼저 말 걸고 분위기 주도함 (인싸 본능)", type: "C" },
+                { text: "말없이 가만히 있어도 존재감이 풍김 (아우라 파)", type: "A" }
+            ]
+        },
+        { 
+            q: "상대방이 나를 처음 봤을 때 떠올릴 것 같은 키워드는?", 
+            options: [
+                { text: "신비주의, 도도함, 왠지 다가가기 힘듦", type: "A" },
+                { text: "비타민, 활기참, 친구 하고 싶음", type: "B" },
+                { text: "차분함, 성숙함, 믿음직스러움", type: "C" },
+                { text: "엉뚱함, 정체를 모르겠음, 외계인 같음", type: "D" }
+            ]
+        },
+        { 
+            q: "내가 생각하는 '첫인상'의 중요성은?", 
+            options: [
+                { text: "3초면 끝! 무조건 고급스러워야 함", type: "A" },
+                { text: "인상이 나빠도 대화하다 보면 바뀔 수 있음", type: "B" },
+                { text: "솔직히 첫인상보다는 '지식'이 중요함", type: "C" },
+                { text: "첫인상 따위... 나를 아는 사람만 알면 됨", type: "D" }
+            ]
+        }
+    ];
+
+    const results = {
+        A: { name: "얼음 조각상\n(냉미남/냉미녀)", img: "🗿", desc: "첫인상은 차갑고 도도해 보이지만 알고 보면 허당미가 넘치는 반전 매력의 소유자!<br><br>왠지 다가가기 힘들다는 소리를 자주 듣지만, 한 번 친해지면 당신의 매력에서 헤어 나오기 힘듭니다. 세련된 분위기가 당신의 가장 큰 무기네요." },
+        B: { name: "인간 비타민\n(에너지 댕댕이)", img: "🐶", desc: "보기만 해도 기분 좋아지는 첫인상 1위! 밝은 에너지와 친근함이 당신의 강력한 바이브입니다.<br><br>처음 보는 사람과도 금방 벽을 허무는 마력이 있네요. 어디서든 사랑받는 타입으로, 당신이 있는 곳은 항상 활기가 넘칩니다." },
+        C: { name: "지적인 대나무\n(지성미 만렙)", img: "🎍", desc: "차분하고 안정적인 분위기 덕분에 처음 봐도 신뢰가 가는 타입!<br><br>말을 섞어보면 조리 있고 똑똑한 느낌을 주어 고민 상담을 하고 싶게 만듭니다. 성숙한 바이브가 당신을 더욱 매력적으로 보이게 하네요." },
+        D: { name: "신비로운 외계인\n(마이웨이 뇌섹꾼)", img: "👽", desc: "도무지 무슨 생각을 하는지 알 수 없어서 더 궁금해지는 타입!<br><br>정해진 틀에 얽매이지 않는 엉뚱함과 개성이 당신의 바이브입니다. 정체를 알 수 없는 신비주의 덕분에 이성들에게 묘한 인기를 끌기도 합니다." }
+    };
+
+    let shuffledQuestions = [];
+    let finalResultName = "";
+
+    function shuffleArray(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function startTest() {
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        
+        shuffledQuestions = JSON.parse(JSON.stringify(questions));
+        shuffleArray(shuffledQuestions);
+        
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let percent = (currentQ / shuffledQuestions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        document.getElementById('q-number').innerText = "Question " + (currentQ + 1) + " / 5";
+
+        let currentData = shuffledQuestions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
+
+        let options = [...currentData.options];
+        shuffleArray(options);
+
+        let container = document.getElementById('options-container');
+        container.innerHTML = ""; 
+        
+        options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.type);
+            container.appendChild(btn);
+        });
+    }
+
+    function nextQuestion(type) {
+        score[type]++;
+        currentQ++;
+
+        if (currentQ < shuffledQuestions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+
+        let bestType = "A";
+        let bestVal = -1;
+        for(let key in score) {
+            if(score[key] > bestVal) {
+                bestVal = score[key];
+                bestType = key;
+            }
+        }
+
+        const resultData = results[bestType];
+        finalResultName = resultData.name.replace('\n', ' ');
+
+        document.getElementById('res-image').innerText = resultData.img;
+        document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
+        document.getElementById('res-desc').innerHTML = resultData.desc;
+    }
+
+    function shareKakao() {
+        Kakao.Share.sendDefault({
+            objectType: 'feed',
+            content: {
+                title: '나의 첫인상은 어떤 바이브일까? 👀',
+                description: '내 첫인상 결과는 [' + finalResultName + '] ! 당신의 바이브도 스캔해보세요.',
+                imageUrl: 'https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg',
+                link: { mobileWebUrl: SITE_URL, webUrl: SITE_URL }
+            },
+            buttons: [
+                { title: '내 바이브 체크하기', link: { mobileWebUrl: SITE_URL, webUrl: SITE_URL } },
+                { title: '다른 테스트 구경하기', link: { mobileWebUrl: 'https://blog.naver.com/forgiven_77/224195220807', webUrl: 'https://blog.naver.com/forgiven_77/224195220807' } }
+            ]
+        });
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,238 @@
+/* vibe-theme.css - 바이브코딩 공통 디자인 시스템 */
+/* 최근 제작한 파스텔 & 라운드 카드 베이스 */
+
+:root {
+    /* 각 HTML 파일 내에서 덮어쓸 기본 테마 색상 (fallback) */
+    --main-color: #ff85a2; 
+    --bg-light: #fff0f3; 
+    --card-bg: #ffffff; 
+    --text-dark: #334155;
+    --border-color: #ffe4e6;
+    --btn-hover-shadow: rgba(255, 133, 162, 0.3);
+}
+
+* { 
+    box-sizing: border-box; 
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+    -webkit-tap-highlight-color: transparent; 
+}
+
+body { 
+    background: var(--bg-light); 
+    margin: 0; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    min-height: 100vh; 
+    padding: 20px; 
+    color: var(--text-dark); 
+}
+
+/* 메인 카드 레이아웃 */
+.card { 
+    background: var(--card-bg); 
+    width: 100%; 
+    max-width: 450px; 
+    border-radius: 28px; 
+    padding: 35px; 
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05); 
+    text-align: center; 
+    position: relative; 
+    overflow: hidden; 
+    border: 1px solid var(--border-color); 
+}
+
+/* 제목 및 설명 */
+.title { 
+    color: var(--main-color); 
+    font-size: 26px; 
+    font-weight: 800; 
+    margin-bottom: 20px; 
+    line-height: 1.4; 
+    word-break: keep-all; 
+}
+.description { 
+    font-size: 15px; 
+    color: #64748b; 
+    line-height: 1.6; 
+    margin-bottom: 30px; 
+    word-break: keep-all; 
+}
+
+/* 상태바 */
+.progress-bar { 
+    width: 100%; 
+    height: 8px; 
+    background: rgba(0, 0, 0, 0.05); 
+    border-radius: 10px; 
+    margin-bottom: 30px; 
+    overflow: hidden; 
+}
+.progress { 
+    height: 100%; 
+    background: var(--main-color); 
+    width: 0%; 
+    transition: width 0.3s ease; 
+}
+
+/* 공통 메인/시작 버튼 */
+.btn-start {
+    background: var(--main-color); 
+    color: white; 
+    font-size: 19px; 
+    padding: 22px; 
+    width: 100%;
+    border: none; 
+    font-weight: 800; 
+    box-shadow: 0 6px 20px var(--btn-hover-shadow); 
+    border-radius: 20px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.btn-start:hover {
+    transform: translateY(-2px);
+}
+.btn-start:active {
+    transform: translateY(1px);
+}
+
+/* 선택지 버튼 */
+.option-btn { 
+    width: 100%; 
+    padding: 18px; 
+    margin-bottom: 12px; 
+    border: 1px solid var(--border-color); 
+    border-radius: 16px; 
+    background: #ffffff; 
+    cursor: pointer; 
+    font-size: 15px; 
+    transition: 0.2s; 
+    font-weight: 600; 
+    color: #475569; 
+    word-break: keep-all; 
+    line-height: 1.4; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.02); 
+}
+.option-btn:hover { 
+    background: var(--main-color); 
+    color: white; 
+    border-color: var(--main-color); 
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 15px var(--btn-hover-shadow); 
+}
+
+/* 결과 영역 스타일 */
+#result-area { display: none; }
+.result-image { font-size: 75px; margin: 10px 0 20px 0; animation: bounce 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+@keyframes bounce { 0% { transform: scale(0); } 100% { transform: scale(1); } }
+.result-title { font-size: 28px; font-weight: 800; margin: 10px 0; color: #1e293b; }
+
+/* 결과 내용 박스 */
+.result-box { 
+    background: rgba(0, 0, 0, 0.02); 
+    border: 1px solid var(--border-color); 
+    border-radius: 16px; 
+    padding: 25px 20px; 
+    margin-bottom: 30px; 
+    text-align: left; 
+}
+.result-box-title { 
+    font-size: 14px; 
+    font-weight: 800; 
+    color: var(--main-color); 
+    margin-bottom: 15px; 
+    display: inline-block; 
+    padding: 6px 14px; 
+    background: var(--bg-light); 
+    border-radius: 20px; 
+}
+.result-desc { 
+    font-size: 16px; 
+    color: #475569; 
+    line-height: 1.7; 
+    word-break: keep-all; 
+}
+
+/* 액션 버튼 그룹 (노/파/빨 무적서식) */
+.action-btns { margin-top: 10px; border-top: 1px dashed #e2e8f0; padding-top: 25px; }
+
+.btn-kakao { 
+    width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; 
+    background: #FEE500; color: #3A1D1D; cursor: pointer; margin-bottom: 12px; 
+    font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; 
+}
+.btn-kakao:hover { background: #e5cd00; transform: translateY(-1px); }
+
+.btn-blog { 
+    width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; 
+    background: #3b82f6; color: white; cursor: pointer; margin-bottom: 12px; 
+    font-size: 16px; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: 0.2s; 
+}
+.btn-blog:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
+
+.btn-retry { 
+    width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; 
+    background: #ef4444; color: white; cursor: pointer; font-size: 16px; transition: 0.2s; 
+}
+.btn-retry:hover { background: #dc2626; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3); }
+
+/* 유틸리티 클래스 */
+.hide { display: none !important; }
+
+/* =========================================================
+   하위 호환성 (기존 테스트들의 클래스를 새 디자인으로 매핑)
+   ========================================================= */
+
+/* 선택지 버튼 (.opt) -> .option-btn 과 동일 */
+.opt { 
+    width: 100%; padding: 18px; margin-bottom: 12px; border: 1px solid var(--border-color); 
+    border-radius: 16px; background: #ffffff; cursor: pointer; font-size: 15px; 
+    transition: 0.2s; font-weight: 600; color: #475569; box-shadow: 0 2px 5px rgba(0,0,0,0.02); 
+    line-height: 1.4; word-break: keep-all; 
+}
+.opt:hover { 
+    background: var(--main-color); color: white; border-color: var(--main-color); 
+    transform: translateY(-2px); box-shadow: 0 4px 15px var(--btn-hover-shadow); 
+}
+
+/* 시작 버튼 (.btnPrimary) -> .btn-start 와 동일 */
+.btnPrimary {
+    background: var(--main-color); color: white; border: none; font-size: 19px; 
+    padding: 22px; width: 100%; font-weight: 800; border-radius: 20px; cursor: pointer; 
+    box-shadow: 0 6px 20px var(--btn-hover-shadow); transition: 0.2s;
+}
+.btnPrimary:hover { transform: translateY(-2px); }
+
+/* 하단 공유 액션 버튼 매핑 */
+.btnYellow {
+    width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; 
+    background: #FEE500; color: #3A1D1D; cursor: pointer; font-size: 16px; transition: 0.2s; 
+}
+.btnYellow:hover { background: #e5cd00; transform: translateY(-1px); }
+
+.btnBlue {
+    width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; 
+    background: #3b82f6; color: white; cursor: pointer; font-size: 16px; transition: 0.2s; 
+}
+.btnBlue:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
+
+.btnRed {
+    width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; 
+    background: #ef4444; color: white; cursor: pointer; font-size: 16px; transition: 0.2s; 
+}
+.btnRed:hover { background: #dc2626; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3); }
+
+.btnGray {
+    width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; 
+    background: #f1f5f9; color: #475569; cursor: pointer; font-size: 16px; transition: 0.2s; 
+}
+.btnGray:hover { background: #e2e8f0; transform: translateY(-1px); }
+
+/* 질문 제목, 프로그레스 바 영역 등 매핑 */
+.qTitle { color: var(--main-color); font-size: 20px; font-weight: 800; margin-bottom: 20px; line-height: 1.4; word-break: keep-all; text-align: center; }
+.progressWrap { width: 100%; height: 8px; background: rgba(0, 0, 0, 0.05); border-radius: 10px; margin-bottom: 30px; overflow: hidden; }
+.resultName { font-size: 26px; font-weight: 800; margin: 10px 0; color: #1e293b; }
+.desc { font-size: 16px; color: #475569; line-height: 1.7; word-break: keep-all; background: rgba(0, 0, 0, 0.02); border: 1px solid var(--border-color); border-radius: 16px; padding: 25px 20px; margin-bottom: 20px; text-align: left; }
+.bullets { list-style: none; padding: 0; margin: 0 0 20px; text-align: left; }
+.bullets li { font-size: 15px; color: #475569; padding: 12px 14px; margin-bottom: 8px; background: #ffffff; border: 1px solid var(--border-color); border-radius: 12px; }
+

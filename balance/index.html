@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>바이브 코딩 | 무인도 생존 밸런스 게임</title>
+    
+    <!-- Open Graph (Kakao preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="무인도 생존 밸런스 게임" />
+    <meta property="og:description" content="당신은 아무도 없는 무인도에 떨어졌습니다. 살아남기 위한 극한의 선택, 당신의 생존 등급은?" />
+    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/balance/" />
+    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg" />
+
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+<div class="card">
+    <!-- 시작 화면 -->
+    <div id="start-area">
+        <div style="font-size: 50px; margin-bottom: 20px;">🏝️</div>
+        <div class="title">무인도 생존<br>밸런스 게임</div>
+        <p class="description">당신은 아무도 없는 무인도에 떨어졌습니다.<br>살아남기 위한 극한의 선택, 당신의 생존 등급은?</p>
+        <button class="btn-start" onclick="startTest()">생존 게임 시작 🔦</button>
+    </div>
+
+    <!-- 질문 영역 -->
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <div id="q-number" style="color: #94a3b8; font-size: 14px; font-weight: 700; margin-bottom: 10px;">Question 1 / 5</div>
+        <div class="title" id="question-text">질문 불러오는 중...</div>
+        <div id="options-container"></div>
+    </div>
+
+    <!-- 결과 영역 -->
+    <div id="result-area" style="display: none;">
+        <div style="color: #94a3b8; font-size: 14px; font-weight: 700;">시뮬레이션 종료</div>
+        <div class="result-image">🔥</div>
+        <div id="res-type" class="result-title">생존 유형</div>
+        
+        <div class="result-box">
+            <span class="result-box-title">나의 생존 본능</span>
+            <div id="res-desc" class="result-desc">결과 설명이 여기에 나옵니다.</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao" onclick="shareKakao()">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                나의 생존력 친구에게 공유하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224195220807" target="_blank" class="btn-blog">
+                👀 다른 생존 테스트 구경가기
+            </a>
+            <button class="btn-retry" onclick="location.reload()">다시 도전하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const KAKAO_KEY = "b30b6d088f5b3551adc2890111d071fc";
+    const BLOG_URL = "https://blog.naver.com/forgiven_77/224195220807";
+    const SITE_URL = window.location.href;
+
+    if (!Kakao.isInitialized()) Kakao.init(KAKAO_KEY);
+
+    const questions = [
+        {
+            q: "무인도에 단 한 가지 도구만 가져갈 수 있다면?",
+            options: [
+                { id: 'A', text: "만능 생존 칼 (사냥, 채집, 공구)" },
+                { id: 'B', text: "라이터 (불 피우기, 조리, 체온)" },
+                { id: 'C', text: "깨끗한 물 10리터 (생명 연장)" },
+                { id: 'D', text: "튼튼한 낚싯대 (무한 식량 수급)" }
+            ]
+        },
+        {
+            q: "배가 너무 고픈데 눈앞에 정체불명의 화려한 과일과 징그럽게 생긴 애벌레가 있다.",
+            options: [
+                { id: 'A', text: "일단 눈에 익숙한 예쁜 과일부터 먹어본다." },
+                { id: 'B', text: "확실한 단백질! 애벌레를 구워 먹는다." },
+                { id: 'C', text: "침착하게 둘 다 안 먹고 다른 걸 찾는다." },
+                { id: 'D', text: "바다로 가서 게나 조개를 잡으러 간다." }
+            ]
+        },
+        {
+            q: "밤이 깊었는데 멀리서 맹수의 울음소리가 들린다. 나의 선택은?",
+            options: [
+                { id: 'A', text: "나무 위로 높이 올라가 밤을 지새운다." },
+                { id: 'B', text: "동굴을 찾아 입구를 큰 돌로 막고 숨는다." },
+                { id: 'C', text: "횃불을 들고 주위를 환하게 밝혀 경계한다." },
+                { id: 'D', text: "창을 깎아 방어 태세를 갖추고 잠을 청한다." }
+            ]
+        },
+        {
+            q: "저 멀리 수평선에 조그만 배가 지나가는 게 보인다! 어떻게 신호를 보낼까?",
+            options: [
+                { id: 'A', text: "연기가 많이 나는 큰 불을 피워 올린다." },
+                { id: 'B', text: "해변에 거대한 SOS 문자를 파놓는다." },
+                { id: 'C', text: "거울이나 금속판으로 빛을 반사한다." },
+                { id: 'D', text: "미친 듯이 소리 지르며 옷을 흔든다." }
+            ]
+        },
+        {
+            q: "무인도 탈출을 위해 뗏목을 만들기로 했다. 가장 중요한 포인트는?",
+            options: [
+                { id: 'A', text: "무조건 튼튼하고 안 부서지는 높은 안전성" },
+                { id: 'B', text: "조류를 잘 탈 수 있는 가벼움과 속도" },
+                { id: 'C', text: "식량과 물을 많이 실을 수 있는 수납 공간" },
+                { id: 'D', text: "뗏목 위에 그늘막을 만드는 생존 편의성" }
+            ]
+        }
+    ];
+
+    const results = {
+        A: {
+            title: "야생의 생존왕<br>베어 그릴스",
+            desc: "당신은 타고난 신체 능력과 본능을 가진 생존가입니다. 어떤 열악한 환경에서도 도구를 활용해 길을 찾아내는 타입이죠. 무인도에 떨어져도 일주일 만에 별장을 지을 기세입니다!"
+        },
+        B: {
+            title: "전략적인 지략가<br>로빈슨 크루소",
+            desc: "도구보다 머리를 쓰는 지성인 유형입니다. 불과 에너지 효율을 중요시하며, 장기적인 생존 전략을 짜는 데 탁월합니다. 철저한 계획 하에 가장 안전하게 구조를 기다릴 줄 아는 사람입니다."
+        },
+        C: {
+            title: "안전제일주의<br>섬의 파수꾼",
+            desc: "모험보다는 안정을 택하는 타입입니다. 식량과 식수 확보를 가장 우선시하며, 위험 요소를 사전에 차단하는 신중함을 가졌습니다. 당신이 있는 캠프는 무인도에서 가장 안전한 장소가 될 것입니다."
+        },
+        D: {
+            title: "적응력 만렙<br>섬 현지인",
+            desc: "어디에 내놔도 굶어 죽지 않을 적응력을 가졌습니다. 주변 환경을 그대로 받아들이고 즐기는 여유까지 보여주네요. 무인도에서 코코넛 주스를 마시며 여유롭게 구조를 기다릴 낙천적인 생존자입니다."
+        }
+    };
+
+    let currentIdx = 0;
+    let scores = { A: 0, B: 0, C: 0, D: 0 };
+
+    function startTest() {
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        if (currentIdx < questions.length) {
+            const q = questions[currentIdx];
+            document.getElementById('q-number').innerText = `Question ${currentIdx + 1} / 5`;
+            document.getElementById('question-text').innerText = q.q;
+            
+            const container = document.getElementById('options-container');
+            container.innerHTML = "";
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerText = opt.text;
+                btn.onclick = () => nextQuestion(opt.id);
+                container.appendChild(btn);
+            });
+            document.getElementById('progress').style.width = `${((currentIdx) / questions.length) * 100}%`;
+        } else {
+            showResults();
+        }
+    }
+
+    function nextQuestion(id) {
+        scores[id]++;
+        currentIdx++;
+        loadQuestion();
+    }
+
+    function showResults() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+
+        // 최다 선택지 찾기
+        let win = 'A';
+        let max = -1;
+        for (let key in scores) {
+            if (scores[key] > max) {
+                max = scores[key];
+                win = key;
+            }
+        }
+        const result = results[win];
+
+        document.getElementById('res-type').innerHTML = result.title;
+        document.getElementById('res-desc').innerHTML = result.desc;
+    }
+
+    function shareKakao() {
+        Kakao.Share.sendDefault({
+            objectType: 'feed',
+            content: {
+                title: '극한 연애 밸런스 게임 결과',
+                description: '내 결과는 [' + document.getElementById('res-type').innerText + ']! 너는 어떤 유형일까?',
+                imageUrl: 'https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg',
+                link: { mobileWebUrl: SITE_URL, webUrl: SITE_URL },
+            },
+            buttons: [
+                { title: '나도 테스트 하러가기', link: { mobileWebUrl: SITE_URL, webUrl: SITE_URL } },
+                { title: '다른 테스트 구경하기', link: { mobileWebUrl: 'https://blog.naver.com/forgiven_77/224195220807', webUrl: 'https://blog.naver.com/forgiven_77/224195220807' } }
+            ],
+        });
+    }
+</script>
+</body>
+</html> = Math.max(scores.A, scores.B, scores.C, scores.D);
+            const winner = Object.keys(scores).find(key => scores[key] === maxScore);
+
+            if (winner === 'A') {
+                type = "멘탈 갑 밸런스 파괴자";
+                desc = "어떤 극한의 상황에서도 평정심을 잃지 않는 강철 멘탈의 소유자! 논리적이고 합리적인 판단을 내리지만, 가끔 애인에겐 너무 로봇 같다는 소리를 들을지도 몰라요.";
+            } else if (winner === 'B') {
+                type = "질투의 화신 아수라";
+                desc = "사랑한다면 당연히 이 정도는 해야지! 소유욕과 질투심이 상당한 타입입니다. 뜨거운 사랑만큼 불같은 성격도 가지고 있어 상대방이 긴장을 늦출 수 없게 만드네요.";
+            } else if (winner === 'C') {
+                type = "해탈한 사랑의 보살";
+                desc = "이 정도면 거의 성인군자급! 상대방의 어지간한 잘못이나 특이취향도 '그럴 수 있지' 하며 넘기는 넓은 가슴의 소유자입니다. 하지만 본인의 속은 타들어가고 있진 않나요?";
+            } else {
+                type = "도파민 중독 스릴러";
+                desc = "평범한 연애는 거부한다! 아슬아슬하고 자극적인 상황을 은근히 즐기는 타입입니다. 늘 새로운 이벤트와 변화를 꿈꾸며 연애를 하나의 재미있는 게임처럼 즐기시네요.";
+            }
+
+            document.getElementById('res-type').innerText = type;
+            document.getElementById('res-desc').innerText = desc;
+        }
+
+        const BLOG_URL = "https://blog.naver.com/forgiven_77/224195220807";
+        // 결과 버튼에 블로그 링크 추가 등 필요시 수정 가능
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    
+    <!-- Open Graph (Kakao preview) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="roulette 테스트" />
+    <meta property="og:description" content="roulette 바이브코딩 테스트" />
+    <meta property="og:url" content="https://vibecoding1.purplesunset707.workers.dev/roulette/" />
+    <meta property="og:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+
+    <!-- Twitter (optional, helps some previews) -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="roulette 테스트" />
+    <meta name="twitter:description" content="roulette 바이브코딩 테스트" />
+    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
+    
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>심장쫄깃 점심 슬롯</title>
+
+  <!-- OG(스크랩/공유용) -->
+
+
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            --main-color: #f43f5e; /* 로즈 레드 (룰렛) */
+            --bg-light: #fff1f2;
+            --card-bg: #ffffff;
+            --text-dark: #334155;
+            --border-color: #ffe4e6;
+            --btn-hover-shadow: rgba(244, 63, 94, 0.3);
+            --gold: #fcd34d;
+        }
+        
+        /* === Global Center Fix (auto) === */
+        html, body { height: 100%; }
+        body{
+          min-height:100vh;
+          display:flex;
+          align-items:center;
+          justify-content:center;
+          background: #f8fafc;
+          margin: 0;
+        }
+        .pageCenter{
+          width:100%;
+          max-width:450px;
+        }
+
+        .container { background: var(--card-bg); padding: 35px 25px; border-radius: 28px; box-shadow: 0 15px 35px var(--btn-hover-shadow); width: 100%; max-width: 450px; text-align: center; border: 1px solid var(--border-color); }
+        
+        .input-group { margin-bottom: 25px; text-align: left; background: var(--bg-light); padding: 20px; border-radius: 16px; border: 1px dashed var(--border-color); }
+        .input-group label { color: var(--main-color); font-size: 14px; font-weight: 800; }
+        input { width: 100%; padding: 15px; border: 1px solid var(--border-color); border-radius: 12px; box-sizing: border-box; margin-top: 10px; font-weight: 800; font-size: 15px; color: var(--text-dark); outline: none; transition: 0.2s; }
+        input:focus { border-color: var(--main-color); box-shadow: 0 0 0 3px var(--btn-hover-shadow); }
+
+        /* 슬롯 디자인 */
+        .slot-machine { display: flex; gap: 10px; background: #fff; border: 6px solid var(--gold); border-radius: 20px; padding: 15px; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .slot-column { flex: 1; height: 120px; background: var(--bg-light); border-radius: 12px; overflow: hidden; position: relative; border: 1px solid var(--border-color); }
+        .reel { transition: transform 0.5s linear; } 
+        .item { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: var(--main-color); text-align: center; line-height: 1.4; word-break: keep-all; }
+        
+        /* 버튼 스타일 */
+        .btn-main { background-color: var(--main-color); color: white; border: none; padding: 20px; font-size: 19px; font-weight: 800; border-radius: 20px; cursor: pointer; transition: 0.2s; box-shadow: 0 6px 20px var(--btn-hover-shadow); width: 100%; }
+        .btn-stop { background-color: #10b981; color: white; border: none; padding: 20px; font-size: 19px; font-weight: 800; border-radius: 20px; cursor: pointer; transition: 0.2s; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3); width: 100%; display: none; }
+        .btn-main:active, .btn-stop:active { transform: translateY(4px); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        
+        /* 결과 화면 */
+        #result-box { margin-top: 25px; padding: 30px 20px; background: #fefce8; border-radius: 20px; border: 2px dashed #fde047; display: none; animation: finalPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex-direction: column; align-items: center;}
+        @keyframes finalPop { from {transform: scale(0.5); opacity:0;} to {transform: scale(1); opacity:1;} }
+        #result-box h2 { font-size: 24px; color: #ca8a04; font-weight: 800; margin: 0 0 10px; word-break: keep-all; }
+        #result-box p { font-size: 15px; color: #854d0e; margin: 0 0 15px; word-break: keep-all; }
+        .share-btn { background: #3b82f6; color: white; border: none; padding: 18px; border-radius: 16px; width: 100%; margin-top: 5px; cursor: pointer; font-weight: 800; font-size: 16px; transition: 0.2s; }
+        .share-btn:hover { background: #2563eb; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
+    </style>
+</head>
+<body>
+<div class=\"pageCenter\">
+
+<div class="container">
+    <h1 style="color:#222; margin-top:0; font-size: 1.6rem;">🎰 인생역전 점심 슬롯</h1>
+    <div class="input-group">
+        <label style="font-size:0.85rem; font-weight:bold;">👥 함께하는 동료들 (쉼표로 구분)</label>
+        <input type="text" id="memberInput" value="김대리, 이과장, 박사원, 최팀장, 나">
+    </div>
+
+    <div class="slot-machine">
+        <div class="slot-column"><div id="reel1" class="reel"></div></div>
+        <div class="slot-column"><div id="reel2" class="reel"></div></div>
+        <div class="slot-column"><div id="reel3" class="reel"></div></div>
+    </div>
+
+    <button id="spinBtn" class="btn-main" onclick="startSpin()">🎲 운명의 레버 당기기!</button>
+    <button id="stopBtn" class="btn-main btn-stop" onclick="stopSpin()">🛑 STOP!!!!! (멈춰!)</button>
+
+    <div id="result-box">
+        <div id="result-text" style="font-size: 1.15rem; line-height: 1.8;"></div>
+        <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px; width: 100%;">
+            <button class="share-btn" style="background: #FEE500; color: #3A1D1D;" onclick="shareKakao()">카톡으로 결과 공유하기</button>
+            <a href="https://blog.naver.com/forgiven_77/224195220807" target="_blank" style="text-decoration: none; background: #3b82f6; color: white; padding: 18px; border-radius: 16px; font-weight:800; font-size:16px; display: flex; align-items: center; justify-content: center;">다른 심리테스트 하러가기</a>
+            <button class="share-btn" style="background: #94a3b8;" onclick="copyResult()">📋 결과 복사하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const menus = ["마라탕", "김치찌개", "돈까스", "초밥", "제육볶음", "쌀국수", "햄버거", "샌드위치", "비빔밥", "짜장면", "짬뽕", "부대찌개", "순대국", "뼈해장국", "텐동", "라멘", "파스타", "피자", "냉면", "칼국수", "닭갈비", "찜닭", "보쌈", "족발", "분식", "된장찌개", "카레", "회덮밥", "서브웨이", "순두부", "설렁탕", "갈비탕", "육개장", "국밥", "솥밥", "포케", "타코", "딤섬", "떡볶이", "우동", "스테이크", "물회", "삼겹살", "콩국수", "소바", "죽", "토스트", "고기국수", "알탕", "국수"];
+    
+    let timerIds = [null, null, null];
+    let finalIndices = [0, 0, 0];
+    let currentMembers = [];
+
+    function setupReel(reelId, items) {
+        const reel = document.getElementById(reelId);
+        let html = '';
+        for(let i=0; i<40; i++) { // 시각적 풍성함을 위해 40배 생성
+            items.forEach(item => { html += `<div class="item">${item}</div>`; });
+        }
+        reel.innerHTML = html;
+        reel.style.transition = "none";
+        reel.style.transform = "translateY(0)";
+    }
+
+    function startSpin() {
+        currentMembers = document.getElementById('memberInput').value.split(',').map(s => s.trim()).filter(s => s !== '');
+        if(currentMembers.length < 1) { alert("이름을 입력해주세요!"); return; }
+
+        // 슬롯 세팅
+        setupReel('reel1', menus);
+        setupReel('reel2', currentMembers);
+        setupReel('reel3', currentMembers);
+
+        document.getElementById('spinBtn').style.display = 'none';
+        document.getElementById('stopBtn').style.display = 'block';
+        document.getElementById('result-box').style.display = 'none';
+
+        // 버튼 누르자마자 즉시 회전 시작
+        startInfiniteScroll(0, menus);
+        startInfiniteScroll(1, currentMembers);
+        startInfiniteScroll(2, currentMembers);
+    }
+
+    function startInfiniteScroll(idx, dataArr) {
+        const reel = document.getElementById(`reel${idx+1}`);
+        let pos = 0;
+        timerIds[idx] = setInterval(() => {
+            pos++;
+            if(pos >= dataArr.length) pos = 0;
+            reel.style.transition = "none";
+            reel.style.transform = `translateY(-${pos * 120}px)`;
+            finalIndices[idx] = pos;
+        }, 35); // 회전 속도 (더 빠르게)
+    }
+
+    function stopSpin() {
+        document.getElementById('stopBtn').disabled = true;
+
+        // 딜레이 대폭 강화 (1.1초 -> 2.1초 -> 4.2초)
+        setTimeout(() => stopReel(0, menus, 1.5), 0);
+        setTimeout(() => stopReel(1, currentMembers, 1.5), 2100); 
+        setTimeout(() => stopReel(2, currentMembers, 1.5), 4200); 
+    }
+
+    function stopReel(idx, dataArr, duration) {
+        clearInterval(timerIds[idx]);
+        const reel = document.getElementById(`reel${idx+1}`);
+        
+        // 현재 위치에서 더 돌다가 서서히 멈춤
+        const extraTurns = dataArr.length * 2; 
+        const stopTarget = finalIndices[idx] + extraTurns; 
+        
+        reel.style.transition = `transform ${duration}s cubic-bezier(0.1, 0.9, 0.3, 1)`;
+        reel.style.transform = `translateY(-${stopTarget * 120}px)`;
+        
+        finalIndices[idx] = stopTarget % dataArr.length;
+
+        if (idx === 2) {
+            setTimeout(showResult, duration * 1000 + 300);
+        }
+    }
+
+    function showResult() {
+        const res1 = menus[finalIndices[0]];
+        const res2 = currentMembers[finalIndices[1]];
+        const res3 = currentMembers[finalIndices[2]];
+
+        document.getElementById('result-text').innerHTML = `
+            <span style="font-size: 0.9rem; color: #666;">--- 오늘의 운명 ---</span><br>
+            🍴 오늘의 메뉴: <strong>${res1}</strong><br>
+            💸 점심 결제: <span style="color:#ff4757; font-size:1.4rem; font-weight:900;">${res2}</span><br>
+            ☕️ 커피 결제: <span style="color:#1e90ff; font-size:1.4rem; font-weight:900;">${res3}</span><br>
+            <span style="font-size: 0.85rem; color: #888; display:block; margin-top:10px;">결과에 불복 시 한 판 더?</span>
+        `;
+        document.getElementById('result-box').style.display = 'block';
+        document.getElementById('spinBtn').style.display = 'block';
+        document.getElementById('stopBtn').style.display = 'none';
+        document.getElementById('stopBtn').disabled = false;
+    }
+
+    function copyResult() {
+        const text = document.getElementById('result-text').innerText.replace('--- 오늘의 운명 ---', '').trim();
+        navigator.clipboard.writeText(text + "\n#점심슬롯 #운명에맡겨 #바이브코딩").then(() => {
+            alert("결과가 복사되었습니다!");
+        });
+    }
+
+    const KAKAO_KEY = "b30b6d088f5b3551adc2890111d071fc";
+    function shareKakao() {
+        if (!window.Kakao) return;
+        if (!Kakao.isInitialized()) Kakao.init(KAKAO_KEY);
+        const text = document.getElementById('result-text').innerText.replace('--- 오늘의 운명 ---', '').trim();
+        Kakao.Share.sendDefault({
+            objectType: 'feed',
+            content: {
+                title: '인생역전 점심 슬롯 결과!',
+                description: text,
+                imageUrl: 'https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg',
+                link: { mobileWebUrl: window.location.href, webUrl: window.location.href },
+            },
+            buttons: [
+                { title: '나도 슬롯 돌리기', link: { mobileWebUrl: window.location.href, webUrl: window.location.href } },
+                { title: '다른 테스트 구경하기', link: { mobileWebUrl: 'https://blog.naver.com/forgiven_77/224195220807', webUrl: 'https://blog.naver.com/forgiven_77/224195220807' } }
+            ],
+        });
+    }
+
+    window.onload = () => {
+        setupReel('reel1', menus);
+        setupReel('reel2', ["이름1", "이름2", "이름3"]);
+        setupReel('reel3', ["이름1", "이름2", "이름3"]);
+    };
+</script>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+
+</div>
+</body>
+</html>
