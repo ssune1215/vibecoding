@@ -133,7 +133,7 @@
     function showQuestion() {
         let percent = (currentQ / questions.length) * 100;
         document.getElementById('progress').style.width = percent + '%';
-        document.getElementById('q-number').innerText = "Question " + (currentQ + 1) + " / 5";
+        document.getElementById('q-number').innerText = `Question ${currentQ + 1} / ${questions.length}`;
         let currentData = questions[currentQ];
         document.getElementById('question-text').innerText = currentData.q;
         let container = document.getElementById('options-container');

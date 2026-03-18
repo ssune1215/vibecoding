@@ -13,6 +13,14 @@
     <meta property="og:image" content="../assets/share-thumb.jpg" />
 
     <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            --main-color: #a855f7; /* 퍼플 */
+            --bg-light: #faf5ff;
+            --border-color: #f3e8ff;
+            --btn-hover-shadow: rgba(168, 85, 247, 0.3);
+        }
+    </style>
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script src="../assets/kakao-share.js" defer></script>
@@ -125,6 +133,7 @@
     function showQuestion() {
         let percent = (currentQ / questions.length) * 100;
         document.getElementById('progress').style.width = percent + '%';
+        document.getElementById('q-number').innerText = `Question ${currentQ + 1} / ${questions.length}`;
         let currentData = questions[currentQ];
         document.getElementById('question-text').innerText = currentData.q;
         let container = document.getElementById('options-container');

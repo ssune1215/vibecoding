@@ -130,47 +130,59 @@ body {
     margin-bottom: 30px; 
     text-align: left; 
 }
+.result-box { 
+    background: white; 
+    border: 1px solid var(--border-color); 
+    border-radius: 20px; 
+    padding: 30px 25px; 
+    margin-bottom: 35px; 
+    text-align: left; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+}
 .result-box-title { 
     font-size: 14px; 
     font-weight: 800; 
     color: var(--main-color); 
-    margin-bottom: 15px; 
+    margin-bottom: 20px; 
     display: inline-block; 
-    padding: 6px 14px; 
+    padding: 8px 16px; 
     background: var(--bg-light); 
     border-radius: 20px; 
+    letter-spacing: -0.02em;
 }
 .result-desc { 
-    font-size: 16px; 
+    font-size: 16.5px; 
     color: #475569; 
-    line-height: 1.7; 
+    line-height: 1.8; 
     word-break: keep-all; 
 }
 
-/* 액션 버튼 그룹 (노/파/빨 무적서식) */
-.action-btns { margin-top: 10px; border-top: 1px dashed #e2e8f0; padding-top: 25px; }
+/* 액션 버튼 그룹 (세련된 컬러 브랜딩) */
+.action-btns { margin-top: 20px; border-top: 1px dashed #e2e8f0; padding-top: 30px; }
 
 .btn-kakao { 
-    width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; 
-    background: #FEE500; color: #3A1D1D; cursor: pointer; margin-bottom: 12px; 
-    font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; 
+    width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 800; 
+    background: #FEE500; color: #3A1D1D; cursor: pointer; margin-bottom: 15px; 
+    font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
 }
-.btn-kakao:hover { background: #e5cd00; transform: translateY(-1px); }
+.btn-kakao:hover { background: #fada00; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(254, 229, 0, 0.3); }
 
 .btn-blog { 
-    width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; 
-    background: #3b82f6; color: white; cursor: pointer; margin-bottom: 12px; 
-    font-size: 16px; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: 0.2s; 
+    width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 800; 
+    background: #f1f5f9; color: #475569; cursor: pointer; margin-bottom: 15px; 
+    font-size: 16px; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: 0.3s; 
 }
-.btn-blog:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
+.btn-blog:hover { background: #e2e8f0; transform: translateY(-2px); color: #1e293b; }
 
 .btn-retry { 
-    width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; 
-    background: #ef4444; color: white; cursor: pointer; font-size: 16px; transition: 0.2s; 
+    width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 800; 
+    background: white; color: #94a3b8; cursor: pointer; font-size: 15px; transition: 0.2s; 
+    border: 1px solid #e2e8f0;
 }
-.btn-retry:hover { background: #dc2626; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3); }
+.btn-retry:hover { background: #f8fafc; color: #64748b; }
 
-/* 유틸리티 클래스 */
+/* 유틸리티 및 질문 번호 */
+.tiny { font-size: 13px; font-weight: 700; color: var(--main-color); opacity: 0.8; margin-bottom: 20px; letter-spacing: 0.05em; }
 .hide { display: none !important; }
 
 /* =========================================================

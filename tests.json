@@ -22,22 +22,22 @@
   {
     "title": "🎭 겉과 속 (본심 테스트)",
     "path": "./blackandwhite/",
-    "group": "etc"
+    "group": "psy"
   },
   {
     "title": "🍜 점심 추천",
     "path": "./lunch/",
-    "group": "etc"
+    "group": "psy"
   },
   {
     "title": "🎯 룰렛",
     "path": "./roulette/",
-    "group": "etc"
+    "group": "psy"
   },
   {
     "title": "🏝️ 무인도 생존 (밸런스)",
     "path": "./balance/",
-    "group": "etc"
+    "group": "psy"
   },
   {
     "title": "🦊 연애 동물 테스트",
@@ -47,11 +47,11 @@
   {
     "title": "😏 음란마귀 테스트",
     "path": "./eros/",
-    "group": "etc"
+    "group": "psy"
   },
   {
     "title": "✨ 첫인상 스캐너 (Vibe Check)",
     "path": "./firstimpression/",
-    "group": "etc"
+    "group": "psy"
   }
 ]
