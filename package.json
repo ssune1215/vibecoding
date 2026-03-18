@@ -1,0 +1,10 @@
+{
+  "name": "vibecoding",
+  "version": "1.0.0",
+  "description": "Vibecoding static test platform",
+  "scripts": {
+    "build": "echo 'Building static files...'"
+  },
+  "author": "",
+  "license": "ISC"
+}
