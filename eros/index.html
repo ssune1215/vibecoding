@@ -124,7 +124,16 @@
         { min: 12, max: 15, name: "에로스의 현신\n절대 매력신 등급", img: "🔥", desc: "당신 앞에서는 그 누구도 버틸 수 없습니다! 존재 자체가 치명적인 매력 덩어리군요. 너무 위험한 수준의 매력을 가졌으니 조심하세요!" }
     ];
 
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
     function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
         document.getElementById('start-area').style.display = 'none';
         document.getElementById('quiz-area').style.display = 'block';
         showQuestion();

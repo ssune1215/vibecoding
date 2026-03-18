@@ -124,7 +124,16 @@
         IT: { name: "차분하고 깊은 사랑\n츤데레 전략가형", img: "🐱", desc: "겉으로는 무심해 보일 수 있어도 속으로는 누구보다 깊게 생각하고 챙겨주는 스타일입니다. 당신의 진중한 모습에 상대방은 큰 안정감을 느낄 거예요." }
     };
 
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
     function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
         document.getElementById('start-area').style.display = 'none';
         document.getElementById('quiz-area').style.display = 'block';
         showQuestion();

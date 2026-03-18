@@ -124,7 +124,16 @@
         D: { name: "신비로운 베일\n치명적인 고양이형", img: "🐱", desc: "알면 알수록 궁금해지는 묘한 매력의 소유자! 도도하면서도 시크한 분위기가 상대방의 도전 정신(?)을 자극하는 아주 매력적인 타입입니다." }
     };
 
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
     function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
         document.getElementById('start-area').style.display = 'none';
         document.getElementById('quiz-area').style.display = 'block';
         showQuestion();

@@ -124,7 +124,16 @@
         { min: 12, max: 15, name: "사랑에 올인!\n직진 로맨티스트형", img: "💘", desc: "축하합니다! 당신은 이 시대의 진정한 로맨티스트입니다. 사랑 없이는 못 사는 열정적인 마음의 소유자군요. 당신의 진심은 누구보다 밝게 빛나고 있습니다." }
     ];
 
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
     function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
         document.getElementById('start-area').style.display = 'none';
         document.getElementById('quiz-area').style.display = 'block';
         showQuestion();

@@ -126,7 +126,16 @@
         { min: 15, max: 15, name: "야성미 폭발 19금\n마라맛 흑표범", img: "🐆", desc: "오늘 밤의 주인공은 나! 야성미 폭발, 19금 로맨스의 주인공급 텐션. 원하는 게 생기면 무조건 쟁취해야 직성이 풀리는 마라맛 연애 고수입니다. 당신의 눈빛 한 방면 다들 쓰러질걸요?" }
     ];
 
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
     function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
         document.getElementById('start-area').style.display = 'none';
         document.getElementById('quiz-area').style.display = 'block';
         showQuestion();

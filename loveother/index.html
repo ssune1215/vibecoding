@@ -124,7 +124,16 @@
         pro: { name: "망상 대잔치\n짝사랑 프로 선수형", img: "🎭", desc: "혼자 손자 이름까지 다 지어놓는 당신! 상상력만큼은 우주 최강입니다. 친구라는 이름 뒤에 숨지 말고 조금 더 용기를 내어 다가가보세요." }
     };
 
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
     function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
         document.getElementById('start-area').style.display = 'none';
         document.getElementById('quiz-area').style.display = 'block';
         showQuestion();

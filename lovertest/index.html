@@ -124,7 +124,16 @@
         SAINT: { name: "모든 걸 초월한\n살아있는 보살형", img: "🙏", desc: "태평양 같은 마음의 소유자! 웬만한 잘못은 웃으며 넘깁니다. 당신의 헌신과 믿음에 상대방은 딴짓을 할 엄두도 못 낼 거예요." }
     };
 
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
     function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
         document.getElementById('start-area').style.display = 'none';
         document.getElementById('quiz-area').style.display = 'block';
         showQuestion();

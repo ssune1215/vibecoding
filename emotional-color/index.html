@@ -125,7 +125,16 @@
         G: { name: "평온하고 듬직한\n에코 그린 (Echo Green)", img: "💚", color: "#10b981", desc: "당신은 조화를 중요시하는 평화주의자입니다! 타인의 이야기를 잘 들어주며 안정감을 주는 듬직한 사람이군요. 당신과 함께라면 누구든 편안해질 수 있습니다." }
     };
 
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
     function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
         document.getElementById('start-area').style.display = 'none';
         document.getElementById('quiz-area').style.display = 'block';
         showQuestion();
