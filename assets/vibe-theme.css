@@ -161,23 +161,23 @@ body {
 .action-btns { margin-top: 20px; border-top: 1px dashed #e2e8f0; padding-top: 30px; }
 
 .btn-kakao { 
-    width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 800; 
+    width: 100%; height: 60px; border-radius: 18px; border: none; font-weight: 800; 
     background: #FEE500; color: #3A1D1D; cursor: pointer; margin-bottom: 15px; 
-    font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+    font-size: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; 
 }
-.btn-kakao:hover { background: #fada00; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(254, 229, 0, 0.3); }
+.btn-kakao:hover { background: #fada00; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(254, 229, 0, 0.3); }
 
 .btn-blog { 
-    width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 800; 
-    background: #f1f5f9; color: #475569; cursor: pointer; margin-bottom: 15px; 
+    width: 100%; height: 60px; border-radius: 18px; border: none; font-weight: 800; 
+    background: #3b82f6; color: white; cursor: pointer; margin-bottom: 15px; 
     font-size: 16px; text-decoration: none; display: flex; align-items: center; justify-content: center; transition: 0.3s; 
 }
-.btn-blog:hover { background: #e2e8f0; transform: translateY(-2px); color: #1e293b; }
+.btn-blog:hover { background: #2563eb; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3); }
 
 .btn-retry { 
-    width: 100%; padding: 18px; border-radius: 16px; border: none; font-weight: 800; 
+    width: 100%; height: 60px; border-radius: 18px; border: none; font-weight: 800; 
     background: white; color: #94a3b8; cursor: pointer; font-size: 15px; transition: 0.2s; 
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e2e8f0; display: flex; align-items: center; justify-content: center;
 }
 .btn-retry:hover { background: #f8fafc; color: #64748b; }
 
