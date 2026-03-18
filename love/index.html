@@ -1,425 +1,163 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  
-    <!-- Open Graph (Kakao preview) -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연애 지수 테스트 | 나의 러브 지수 스캐너</title>
+    
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="love 테스트" />
-    <meta property="og:description" content="love 바이브코딩 테스트" />
+    <meta property="og:title" content="나의 연애 점수는? | 연애 지수 테스트" />
+    <meta property="og:description" content="당신의 연애 세포는 살아있나요? 숨겨진 로맨틱 지수를 스캔해드립니다." />
     <meta property="og:url" content="./" />
-  <meta property="og:image" content="/assets/share-thumb.jpg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
 
-    <!-- Twitter (optional, helps some previews) -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="love 테스트" />
-    <meta name="twitter:description" content="love 바이브코딩 테스트" />
-    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
-    
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>나의 숨겨진 연애 본능 진단</title>
-
-  <!-- OG(스크랩/공유용) -->
-
-
-
-<!-- Kakao SDK -->
-  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
-
-  <!-- Confetti (선택) -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-  <link rel="stylesheet" href="../assets/vibe-theme.css">
-  <style>
-    :root {
-      --main-color: #ff6b6b; /* 코랄 핑크 */
-      --bg-light: #fff5f7;
-      --card-bg: #ffffff;
-      --text-dark: #334155;
-      --border-color: #ffe4e6;
-      --btn-hover-shadow: rgba(255, 107, 107, 0.3);
-    }
-    html, body { min-height: 100vh; margin: 0; }
-  </style>
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
 </head>
-
 <body>
+
 <div class="card">
-  <!-- START -->
-  <section id="startSection">
-    <div class="hero">
-      <div class="result-image">💘</div>
-      <h1 class="title">나의 숨겨진<br/>연애 본능 진단</h1>
-      <p class="description">현실 고증 200%, 과몰입 주의!<br/>몇 가지 선택으로 내 연애 본능을 확인해요.</p>
-    </div>
-    <div class="body">
-      <button id="startBtn" class="btn-start">진단 시작하기</button>
-      <div class="tiny" style="margin-top:15px; color:#94a3b8; font-size:12px;">※ 결과는 재미로만! 다만 은근 맞을 수도 😏</div>
-    </div>
-  </section>
-
-  <!-- QUIZ -->
-  <section id="quizSection" class="hide">
-    <div class="progress-bar"><div id="bar" class="progress"></div></div>
-    <div class="qTitle" id="qTitle" style="font-size: 20px; font-weight: 800; color: var(--main-color); margin-bottom: 25px;"></div>
-    <div id="choices" class="choices"></div>
-    <div class="tiny" style="margin-top:20px; color:#94a3b8; font-size:12px;">선택은 “당장 내 마음” 기준으로 고르면 정확도가 올라가요.</div>
-  </section>
-
-  <!-- RESULT -->
-  <section id="resultSection" class="hide">
-    <div id="res-image" class="result-image">❤️</div>
-    <div id="resultType" class="result-title"></div>
-    
-    <div class="result-box">
-      <span class="result-box-title">🔍 연애 본능 분석 보고서</span>
-      <div id="resultDesc" class="result-desc"></div>
+    <div id="start-area">
+        <div class="result-image">❤️</div>
+        <h1 class="title">나의 연애 점수는?<br>러브 지수 스캐너</h1>
+        <p class="description">당신의 연애 세포는 살아있나요?<br>숨겨진 로맨틱 지수를 스캔해드립니다.</p>
+        <button class="btn-start" onclick="startTest()">연애 지수 측정 시작 🔍</button>
     </div>
 
-    <div class="result-box" style="background: white;">
-      <span class="result-box-title" style="background: #f1f5f9; color: #475569;">📌 주요 특징</span>
-      <ul id="resultBullets" class="bullets" style="margin-top:10px;"></ul>
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700;">Question 1 / 5</div>
+        <div class="title" id="question-text" style="font-size: 20px;">질문 불러오는 중...</div>
+        <div id="options-container"></div>
     </div>
 
-    <div class="action-btns">
-      <button id="kakaoBtn" class="btn-kakao">
-        <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
-        친구들에게 내 본능 자랑하기
-      </button>
-      <button id="otherBtn" class="btn-blog">👀 다른 테스트 구경하기</button>
-      <button id="restartBtn" class="btn-retry">다시 테스트하기</button>
+    <div id="result-area" style="display: none;">
+        <div class="tiny" style="font-weight: 700;">나의 연애 지수 스캔 결과</div>
+        <div id="res-image" class="result-image">✨</div>
+        <div id="res-name" class="result-title">결과 이름</div>
+        
+        <div class="result-box">
+            <span class="result-box-title">🔍 큐피드의 분석 보고서</span>
+            <div id="res-desc" class="result-desc">결과 설명이 여기에 나옵니다.</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                내 연애지수 자랑하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224195220807" target="_blank" class="btn-blog">
+                👀 다른 재미있는 테스트 구경가기
+            </a>
+            <button class="btn-retry" onclick="location.reload()">🔄 다시 테스트하기</button>
+        </div>
     </div>
-  </section>
 </div>
 
 <script>
-/** =========================
- *  설정
- * ========================= */
-const KAKAO_JS_KEY = "b30b6d088f5b3551adc2890111d071fc";
-// 공통 썸네일 경로(재환님이 assets 폴더에 이 이름으로 넣으면 됨)
-const SHARE_THUMB_PATH = "/assets/share-thumb.jpg";
-// "다른 테스트 해보기" 링크(재환님 기본값)
-const OTHER_TEST_LINK = "https://blog.naver.com/forgiven_77/224195220807";
+    let currentQ = 0;
+    let score = 0;
 
-// 결과 공유 버튼 문구 통일
-const KAKAO_BUTTON_TITLE = "테스트 해보기";
+    const questions = [
+        {
+            q: "길을 가다 예쁜 꽃집을 봤을 때 떠오르는 생각은?",
+            options: [
+                { text: "꽃 사주고 싶은 사람이 생각난다", point: 3 },
+                { text: "나중에 기념일에 사야겠다", point: 2 },
+                { text: "꽃은 너무 비싸고 금방 시들어", point: 0 },
+                { text: "그냥 예쁘네 하고 지나간다", point: 1 }
+            ]
+        },
+        {
+            q: "연인이 갑자기 '사랑해'라고 말한다면?",
+            options: [
+                { text: "나도 너무너무 사랑해! (무한공세)", point: 3 },
+                { text: "갑자기 왜 그래? (당황하지만 좋음)", point: 1 },
+                { text: "조용히 웃으며 손을 꽉 잡아준다", point: 2 },
+                { text: "말뿐인 건 아니지? (의심의 눈초리)", point: 0 }
+            ]
+        },
+        {
+            q: "드라마 속 로맨틱한 장면을 볼 때 나의 반응은?",
+            options: [
+                { text: "나도 저런 연애를 꿈꾼다 (과몰입)", point: 3 },
+                { text: "실제로 저게 가능해? (현실 자각)", point: 0 },
+                { text: "대리 만족하며 미소 짓는다", point: 2 },
+                { text: "오그라들어서 채널을 돌린다", point: 1 }
+            ]
+        },
+        {
+            q: "기념일에 내가 더 선호하는 것은?",
+            options: [
+                { text: "직접 쓴 편지와 정성 가득한 선물", point: 3 },
+                { text: "비싸고 화려한 명품 선물", point: 1 },
+                { text: "분위기 좋은 레스토랑에서의 저녁", point: 2 },
+                { text: "그냥 현금이 최고 아냐?", point: 0 }
+            ]
+        },
+        {
+            q: "내가 생각하는 진정한 사랑이란?",
+            options: [
+                { text: "서로의 있는 그대로를 사랑하는 것", point: 3 },
+                { text: "끊임없이 노력하고 맞추어 가는 것", point: 2 },
+                { text: "적당한 거리 유지가 필수인 것", point: 1 },
+                { text: "솔직히 잘 모르겠다", point: 0 }
+            ]
+        }
+    ];
 
-/** =========================
- *  질문/선택지(8문항)
- *  유형: OLIN(올인) / SONAMU(소나무) / JIKJIN(직진) / GWAN(관찰)
- * ========================= */
-const quiz = [
-  {
-    q: "새벽 2시, 자니? 하고 전남친/전여친에게 연락이 왔다. 내 반응은?",
-    a: [
-      { t:"'왜?' 라며 일단 답장하고 마음이 흔들리나 간 본다.", s:{OLIN:2} },
-      { t:"읽씹하거나 무시한다. 과거는 과거일 뿐.", s:{SONAMU:2} },
-      { t:"'자장가 불러달라고?' 바로 장난치며 플러팅", s:{JIKJIN:2} },
-      { t:"'자는데 왜 깨워' 프사 염탐부터 하고 답장 여부 결정", s:{GWAN:2} },
-    ]
-  },
-  {
-    q: "소개팅 첫 만남! 갑자기 분위기가 야릇해졌다면?",
-    a: [
-      { t:"심장 폭발! 눈빛 교환하며 나도 모르게 분위기에 휩쓸린다.", s:{OLIN:2} },
-      { t:"속으로는 놀랐지만 겉으로는 평온한 척 젠틀하게 넘긴다.", s:{SONAMU:2} },
-      { t:"'우리 오늘 밤 뭐 할까?' 직진 멘트로 쐐기를 박는다.", s:{JIKJIN:2} },
-      { t:"이게 플러팅인지 헷갈리네.. 상대방의 다음 행동을 관찰한다.", s:{GWAN:2} },
-    ]
-  },
-  {
-    q: "사귄 지 100일! 애인이 준비한 깜짝 '19금' 이벤트를 본 나는?",
-    a: [
-      { t:"감동의 눈물 줄줄! 오늘 밤은 내가 리드할게🔥", s:{OLIN:2} },
-      { t:"고마워하며 준비한 것에 대해 차분히 칭찬해준다.", s:{SONAMU:2} },
-      { t:"'이거 입고 어떻게 하라고~?' 능글맞게 바로 즐긴다.", s:{JIKJIN:2} },
-      { t:"속으론 엄청 좋으면서 겉으로는 '이게 뭐야~' 쿨한 척", s:{GWAN:2} },
-    ]
-  },
-  {
-    q: "애인이 내 친구와 단둘이 밤늦게 술을 마셨다면?",
-    a: [
-      { t:"눈 돌아감! 당장 전화해서 울고불고 난리 난다.", s:{OLIN:2} },
-      { t:"기분은 더럽지만 일단 다음 날 이성적으로 따져 묻는다.", s:{SONAMU:2} },
-      { t:"당장 그 술집으로 쳐들어가서 내 눈으로 확인한다.", s:{JIKJIN:2} },
-      { t:"어디까지 가나 두고 보자. 증거가 모일 때까지 지켜본다.", s:{GWAN:2} },
-    ]
-  },
-  {
-    q: "상대방과 스킨십 진도를 나가는 나만의 무기는?",
-    a: [
-      { t:"나도 모르게 나오는 애교와 뜨거운 눈빛 한 방!", s:{OLIN:2} },
-      { t:"자연스러운 터치와 상대가 편안함을 느끼는 분위기 조성", s:{SONAMU:2} },
-      { t:"'키스해도 돼?' 돌직구 멘트와 박력 있는 리드", s:{JIKJIN:2} },
-      { t:"상대의 반응을 유도하는 아슬아슬한 선 타기", s:{GWAN:2} },
-    ]
-  }
-];
+    const results = [
+        { min: 0, max: 3, name: "냉동실 연애세포\n차도남 / 차도녀형", img: "❄️", desc: "당신의 연애 세포는 혹한기 훈련 중인가요? 이성적인 판단이 너무 앞서서 로맨틱한 분위기를 깨뜨릴 때가 있네요. 가끔은 머리보다 마음이 가는 대로 행동해보세요!" },
+        { min: 4, max: 7, name: "잠자는 숲속의\n연애 초보형", img: "😴", desc: "연애에 관심은 있지만 아직은 낯설고 수줍은 당신! 이론은 빠삭한데 실전에서 조금 약할 수 있어요. 조금만 더 용기를 낸다면 멋진 로맨스가 시작될 거예요." },
+        { min: 8, max: 11, name: "밀당의 고수\n현실 로맨티스트형", img: "😏", desc: "연애를 즐길 줄 아는 당신! 적당한 설렘과 현실적인 감각을 모두 갖췄네요. 센스가 넘쳐서 연인에게 늘 인기 만점일 스타일입니다." },
+        { min: 12, max: 15, name: "사랑에 올인!\n직진 로맨티스트형", img: "💘", desc: "축하합니다! 당신은 이 시대의 진정한 로맨티스트입니다. 사랑 없이는 못 사는 열정적인 마음의 소유자군요. 당신의 진심은 누구보다 밝게 빛나고 있습니다." }
+    ];
 
-/** =========================
- *  결과 데이터
- * ========================= */
-const results = {
-  OLIN: {
-    emoji: "🔥",
-    title: "불나방 같은 올인형",
-    desc: "연애 세포가 너무 활발해서 문제! 감정에 충실하고, 한 번 꽂히면 물불 안 가리고 뛰어드는 '불나방' 스타일입니다. 금방 불타오르고 상처도 쉽게 받지만, 그만큼 진심으로 뜨겁게 사랑할 줄 아는 로맨티스트네요.",
-    bullets: [
-      "분위기에 약함, 술 한 잔 들어가면 텐션 폭발",
-      "금사빠 기질 농후! 하지만 내 사람에겐 진심",
-      "질투심 역대급! 내 거 건들면 다 주금",
-      "팩폭: 제발 밀당 좀 해! 다 퍼주다가 호구 된다구~"
-    ],
-    shareTitle: "내 연애 세포는? 🔥 활활 타오르는 불나방 올인형",
-    shareDesc: "너, 연애할 땐 앞뒤 안 재고 직진하는 타입이지?\n지금 테스트 해봐!",
-    sub: "어울리는 짝꿍: 묵묵히 받아주는 소나무형"
-  },
-  SONAMU: {
-    emoji: "🌲",
-    title: "흔들림 없는 소나무형",
-    desc: "현실주의자! 자극적인 로맨스보단 오래 지속되는 신뢰를 중요시하는 든든한 타입입니다. 화끈한 이벤트엔 뚝딱거리지만, 한 번 사귀면 좀처럼 한눈팔지 않는 진국 중의 진국이죠.",
-    bullets: [
-      "스킨십은 보수적(?), 하지만 한 번 스위치 켜지면 무서움",
-      "밀당 극혐. 피곤한 연애는 딱 질색",
-      "갈등보다는 대화로 평화롭게 푸는 편",
-      "팩폭: 너무 무미건조한 거 아니야? 가끔은 파격적인 모습도 필요해!"
-    ],
-    shareTitle: "내 연애 세포는? 🌲 듬직함 한도초과 소나무형",
-    shareDesc: "재미없어 보여도 한 번 빠지면 못 헤어나온다구!\n지금 테스트 해봐!",
-    sub: "어울리는 짝꿍: 먼저 다가와주는 불나방 올인형"
-  },
-  JIKJIN: {
-    emoji: "🏎️",
-    title: "노빠꾸 직진 불도저형",
-    desc: "좋으면 좋다, 싫으면 싫다! 애매하게 구는 걸 제일 싫어하는 화끈한 성격입니다. 마음에 드는 상대가 나타나면 플러팅도, 스킨십도 주저 없이 리드하는 매력 부자!",
-    bullets: [
-      "'오늘부터 1일 할래?' 돌직구 멘트 장인",
-      "눈치 안 보고 당당하게 직진하는 본능",
-      "재고 따지는 밀당? 내 사전에 그런 건 없음",
-      "팩폭: 직진도 좋지만, 가끔 눈치 챙겨! 상대방은 부담스러울 수도?"
-    ],
-    shareTitle: "내 연애 세포는? 🏎️ 매력 터지는 노빠꾸 불도저형",
-    shareDesc: "어장관리 절대 안 해, 찐사랑에만 직진!\n지금 테스트 해봐!",
-    sub: "어울리는 짝꿍: 밀고 당기기 고수 쿨한 관찰자형"
-  },
-  GWAN: {
-    emoji: "😎",
-    title: "머리 꼭대기의 관찰자형",
-    desc: "아슬아슬한 선 타기의 고수. 여우(또는 늑대) 같은 스타일로 상대방의 패를 먼저 확인하고 움직이는 치밀함이 돋보입니다. 겉으론 무심해 보이지만 머릿속엔 오만 가지 생각이 다 있죠.",
-    bullets: [
-      "스킨십도 계획적으로! 내가 원할 때, 원하는 타이밍에",
-      "상대방 약 오르게 하는 밀당의 천재",
-      "가벼운 관계는 ok, 진지한 관계는 꼼꼼히 심사",
-      "팩폭: 재고 따지다가 놓친 인연이 몇 트럭이지? 쿨한 척 좀 그만!"
-    ],
-    shareTitle: "내 연애 세포는? 😎 선 타기 만렙 관찰자형",
-    shareDesc: "밀당천재 납셨다! 네 속마음 나만 아는 거 아니지?\n지금 테스트 해봐!",
-    sub: "어울리는 짝꿍: 숨김없이 솔직한 불도저형"
-  }
-};
+    function startTest() {
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
+    }
 
-/** =========================
- *  DOM
- * ========================= */
-const startSection = document.getElementById("startSection");
-const quizSection = document.getElementById("quizSection");
-const resultSection = document.getElementById("resultSection");
+    function showQuestion() {
+        let percent = (currentQ / questions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        let currentData = questions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
+        let container = document.getElementById('options-container');
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.point);
+            container.appendChild(btn);
+        });
+    }
 
-const startBtn = document.getElementById("startBtn");
-const qTitle = document.getElementById("qTitle");
-const choices = document.getElementById("choices");
-const bar = document.getElementById("bar");
+    function nextQuestion(point) {
+        score += point;
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
 
-const resultType = document.getElementById("resultType");
-const resultDesc = document.getElementById("resultDesc");
-const resultBullets = document.getElementById("resultBullets");
-
-const shareTitleEl = document.getElementById("shareTitle");
-const shareDescEl = document.getElementById("shareDesc");
-
-const kakaoBtn = document.getElementById("kakaoBtn");
-const otherBtn = document.getElementById("otherBtn");
-const restartBtn = document.getElementById("restartBtn");
-
-/** =========================
- *  상태
- * ========================= */
-let idx = 0;
-let score = { OLIN:0, SONAMU:0, JIKJIN:0, GWAN:0 };
-
-/** =========================
- *  유틸
- * ========================= */
-function go(section){
-  startSection.classList.add("hide");
-  quizSection.classList.add("hide");
-  resultSection.classList.add("hide");
-  section.classList.remove("hide");
-}
-
-function setProgress(){
-  const pct = Math.round((idx / quiz.length) * 100);
-  bar.style.width = pct + "%";
-}
-
-function pickResult(){
-  const entries = Object.entries(score);
-  entries.sort((a,b)=>b[1]-a[1]);
-  return entries[0][0];
-}
-
-function confettiPop(){
-  if (!window.confetti) return;
-  confetti({
-    particleCount: 80,
-    spread: 65,
-    origin: { y: 0.72 }
-  });
-}
-
-/** =========================
- *  카카오 공유 (단일 파일 내장)
- * ========================= */
-function initKakao(){
-  if (!window.Kakao) return false;
-  if (!window.Kakao.isInitialized()) window.Kakao.init(KAKAO_JS_KEY);
-  return true;
-}
-
-function shareKakaoFeed(title, desc, url){
-  if (!initKakao()) {
-    alert("카카오 SDK 로딩 실패");
-    return;
-  }
-  const thumb = window.location.origin + SHARE_THUMB_PATH;
-
-  window.Kakao.Share.sendDefault({
-    objectType: "feed",
-    content: {
-      title,
-      description: desc,
-      imageUrl: thumb,
-      link: { mobileWebUrl: url, webUrl: url }
-    },
-    buttons: [
-      {
-        title: KAKAO_BUTTON_TITLE, // ✅ "테스트 해보기"
-        link: { mobileWebUrl: url, webUrl: url }
-      },
-      {
-        title: "다른 테스트 구경하기",
-        link: { mobileWebUrl: OTHER_TEST_LINK, webUrl: OTHER_TEST_LINK }
-      }
-    ]
-  });
-}
-
-/** =========================
- *  렌더
- * ========================= */
-function renderQuestion(){
-  setProgress();
-  const cur = quiz[idx];
-  qTitle.textContent = cur.q;
-  choices.innerHTML = "";
-
-  cur.a.forEach((opt) => {
-    const b = document.createElement("button");
-    b.className = "choice";
-    b.type = "button";
-    b.textContent = opt.t;
-    b.addEventListener("click", () => {
-      Object.keys(opt.s).forEach(k => score[k] += opt.s[k]);
-      idx++;
-      if (idx >= quiz.length){
-        showResult(pickResult(), true);
-      } else {
-        renderQuestion();
-      }
-    });
-    choices.appendChild(b);
-  });
-}
-
-function showResult(code, fromQuiz){
-  const r = results[code];
-  if (!r) return;
-
-  // 화면 구성
-  resultType.textContent = `${r.emoji} ${r.title}`;
-  resultDesc.textContent = r.desc;
-
-  resultBullets.innerHTML = "";
-  r.bullets.forEach(li=>{
-    const el = document.createElement("li");
-    el.textContent = li;
-    resultBullets.appendChild(el);
-  });
-
-  // 공유용 텍스트 세팅(카카오 카드에 그대로 들어감)
-  shareTitleEl.textContent = `${r.shareTitle}`;
-  shareDescEl.textContent = `${r.desc}\n${r.sub}`;
-
-  // URL에 결과 코드 심기 -> 공유 링크로 들어오면 바로 결과
-  const url = new URL(window.location.href);
-  url.searchParams.set("r", code);
-  history.replaceState({}, "", url.toString());
-
-  if (fromQuiz) confettiPop();
-  go(resultSection);
-}
-
-/** =========================
- *  이벤트
- * ========================= */
-document.addEventListener("DOMContentLoaded", () => {
-  // 시작 버튼 (무조건 동작)
-  startBtn.addEventListener("click", () => {
-    idx = 0;
-    score = { OLIN:0, SONAMU:0, JIKJIN:0, GWAN:0 };
-    bar.style.width = "0%";
-    go(quizSection);
-    renderQuestion();
-  });
-
-  // 카카오 공유 버튼
-  kakaoBtn.addEventListener("click", () => {
-    const title = shareTitleEl.textContent.trim() || document.title;
-    const desc = shareDescEl.textContent.trim() || "지금 테스트 해보세요 🙂";
-    // 공유 시에는 결과코드가 박힌 현재 URL 그대로
-    const url = window.location.href;
-    shareKakaoFeed(title, desc, url);
-  });
-
-  // 다른 테스트 해보기
-  otherBtn.addEventListener("click", () => {
-    window.open(OTHER_TEST_LINK, "_blank");
-  });
-
-  // 다시하기
-  restartBtn.addEventListener("click", () => {
-    // 결과 파라미터 제거
-    const url = new URL(window.location.href);
-    url.searchParams.delete("r");
-    history.replaceState({}, "", url.toString());
-
-    idx = 0;
-    score = { OLIN:0, SONAMU:0, JIKJIN:0, GWAN:0 };
-    bar.style.width = "0%";
-    go(startSection);
-  });
-
-  // 공유 링크로 들어온 경우(?r=CODE)
-  const url = new URL(window.location.href);
-  const code = url.searchParams.get("r");
-  if (code && results[code]) {
-    showResult(code, false);
-  }
-});
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        let resultData = results.find(r => score >= r.min && score <= r.max);
+        if(!resultData) resultData = results[0];
+        document.getElementById('res-image').innerText = resultData.img;
+        document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
+        document.getElementById('res-desc').innerHTML = resultData.desc;
+    }
 </script>
-</div>
 </body>
 </html>

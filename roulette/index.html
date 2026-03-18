@@ -2,241 +2,167 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>인생 한 방! 심리 행운 룰렛</title>
     
-    <!-- Open Graph (Kakao preview) -->
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="roulette 테스트" />
-    <meta property="og:description" content="roulette 바이브코딩 테스트" />
+    <meta property="og:title" content="인생 한 방! 심리 행운 룰렛" />
+    <meta property="og:description" content="당신의 잠재된 행운 바이브를 스캔합니다. 오늘은 어떤 운명이 당신을 기다릴까요?" />
     <meta property="og:url" content="./" />
-    <meta property="og:image" content="/assets/share-thumb.jpg?v=2" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
-
-    <!-- Twitter (optional, helps some previews) -->
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="roulette 테스트" />
-    <meta name="twitter:description" content="roulette 바이브코딩 테스트" />
-    <meta name="twitter:image" content="https://vibecoding1.purplesunset707.workers.dev/assets/share-thumb.jpg?v=2" />
-    
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>심장쫄깃 점심 슬롯</title>
-
-  <!-- OG(스크랩/공유용) -->
-
-
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
 
     <link rel="stylesheet" href="../assets/vibe-theme.css">
-    <style>
-        :root {
-            --main-color: #f43f5e; /* 로즈 레드 (룰렛) */
-            --bg-light: #fff1f2;
-            --card-bg: #ffffff;
-            --text-dark: #334155;
-            --border-color: #ffe4e6;
-            --btn-hover-shadow: rgba(244, 63, 94, 0.3);
-            --gold: #fcd34d;
-        }
-        
-        /* === Global Center Fix (auto) === */
-        html, body { height: 100%; }
-        body{
-          min-height:100vh;
-          display:flex;
-          align-items:center;
-          justify-content:center;
-          background: #f8fafc;
-          margin: 0;
-        }
-        .pageCenter{
-          width:100%;
-          max-width:450px;
-        }
-
-        .container { background: var(--card-bg); padding: 35px 25px; border-radius: 28px; box-shadow: 0 15px 35px var(--btn-hover-shadow); width: 100%; max-width: 450px; text-align: center; border: 1px solid var(--border-color); }
-        
-        .input-group { margin-bottom: 25px; text-align: left; background: var(--bg-light); padding: 20px; border-radius: 16px; border: 1px dashed var(--border-color); }
-        .input-group label { color: var(--main-color); font-size: 14px; font-weight: 800; }
-        input { width: 100%; padding: 15px; border: 1px solid var(--border-color); border-radius: 12px; box-sizing: border-box; margin-top: 10px; font-weight: 800; font-size: 15px; color: var(--text-dark); outline: none; transition: 0.2s; }
-        input:focus { border-color: var(--main-color); box-shadow: 0 0 0 3px var(--btn-hover-shadow); }
-
-        /* 슬롯 디자인 */
-        .slot-machine { display: flex; gap: 10px; background: #fff; border: 6px solid var(--gold); border-radius: 20px; padding: 15px; margin-bottom: 25px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-        .slot-column { flex: 1; height: 120px; background: var(--bg-light); border-radius: 12px; overflow: hidden; position: relative; border: 1px solid var(--border-color); }
-        .reel { transition: transform 0.5s linear; } 
-        .item { height: 120px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: var(--main-color); text-align: center; line-height: 1.4; word-break: keep-all; }
-        
-        /* 버튼 스타일 */
-        .btn-main { background-color: var(--main-color); color: white; border: none; padding: 20px; font-size: 19px; font-weight: 800; border-radius: 20px; cursor: pointer; transition: 0.2s; box-shadow: 0 6px 20px var(--btn-hover-shadow); width: 100%; }
-        .btn-stop { background-color: #10b981; color: white; border: none; padding: 20px; font-size: 19px; font-weight: 800; border-radius: 20px; cursor: pointer; transition: 0.2s; box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3); width: 100%; display: none; }
-        .btn-main:active, .btn-stop:active { transform: translateY(4px); box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-        
-        /* 결과 화면 */
-        #result-box { margin-top: 25px; padding: 30px 20px; background: #fefce8; border-radius: 20px; border: 2px dashed #fde047; display: none; animation: finalPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex-direction: column; align-items: center;}
-        @keyframes finalPop { from {transform: scale(0.5); opacity:0;} to {transform: scale(1); opacity:1;} }
-        #result-box h2 { font-size: 24px; color: #ca8a04; font-weight: 800; margin: 0 0 10px; word-break: keep-all; }
-        #result-box p { font-size: 15px; color: #854d0e; margin: 0 0 15px; word-break: keep-all; }
-        .share-btn { background: #3b82f6; color: white; border: none; padding: 18px; border-radius: 16px; width: 100%; margin-top: 5px; cursor: pointer; font-weight: 800; font-size: 16px; transition: 0.2s; }
-        .share-btn:hover { background: #2563eb; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
-    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
 </head>
 <body>
-<div class=\"pageCenter\">
 
-<div class="container">
-    <h1 style="color:#222; margin-top:0; font-size: 1.6rem;">🎰 인생역전 점심 슬롯</h1>
-    <div class="input-group">
-        <label style="font-size:0.85rem; font-weight:bold;">👥 함께하는 동료들 (쉼표로 구분)</label>
-        <input type="text" id="memberInput" value="김대리, 이과장, 박사원, 최팀장, 나">
+<div class="card">
+    <div id="start-area">
+        <div class="result-image">🎡</div>
+        <h1 class="title">인생 한 방!<br>심리 행운 룰렛</h1>
+        <p class="description">당신의 잠재된 행운 바이브를 스캔합니다.<br>오늘은 어떤 운명이 당신을 기다릴까요?</p>
+        <button class="btn-start" onclick="startTest()">룰렛 돌리기 시작 🔍</button>
     </div>
 
-    <div class="slot-machine">
-        <div class="slot-column"><div id="reel1" class="reel"></div></div>
-        <div class="slot-column"><div id="reel2" class="reel"></div></div>
-        <div class="slot-column"><div id="reel3" class="reel"></div></div>
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700;">Question 1 / 5</div>
+        <div class="title" id="question-text" style="font-size: 20px;">질문 불러오는 중...</div>
+        <div id="options-container"></div>
     </div>
 
-    <button id="spinBtn" class="btn-main" onclick="startSpin()">🎲 운명의 레버 당기기!</button>
-    <button id="stopBtn" class="btn-main btn-stop" onclick="stopSpin()">🛑 STOP!!!!! (멈춰!)</button>
+    <div id="result-area" style="display: none;">
+        <div class="tiny" style="font-weight: 700;">오늘의 행운 스캔 결과</div>
+        <div id="res-image" class="result-image">✨</div>
+        <div id="res-name" class="result-title">결과 이름</div>
+        
+        <div class="result-box">
+            <span class="result-box-title">🔍 운명학자 분석</span>
+            <div id="res-desc" class="result-desc">결과 설명이 여기에 나옵니다.</div>
+        </div>
 
-    <div id="result-box">
-        <div id="result-text" style="font-size: 1.15rem; line-height: 1.8;"></div>
-        <div style="margin-top: 20px; display: flex; flex-direction: column; gap: 12px; width: 100%;">
-            <button class="share-btn" style="background: #FEE500; color: #3A1D1D;" onclick="shareKakao()">카톡으로 결과 공유하기</button>
-            <a href="https://blog.naver.com/forgiven_77/224195220807" target="_blank" style="text-decoration: none; background: #3b82f6; color: white; padding: 18px; border-radius: 16px; font-weight:800; font-size:16px; display: flex; align-items: center; justify-content: center;">다른 심리테스트 하러가기</a>
-            <button class="share-btn" style="background: #94a3b8;" onclick="copyResult()">📋 결과 복사하기</button>
+        <div class="action-btns">
+            <button class="btn-kakao">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                내 행운 지수 공유하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224195220807" target="_blank" class="btn-blog">
+                👀 다른 재미있는 테스트 구경가기
+            </a>
+            <button class="btn-retry" onclick="location.reload()">🔄 다시 테스트하기</button>
         </div>
     </div>
 </div>
 
 <script>
-    const menus = ["마라탕", "김치찌개", "돈까스", "초밥", "제육볶음", "쌀국수", "햄버거", "샌드위치", "비빔밥", "짜장면", "짬뽕", "부대찌개", "순대국", "뼈해장국", "텐동", "라멘", "파스타", "피자", "냉면", "칼국수", "닭갈비", "찜닭", "보쌈", "족발", "분식", "된장찌개", "카레", "회덮밥", "서브웨이", "순두부", "설렁탕", "갈비탕", "육개장", "국밥", "솥밥", "포케", "타코", "딤섬", "떡볶이", "우동", "스테이크", "물회", "삼겹살", "콩국수", "소바", "죽", "토스트", "고기국수", "알탕", "국수"];
-    
-    let timerIds = [null, null, null];
-    let finalIndices = [0, 0, 0];
-    let currentMembers = [];
+    let currentQ = 0;
+    let score = { L: 0, M: 0, S: 0, XP: 0 };
 
-    function setupReel(reelId, items) {
-        const reel = document.getElementById(reelId);
-        let html = '';
-        for(let i=0; i<40; i++) { // 시각적 풍성함을 위해 40배 생성
-            items.forEach(item => { html += `<div class="item">${item}</div>`; });
+    const questions = [
+        {
+            q: "길을 걷다 우연히 반짝이는 동전을 발견했다! 당신의 행동은?",
+            options: [
+                { text: "아싸! 행운의 전조라 믿고 줍는다", type: 'L' },
+                { text: "귀찮으니 그냥 무시하고 갈 길 간다", type: 'M' },
+                { text: "주변을 살피며 주인이 있는지 확인한다", type: 'S' },
+                { text: "복권을 사야겠다며 바로 편의점으로 간다", type: 'XP' }
+            ]
+        },
+        {
+            q: "중요한 선택을 앞두고 있을 때, 당신이 믿는 것은?",
+            options: [
+                { text: "나의 강력한 직감과 운", type: 'L' },
+                { text: "철저하게 분석된 데이터와 논리", type: 'M' },
+                { text: "주변 신뢰하는 사람들의 조언", type: 'S' },
+                { text: "에라 모르겠다! 하늘의 뜻에 맡긴다", type: 'XP' }
+            ]
+        },
+        {
+            q: "꿈속에서 당신이 본 동물은?",
+            options: [
+                { text: "하늘을 나는 화려한 황금 용", type: 'L' },
+                { text: "평온하게 풀을 뜯는 사슴", type: 'M' },
+                { text: "나를 지켜주는 커다란 곰", type: 'S' },
+                { text: "정체를 알 수 없는 미지의 생명체", type: 'XP' }
+            ]
+        },
+        {
+            q: "당신이 선호하는 복권 당첨 후의 삶은?",
+            options: [
+                { text: "흥청망청! 화려한 세계 일주와 쇼핑", type: 'L' },
+                { text: "건물주! 안정적인 노후 보장", type: 'M' },
+                { text: "기부와 나눔! 조용한 선행", type: 'S' },
+                { text: "비밀 유지! 하던 일 계속하기", type: 'XP' }
+            ]
+        },
+        {
+            q: "지금 당장 운명을 바꿀 수 있는 버튼이 있다면?",
+            options: [
+                { text: "주저 없이 누른다! 인생은 한 방", type: 'L' },
+                { text: "내용을 꼼꼼히 읽어보고 판단한다", type: 'M' },
+                { text: "무서우니 절대 누르지 않는다", type: 'S' },
+                { text: "실수로라도 눌러버릴까 봐 멀리한다", type: 'XP' }
+            ]
         }
-        reel.innerHTML = html;
-        reel.style.transition = "none";
-        reel.style.transform = "translateY(0)";
+    ];
+
+    const results = {
+        L: { name: "잭팟 가즈아!\n천운을 타고난 럭키가이", img: "🎰", desc: "당신은 오늘 당장 복권을 사도 좋을 만큼 강력한 운의 바이브를 가졌네요! 긍정적인 에너지가 행운을 끌어당기고 있습니다. 망설이지 말고 도전하세요!" },
+        M: { name: "차분한 성공\n운명을 개척하는 자", img: "🎩", desc: "운도 실력이라는 말이 당신을 위한 말이군요. 철저한 자기관리와 분석으로 행운마저 당신의 편으로 만드는 힘이 있습니다. 안정적인 성공이 보장된 인상입니다." },
+        S: { name: "포근한 수호신\n평온한 일상의 행복", img: "🛡️", desc: "커다란 대박보다는 소소하지만 확실한 행복이 주위에 가득하네요. 당신을 아껴주는 사람들 자체가 당신의 가장 큰 행운입니다. 마음의 평온이 곧 풍요로 이어질 거예요." },
+        XP: { name: "미지의 변수\n럭키 다크호스", img: "🦄", desc: "당신의 운명은 그 누구도 예측할 수 없습니다! 남들이 보지 못하는 기회를 포착하는 독특한 시각을 가졌군요. 예상치 못한 곳에서 터지는 대박의 주인공이 될 확률이 높습니다." }
+    };
+
+    function startTest() {
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
     }
 
-    function startSpin() {
-        currentMembers = document.getElementById('memberInput').value.split(',').map(s => s.trim()).filter(s => s !== '');
-        if(currentMembers.length < 1) { alert("이름을 입력해주세요!"); return; }
-
-        // 슬롯 세팅
-        setupReel('reel1', menus);
-        setupReel('reel2', currentMembers);
-        setupReel('reel3', currentMembers);
-
-        document.getElementById('spinBtn').style.display = 'none';
-        document.getElementById('stopBtn').style.display = 'block';
-        document.getElementById('result-box').style.display = 'none';
-
-        // 버튼 누르자마자 즉시 회전 시작
-        startInfiniteScroll(0, menus);
-        startInfiniteScroll(1, currentMembers);
-        startInfiniteScroll(2, currentMembers);
+    function showQuestion() {
+        let percent = (currentQ / questions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        document.getElementById('q-number').innerText = "Question " + (currentQ + 1) + " / 5";
+        let currentData = questions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
+        let container = document.getElementById('options-container');
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.type);
+            container.appendChild(btn);
+        });
     }
 
-    function startInfiniteScroll(idx, dataArr) {
-        const reel = document.getElementById(`reel${idx+1}`);
-        let pos = 0;
-        timerIds[idx] = setInterval(() => {
-            pos++;
-            if(pos >= dataArr.length) pos = 0;
-            reel.style.transition = "none";
-            reel.style.transform = `translateY(-${pos * 120}px)`;
-            finalIndices[idx] = pos;
-        }, 35); // 회전 속도 (더 빠르게)
-    }
-
-    function stopSpin() {
-        document.getElementById('stopBtn').disabled = true;
-
-        // 딜레이 대폭 강화 (1.1초 -> 2.1초 -> 4.2초)
-        setTimeout(() => stopReel(0, menus, 1.5), 0);
-        setTimeout(() => stopReel(1, currentMembers, 1.5), 2100); 
-        setTimeout(() => stopReel(2, currentMembers, 1.5), 4200); 
-    }
-
-    function stopReel(idx, dataArr, duration) {
-        clearInterval(timerIds[idx]);
-        const reel = document.getElementById(`reel${idx+1}`);
-        
-        // 현재 위치에서 더 돌다가 서서히 멈춤
-        const extraTurns = dataArr.length * 2; 
-        const stopTarget = finalIndices[idx] + extraTurns; 
-        
-        reel.style.transition = `transform ${duration}s cubic-bezier(0.1, 0.9, 0.3, 1)`;
-        reel.style.transform = `translateY(-${stopTarget * 120}px)`;
-        
-        finalIndices[idx] = stopTarget % dataArr.length;
-
-        if (idx === 2) {
-            setTimeout(showResult, duration * 1000 + 300);
+    function nextQuestion(type) {
+        score[type]++;
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
         }
     }
 
     function showResult() {
-        const res1 = menus[finalIndices[0]];
-        const res2 = currentMembers[finalIndices[1]];
-        const res3 = currentMembers[finalIndices[2]];
-
-        document.getElementById('result-text').innerHTML = `
-            <span style="font-size: 0.9rem; color: #666;">--- 오늘의 운명 ---</span><br>
-            🍴 오늘의 메뉴: <strong>${res1}</strong><br>
-            💸 점심 결제: <span style="color:#ff4757; font-size:1.4rem; font-weight:900;">${res2}</span><br>
-            ☕️ 커피 결제: <span style="color:#1e90ff; font-size:1.4rem; font-weight:900;">${res3}</span><br>
-            <span style="font-size: 0.85rem; color: #888; display:block; margin-top:10px;">결과에 불복 시 한 판 더?</span>
-        `;
-        document.getElementById('result-box').style.display = 'block';
-        document.getElementById('spinBtn').style.display = 'block';
-        document.getElementById('stopBtn').style.display = 'none';
-        document.getElementById('stopBtn').disabled = false;
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        let maxVal = -1;
+        let finalType = 'L';
+        for (let k in score) {
+            if (score[k] > maxVal) { maxVal = score[k]; finalType = k; }
+        }
+        let resultData = results[finalType];
+        document.getElementById('res-image').innerText = resultData.img;
+        document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
+        document.getElementById('res-desc').innerHTML = resultData.desc;
     }
-
-    function copyResult() {
-        const text = document.getElementById('result-text').innerText.replace('--- 오늘의 운명 ---', '').trim();
-        navigator.clipboard.writeText(text + "\n#점심슬롯 #운명에맡겨 #바이브코딩").then(() => {
-            alert("결과가 복사되었습니다!");
-        });
-    }
-
-    const KAKAO_KEY = "b30b6d088f5b3551adc2890111d071fc";
-    function shareKakao() {
-        if (!window.Kakao) return;
-        if (!Kakao.isInitialized()) Kakao.init(KAKAO_KEY);
-        const text = document.getElementById('result-text').innerText.replace('--- 오늘의 운명 ---', '').trim();
-        Kakao.Share.sendDefault({
-            objectType: 'feed',
-            content: {
-                title: '인생역전 점심 슬롯 결과!',
-                description: text,
-                imageUrl: window.location.origin + '/assets/share-thumb.jpg',
-                link: { mobileWebUrl: window.location.href, webUrl: window.location.href },
-            },
-            buttons: [
-                { title: '나도 슬롯 돌리기', link: { mobileWebUrl: window.location.href, webUrl: window.location.href } },
-                { title: '다른 테스트 구경하기', link: { mobileWebUrl: 'https://blog.naver.com/forgiven_77/224195220807', webUrl: 'https://blog.naver.com/forgiven_77/224195220807' } }
-            ],
-        });
-    }
-
-    window.onload = () => {
-        setupReel('reel1', menus);
-        setupReel('reel2', ["이름1", "이름2", "이름3"]);
-        setupReel('reel3', ["이름1", "이름2", "이름3"]);
-    };
 </script>
-<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
-
-</div>
 </body>
 </html>

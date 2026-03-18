@@ -3,77 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>바이브 코딩 | 연애 동물 테스트</title>
-    <!-- [폰트] 세련된 디자인 -->
-    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700&display=swap" rel="stylesheet">
+    <title>연애할 때 나는 어떤 동물일까? 연애 동물 테스트</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="연애할 때 나는 어떤 동물일까? 연애 동물 테스트" />
+    <meta property="og:description" content="내 연애 세포에 숨겨진 동물의 본능을 5가지 상황으로 알아봅니다! 당신은 어떤 동물일까요?" />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
     <link rel="stylesheet" href="../assets/vibe-theme.css">
-    <style>
-        :root {
-            --main-color: #ff85a2; /* 파스텔 코랄핑크 */
-            --bg-light: #fff0f3;
-            --card-bg: #ffffff;
-            --text-dark: #334155;
-            --border-color: #ffe4e6;
-            --btn-hover-shadow: rgba(255, 133, 162, 0.3);
-        }
-    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
 </head>
 <body>
 
 <div class="card">
-    <!-- 시작 화면 -->
     <div id="start-area">
         <div class="result-image">🦊💕</div>
         <h1 class="title">연애할 때<br>나는 어떤 동물일까?</h1>
         <p class="description">내 연애 세포에 숨겨진 동물의 본능을<br>5가지 상황으로 알아봅니다!</p>
         <button class="btn-start" onclick="startTest()">테스트 시작하기 🚀</button>
-        <div class="tiny" style="margin-top:20px; color:#94a3b8; font-size:13px;">※ 결과는 재미로만! 과몰입 환영 😏</div>
     </div>
 
-    <!-- 질문 영역 -->
     <div id="quiz-area" style="display: none;">
         <div class="progress-bar"><div class="progress" id="progress"></div></div>
-        <div id="q-number" style="color: #94a3b8; font-size: 14px; font-weight: 700; margin-bottom: 10px;">Question</div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700;">Question 1 / 5</div>
         <div class="title" id="question-text" style="font-size: 20px;">질문 불러오는 중...</div>
         <div id="options-container"></div>
     </div>
 
-    <!-- 결과 영역 -->
     <div id="result-area" style="display: none;">
-        <div style="color: #94a3b8; font-size: 14px; font-weight: 700;">테스트 결과 도출!</div>
+        <div class="tiny" style="font-weight: 700;">나의 연애 동물 결과</div>
         <div id="res-image" class="result-image">🐶</div>
         <div id="res-name" class="result-title">결과 이름</div>
         
         <div class="result-box">
             <span class="result-box-title">🐾 연애 동물 분석 보고서</span>
-            <div id="res-desc" class="result-desc"></div>
+            <div id="res-desc" class="result-desc">결과 설명이 여기에 나옵니다.</div>
         </div>
 
         <div class="action-btns">
-            <button class="btn-kakao" onclick="shareKakao()">
+            <button class="btn-kakao">
                 <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
-                카카오톡으로 결과 공유하기
+                내 결과 카톡으로 공유하기
             </button>
             <a href="https://blog.naver.com/forgiven_77/224195220807" target="_blank" class="btn-blog">
-                🔍 다른 재미있는 테스트 더보기
+                👀 다른 재미있는 테스트 구경가기
             </a>
-            <button class="btn-retry" onclick="location.reload()">
-                🔄 테스트 다시하기
-            </button>
+            <button class="btn-retry" onclick="location.reload()">🔄 다시 테스트하기</button>
         </div>
     </div>
 </div>
 
-<!-- 카카오 SDK 불러오기 -->
-<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
 <script>
-    if (!Kakao.isInitialized()) Kakao.init('b30b6d088f5b3551adc2890111d071fc');
-
     let currentQ = 0;
     let score = 0;
-    let shuffledQuestions = [];
 
-    const originalQuestions = [
+    const questions = [
         { 
             q: "마음에 드는 이성 발견! 스캔을 마친 나의 첫 행동은?", 
             options: [
@@ -89,7 +77,7 @@
                 { text: "예쁜 카페에서 조용히 대화를 나눈다.", point: 0 },
                 { text: "가벼운 칵테일 바에서 살짝 알코올을 빌린다.", point: 1 },
                 { text: "'우리 드라이브 갈래?' 은밀히 둘만의 공간으로!", point: 2 },
-                { text: "방 잡고 넷플릭스 고? 은밀하고 짜릿한 홈 데이트.", point: 3 }
+                { text: "방 잡고 넷플릭스 고? 홈 데이트.", point: 3 }
             ]
         },
         { 
@@ -102,7 +90,7 @@
             ]
         },
         { 
-            q: "썸남/썸녀 하드폰에 '전연인' 이름으로 카톡이 뜬 걸 봤다.", 
+            q: "썸남/썸녀 폰에 '전연인' 이름으로 카톡이 뜬 걸 봤다.", 
             options: [
                 { text: "모른 척 넘어가지만 속으로는 오만 가지 소설을 쓴다.", point: 0 },
                 { text: "'오, 아직 연락하나 봐?' 티 나게 꼽을 준다.", point: 1 },
@@ -116,53 +104,34 @@
                 { text: "천천히 스며드는 안정적이고 편안한 휴식.", point: 0 },
                 { text: "적당한 텐션과 밀당이 공존하는 짜릿한 게임.", point: 1 },
                 { text: "한 번 빠지면 내 모든 걸 다 내어주는 헌신.", point: 2 },
-                { text: "심장 폭발, 오늘만 사는 것처럼 뜨겁게 불태우는 본능!", point: 3 }
+                { text: "오늘만 사는 것처럼 뜨겁게 불태우는 본능!", point: 3 }
             ]
         }
     ];
 
     const results = [
-        { min: 0, max: 2, name: "철벽 폭발 뚝딱이\n나무늘보", img: "🦥", desc: "연애 세포 가뭄 상태! 다가와도 철벽을 치거나 너무 조심스러워서 썸만 타다 증발할 확률이 높아요.<br><br>하지만 한 번 마음을 열면 누구보다 편안한 안식처가 되어주는 은근한 진국 스타일입니다." },
-        { min: 3, max: 5, name: "겉바속촉 앙큼\n고양이", img: "🐈", desc: "겉으로는 새침하고 관심 없는 척하지만 속으로는 '날 좀 꼬셔봐' 모드인 당신!<br><br>안달 나게 만드는 치명적인 매력이 넘칩니다. 막상 사귀면 앙큼하게 잘 챙겨주는 마성의 매력을 가졌네요." },
-        { min: 6, max: 8, name: "밀당 만렙 여우\n플라밍고", img: "🦩", desc: "화려하게 플러팅은 잘 날리지만 정작 진짜 자기 패는 잘 안 보여주는 연애 고수!<br><br>다이나믹한 텐션을 즐기는 편입니다. 너무 밀어내기만 하면 상대가 지칠 수 있으니 가끔은 솔직해지자구요." },
-        { min: 9, max: 11, name: "눈먼 해바라기\n리트리버 댕댕이", img: "🐕", desc: "밀당 그게 뭔데? 한 번 꽂히면 이성 잃고 올인하는 찐 사랑꾼!<br><br>간이고 쓸개고 다 빼주는 스타일이라 가끔 상처받을 때도 있지만, 그만큼 투명하고 예쁜 사랑을 할 줄 아는 사람입니다." },
-        { min: 12, max: 14, name: "노빠꾸 직진 불도저\n코뿔소", img: "🦏", desc: "좋으면 들이받고 보는 불도저. 스킨십도 진도도 엄청 빠름!<br><br>애매한 관계를 가장 싫어하며 '일단 사귀고 맞춰가자'는 시크하면서도 뜨거운 상남자/상여자 스타일입니다." },
-        { min: 15, max: 15, name: "야성미 폭발 19금\n마라맛 흑표범", img: "🐆", desc: "오늘 밤의 주인공은 나! 야성미 폭발, 19금 로맨스의 주인공급 텐션.<br><br>원하는 게 생기면 무조건 쟁취해야 직성이 풀리는 마라맛 연애 고수입니다. 당신의 눈빛 한 방면 다들 쓰러질걸요?" }
+        { min: 0, max: 2, name: "철벽 폭발 뚝딱이\n나무늘보", img: "🦥", desc: "연애 세포 가뭄 상태! 다가와도 철벽을 치거나 너무 조심스러워서 썸만 타다 증발할 확률이 높아요. 하지만 한 번 마음을 열면 누구보다 편안한 안식처가 되어주는 은근한 진국 스타일입니다." },
+        { min: 3, max: 5, name: "겉바속촉 앙큼\n고양이", img: "🐈", desc: "겉으로는 새침하고 관심 없는 척하지만 속으로는 '날 좀 꼬셔봐' 모드인 당신! 안달 나게 만드는 치명적인 매력이 넘칩니다. 막상 사귀면 앙큼하게 잘 챙겨주는 마성의 매력을 가졌네요." },
+        { min: 6, max: 8, name: "밀당 만렙 여우\n플라밍고", img: "🦩", desc: "화려하게 플러팅은 잘 날리지만 정작 진짜 자기 패는 잘 안 보여주는 연애 고수! 다이나믹한 텐션을 즐기는 편입니다. 너무 밀어내기만 하면 상대가 지칠 수 있으니 가끔은 솔직해지자구요." },
+        { min: 9, max: 11, name: "눈먼 해바라기\n리트리버 댕댕이", img: "🐕", desc: "밀당 그게 뭔데? 한 번 꽂히면 이성 잃고 올인하는 찐 사랑꾼! 간이고 쓸개고 다 빼주는 스타일이라 가끔 상처받을 때도 있지만, 그만큼 투명하고 예쁜 사랑을 할 줄 아는 사람입니다." },
+        { min: 12, max: 14, name: "노빠꾸 직진 불도저\n코뿔소", img: "🦏", desc: "좋으면 들이받고 보는 불도저. 스킨십도 진도도 엄청 빠름! 애매한 관계를 가장 싫어하며 '일단 사귀고 맞춰가자'는 시크하면서도 뜨거운 상남자/상여자 스타일입니다." },
+        { min: 15, max: 15, name: "야성미 폭발 19금\n마라맛 흑표범", img: "🐆", desc: "오늘 밤의 주인공은 나! 야성미 폭발, 19금 로맨스의 주인공급 텐션. 원하는 게 생기면 무조건 쟁취해야 직성이 풀리는 마라맛 연애 고수입니다. 당신의 눈빛 한 방면 다들 쓰러질걸요?" }
     ];
-
-    let finalResultName = ""; 
-
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
 
     function startTest() {
         document.getElementById('start-area').style.display = 'none';
         document.getElementById('quiz-area').style.display = 'block';
-        
-        shuffledQuestions = JSON.parse(JSON.stringify(originalQuestions));
-        shuffleArray(shuffledQuestions);
-        
         showQuestion();
     }
 
     function showQuestion() {
-        let percent = (currentQ / shuffledQuestions.length) * 100;
+        let percent = (currentQ / questions.length) * 100;
         document.getElementById('progress').style.width = percent + '%';
-
-        let currentData = shuffledQuestions[currentQ];
-        document.getElementById('question-text').innerText = "Q" + (currentQ + 1) + ". " + currentData.q;
-
-        let options = [...currentData.options];
-        shuffleArray(options);
-
+        let currentData = questions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
         let container = document.getElementById('options-container');
-        container.innerHTML = ""; 
-        
-        options.forEach(opt => {
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
             let btn = document.createElement("button");
             btn.className = "option-btn";
             btn.innerText = opt.text;
@@ -174,8 +143,7 @@
     function nextQuestion(point) {
         score += point;
         currentQ++;
-
-        if (currentQ < shuffledQuestions.length) {
+        if (currentQ < questions.length) {
             showQuestion();
         } else {
             showResult();
@@ -185,34 +153,13 @@
     function showResult() {
         document.getElementById('quiz-area').style.display = 'none';
         document.getElementById('result-area').style.display = 'block';
-
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         let resultData = results.find(r => score >= r.min && score <= r.max);
         if(!resultData) resultData = results[0];
-
-        finalResultName = resultData.name.replace('\n', ' ');
-
         document.getElementById('res-image').innerText = resultData.img;
-        // <br>태그 허용 (줄바꿈 처리)
         document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
         document.getElementById('res-desc').innerHTML = resultData.desc;
     }
-
-    function shareKakao() {
-        Kakao.Share.sendDefault({
-            objectType: 'feed',
-            content: {
-                title: '연애할 때 나는 어떤 동물일까?',
-                description: '나의 연애 동물 유형은 [' + finalResultName + '] 입니다! 💖 확인해보세요!',
-                imageUrl: window.location.origin + '/assets/share-thumb.jpg',
-                link: { mobileWebUrl: window.location.href, webUrl: window.location.href }
-            },
-            buttons: [
-                { title: '나도 테스트 받기', link: { mobileWebUrl: window.location.href, webUrl: window.location.href } },
-                { title: '다른 테스트 구경하기', link: { mobileWebUrl: 'https://blog.naver.com/forgiven_77/224195220807', webUrl: 'https://blog.naver.com/forgiven_77/224195220807' } }
-            ]
-        });
-    }
 </script>
-
 </body>
 </html>

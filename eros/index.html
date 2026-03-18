@@ -2,176 +2,134 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>바이브 코딩 | 음란마귀 테스트 (순한맛)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>치명적 매력 스캐너 | 나의 에로스 등급 테스트</title>
     
     <!-- Open Graph -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="음란마귀 지수 테스트">
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="나의 치명적 매력 지수는? | 에로스 테스트" />
+    <meta property="og:description" content="당신에게 숨겨진 치명적인 매력을 스캔합니다. 당신의 에로스 등급은?" />
     <meta property="og:url" content="./" />
-    <meta property="og:description" content="내 머릿속엔 마구니가 얼마나 들었을까? 당신의 뇌구조를 스캔합니다. (17세 이상 권장)">
-    <meta property="og:image" content="/assets/share-thumb.jpg" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
 
-    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../assets/vibe-theme.css">
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
-    
-    <style>
-        :root {
-            --main-color: #ff8fa3; /* 복숭아 핑크 */
-            --bg-light: #fffdf2;
-            --card-bg: #ffffff;
-            --text-dark: #334155;
-            --border-color: #ffe4e6;
-            --btn-hover-shadow: rgba(255, 143, 163, 0.3);
-        }
-    </style>
+    <script src="../assets/kakao-share.js" defer></script>
 </head>
 <body>
 
 <div class="card">
-    <!-- 시작 화면 -->
     <div id="start-area">
-        <div class="title">😏 내 안에 숨겨진<br>음란마귀 지수 테스트</div>
-        <div class="result-image">🍑✨</div>
-        <p class="description">내 머릿속엔 마구니가 얼마나 들었을까?<br>(17세 이상 권장)</p>
-        <button class="btn-start" onclick="startTest()">내 뇌구조 스캔하기 🔍</button>
+        <div class="result-image">🔥👄</div>
+        <h1 class="title">치명적 매력<br>에로스 스캐너</h1>
+        <p class="description">당신에게 숨겨진 치명적인 매력을 스캔합니다.<br>당신의 진짜 등급을 확인해 보세요!</p>
+        <button class="btn-start" onclick="startTest()">매력 스캔 시작 🚀</button>
     </div>
 
-    <!-- 질문 영역 -->
     <div id="quiz-area" style="display: none;">
         <div class="progress-bar"><div class="progress" id="progress"></div></div>
-        <div id="q-number" style="color: #94a3b8; font-size: 14px; font-weight: 700; margin-bottom: 10px;">Question 1 / 5</div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700;">Question 1 / 5</div>
         <div class="title" id="question-text" style="font-size: 20px;">질문 불러오는 중...</div>
         <div id="options-container"></div>
     </div>
 
-    <!-- 결과 영역 -->
     <div id="result-area" style="display: none;">
-        <div style="color: #94a3b8; font-size: 14px; font-weight: 700;">내 머릿속 상태는?</div>
-        <div id="res-image" class="result-image">😇</div> 
+        <div class="tiny" style="font-weight: 700;">나의 에로스 스캔 결과</div>
+        <div id="res-image" class="result-image">✨</div>
         <div id="res-name" class="result-title">결과 이름</div>
         
         <div class="result-box">
-            <span class="result-box-title">🔍 음란마귀 분석 보고서</span>
+            <span class="result-box-title">🔍 매력 유전학자 분석</span>
             <div id="res-desc" class="result-desc">결과 설명이 여기에 나옵니다.</div>
         </div>
 
         <div class="action-btns">
-            <button class="btn-kakao" onclick="shareKakao()">
+            <button class="btn-kakao">
                 <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
-                친구들에게 내 뇌구조 자랑하기
+                내 매력 지수 공유하기
             </button>
             <a href="https://blog.naver.com/forgiven_77/224195220807" target="_blank" class="btn-blog">
                 👀 다른 재미있는 테스트 구경가기
             </a>
-            <button class="btn-retry" onclick="location.reload()">다시 테스트하기</button>
+            <button class="btn-retry" onclick="location.reload()">🔄 다시 테스트하기</button>
         </div>
     </div>
 </div>
 
 <script>
-    const KAKAO_KEY = "b30b6d088f5b3551adc2890111d071fc";
-    const SITE_URL = window.location.href;
-
-    if (!Kakao.isInitialized()) Kakao.init(KAKAO_KEY);
-
     let currentQ = 0;
     let score = 0;
 
-    const originalQuestions = [
-        { 
-            q: "썸녀/썸남이 '오늘 집 텅 비었는데 라면 먹고 갈래?'라고 한다. 내 머릿속은?", 
+    const questions = [
+        {
+            q: "길을 걷다 낯선 사람과 눈이 마주쳤을 때, 당신의 행동은?",
             options: [
-                { text: "아싸! 근데 무슨 라면일까? (진라면 순한맛 기대)", point: 0 },
-                { text: "이거 혹시... 그린라이트? (설렘 반 긴장 반)", point: 1 },
-                { text: "아싸! 이건 백프로다! (행복회로 풀가동하며 향수 뿌림)", point: 2 },
-                { text: "라면은 핑계고 냄비도 안 꺼낼걸? (은밀한 상상 200회 진행 중)", point: 3 }
+                { text: "부끄러워서 바로 시선을 피한다", point: 0 },
+                { text: "가벼운 미소로 화답한다", point: 2 },
+                { text: "상대가 피할 때까지 빤히 쳐다본다", point: 3 },
+                { text: "자신 있게 윙크를 날린다", point: 1 }
             ]
         },
-        { 
-            q: "술자리 중 은근슬쩍 '19금 아찔한 경험담' 토크가 나왔다! 나는?", 
+        {
+            q: "가장 파워풀하다고 생각하는 나의 매력 포인트는?",
             options: [
-                { text: "'어머, 어머머' 입틀막 하며 귀만 빨개지는 타입", point: 0 },
-                { text: "조용히 경청하며 리듬 타고 리액션만 열심히 해주는 타입", point: 1 },
-                { text: "나도 어디서 주워들은 남의 썰로 숟가락 하나 얹는 타입", point: 2 },
-                { text: "드립 폭발 활화산! 내 머릿속엔 이미 19금 필터가 장착됐다.", point: 3 }
+                { text: "깊고 그윽한 눈빛", point: 3 },
+                { text: "자신감 넘치는 목소리", point: 2 },
+                { text: "탄탄하고 건강한 몸매", point: 1 },
+                { text: "상대를 배려하는 다정함", point: 0 }
             ]
         },
-        { 
-            q: "자주 보던 동료(친구)가 땀을 흘리며 셔츠 단추를 2개 풀었다. 나의 행동은?", 
+        {
+            q: "좋아하는 이성 앞에서 나의 태도는?",
             options: [
-                { text: "'오늘 날씨가 덥지?' 하며 선풍기를 틀어준다.", point: 0 },
-                { text: "단추가 너무 많이 풀렸다고 조용히 닫으라고 눈치 준다.", point: 1 },
-                { text: "(시선은 이미 꽂혔지만) 꾹 참고 모른 척 애꿎은 물만 마신다.", point: 2 },
-                { text: "나도 모르게 시선 고정! 쇄골 라인 폼 미쳤다며 침 삼킴.", point: 3 }
+                { text: "은근슬쩍 스킨십을 유도한다", point: 3 },
+                { text: "칭찬 공세로 기분을 좋게 만든다", point: 1 },
+                { text: "나의 성공과 능력을 어필한다", point: 2 },
+                { text: "조용히 챙겨주는 츤데레 매력", point: 0 }
             ]
         },
-        { 
-            q: "유튜브에서 '절대 혼자 보지 마세요 🔥'라는 썸네일을 봤다.", 
+        {
+            q: "당신이 생각하는 가장 섹시한 순간은?",
             options: [
-                { text: "무서운 건가? 아님 낚시겠지. 과감히 패스.", point: 0 },
-                { text: "궁금하긴 한데 주변의 시선이 있으니 나중에 저장해둠.", point: 1 },
-                { text: "일단 누르고 소리 확 줄인 다음 실눈 뜨고 화면 각도를 튼다.", point: 2 },
-                { text: "0.1초 만에 광클. 숨겨진 꿀잼 레전드 영상은 절대 못 참지!", point: 3 }
+                { text: "열정적으로 일에 몰두할 때", point: 2 },
+                { text: "운동을 마치고 땀 흘릴 때", point: 1 },
+                { text: "샤워 후 거울 속 나를 볼 때", point: 3 },
+                { text: "맛있는 음식을 복스럽게 먹을 때", point: 0 }
             ]
         },
-        { 
-            q: "솔직히 털어놓자. 내 안에 잠든 마구니(음란마귀)의 크기는?", 
+        {
+            q: "사랑을 나눌 때 가장 중요하게 생각하는 것은?",
             options: [
-                { text: "이슬만 먹고 자란 백지장처럼 순수함 그 자체.", point: 0 },
-                { text: "평소엔 유교보이/유교걸. 하지만 특정 상황에선 스위치 켜짐.", point: 1 },
-                { text: "잘 숨긴다고 생각하지만 묘하게 음란한 눈빛이 가끔 튀어나옴.", point: 2 },
-                { text: "숨 쉴 때마다 야한 생각이 자동으로 생성되는 일상생활 불가 수준.", point: 3 }
+                { text: "서로의 강렬한 육체적 교감", point: 3 },
+                { text: "끊이지 않는 달콤한 대화", point: 1 },
+                { text: "서로를 향한 절대적인 신뢰", point: 0 },
+                { text: "함께하는 시간 속의 소소한 즐거움", point: 2 }
             ]
         }
     ];
 
     const results = [
-        { min: 0, max: 2, name: "천연기념물\n유교걸/유교보이", img: "👼", desc: "이 구역의 진정한 청정구역!<br><br>은밀한 농담을 들으면 '그게 무슨 뜻이야?'라고 물어봐서 분위기를 숙연하게 만드는 재주가 있습니다. 당신의 뇌는 아직 이슬만 먹고살고 있네요. 때묻지 않은 그 순수함, 국보급으로 보호해야 합니다." },
-        { min: 3, max: 5, name: "상상력 대장\n수줍은 끄덕요정", img: "😶", desc: "야한 이야기를 선뜻 꺼내지는 못하지만, 남들이 하는 이야기는 기가 막히게 잘 알아듣습니다.<br><br>겉으로는 평범해 보여도 속으로는 꽤 진도(?)를 나간 상상을 즐깁니다. 멍석만 안 깔렸을 뿐, 은근슬쩍 상상의 나래를 펼치는 당신!" },
-        { min: 6, max: 8, name: "선을 넘을 듯 말 듯\n방구석 상상러", img: "🍑", desc: "평소엔 정상인 코스프레를 아주 잘하고 있습니다.<br><br>하지만 친한 친구들 앞이나 혼자 있을 때는 뇌 안에 잠들어 있던 마구니가 슬그머니 깨어납니다. 선을 넘을 듯 말 듯 한 아슬아슬한 드립 구사 능력을 갖췄습니다." },
-        { min: 9, max: 11, name: "필터 고장난\n음흉한 너구리", img: "🦝", desc: "일상적인 대화에서도 혼자 이상하게 뜻을 해석해서 피식피식 웃는 타입이군요?<br><br>세상 만물이 묘하게 19금 필터링 되어 보이는 신기한 눈을 장착하고 계십니다. 주변 사람들은 당신의 묘한 미소의 뜻을 다 알고 있답니다." },
-        { min: 12, max: 14, name: "브레이크 파열\n도파민 폭주기관차", img: "🚂", desc: "삐빅- 위험 수위 경보입니다!<br><br>은밀한 드립이라면 자다가도 벌떡 일어나는 당신. 굳이 숨기지도 않고 당당하게 썰을 즐기는 경지에 올랐습니다. 술자리에서 이 구역의 토크를 미쳐 날뛰게 만드는 분위기 메이커!" },
-        { min: 15, max: 15, name: "인간 한계 돌파\n세계관 최강 음란마귀", img: "😈", desc: "경축! 당신의 머릿속에는 이미 마구니가 가득 찼습니다.<br><br>숨만 쉬어도 이상한(?) 상상이 자동으로 연상되는 기적의 뇌구조! 당장 산속으로 깊이 들어가 폭포수를 맞으며 번뇌를 씻어내야 할 수준입니다. 혼자 보지 말고 친구들에게 자랑스럽게(?) 공유하세요." }
+        { min: 0, max: 3, name: "청순가련\n순수 결정체 등급", img: "👼", desc: "당신은 아직 에로스의 마법보다는 순수한 사랑을 꿈꾸는 영혼이군요! 당신의 맑은 매력에 치유받고 싶어 하는 사람이 아주 많을 거예요." },
+        { min: 4, max: 7, name: "은은한 유혹\n잠재적 매력러 등급", img: "🌙", desc: "자신도 모르는 사이에 뿜어져 나오는 매력이 상당하네요! 조금만 더 자신감을 갖는다면 누구든 당신의 매력에 빠뜨릴 수 있을 거예요." },
+        { min: 8, max: 11, name: "눈빛 살인마\n치명적 유혹자 등급", img: "💋", desc: "축하합니다! 당신은 이 시대의 진정한 팜므파탈/옴므파탈입니다. 당신의 눈빛 한 방이면 누구나 무장해제될 수밖에 없군요." },
+        { min: 12, max: 15, name: "에로스의 현신\n절대 매력신 등급", img: "🔥", desc: "당신 앞에서는 그 누구도 버틸 수 없습니다! 존재 자체가 치명적인 매력 덩어리군요. 너무 위험한 수준의 매력을 가졌으니 조심하세요!" }
     ];
-
-    let shuffledQuestions = [];
-    let finalResultName = "";
-
-    function shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
 
     function startTest() {
         document.getElementById('start-area').style.display = 'none';
         document.getElementById('quiz-area').style.display = 'block';
-        
-        shuffledQuestions = JSON.parse(JSON.stringify(originalQuestions));
-        shuffleArray(shuffledQuestions);
-        
         showQuestion();
     }
 
     function showQuestion() {
-        let percent = (currentQ / shuffledQuestions.length) * 100;
+        let percent = (currentQ / questions.length) * 100;
         document.getElementById('progress').style.width = percent + '%';
-        document.getElementById('q-number').innerText = "Question " + (currentQ + 1) + " / 5";
-
-        let currentData = shuffledQuestions[currentQ];
+        let currentData = questions[currentQ];
         document.getElementById('question-text').innerText = currentData.q;
-
-        let options = [...currentData.options];
-        shuffleArray(options);
-
         let container = document.getElementById('options-container');
-        container.innerHTML = ""; 
-        
-        options.forEach(opt => {
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
             let btn = document.createElement("button");
             btn.className = "option-btn";
             btn.innerText = opt.text;
@@ -183,8 +141,7 @@
     function nextQuestion(point) {
         score += point;
         currentQ++;
-
-        if (currentQ < shuffledQuestions.length) {
+        if (currentQ < questions.length) {
             showQuestion();
         } else {
             showResult();
@@ -195,31 +152,11 @@
         document.getElementById('quiz-area').style.display = 'none';
         document.getElementById('result-area').style.display = 'block';
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-
         let resultData = results.find(r => score >= r.min && score <= r.max);
         if(!resultData) resultData = results[0];
-
-        finalResultName = resultData.name.replace('\n', ' ');
-
         document.getElementById('res-image').innerText = resultData.img;
         document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
         document.getElementById('res-desc').innerHTML = resultData.desc;
-    }
-
-    function shareKakao() {
-        Kakao.Share.sendDefault({
-            objectType: 'feed',
-            content: {
-                title: '나의 숨겨진 음란마귀 지수는?',
-                description: '내 머릿속은 [' + finalResultName + '] 수준이라고?! 👀 빨리 확인해봐!',
-                imageUrl: window.location.origin + '/assets/share-thumb.jpg',
-                link: { mobileWebUrl: SITE_URL, webUrl: SITE_URL }
-            },
-            buttons: [
-                { title: '내 안의 마구니 확인하기', link: { mobileWebUrl: SITE_URL, webUrl: SITE_URL } },
-                { title: '다른 테스트 구경하기', link: { mobileWebUrl: 'https://blog.naver.com/forgiven_77/224195220807', webUrl: 'https://blog.naver.com/forgiven_77/224195220807' } }
-            ]
-        });
     }
 </script>
 </body>
