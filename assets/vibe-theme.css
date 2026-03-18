@@ -3,9 +3,37 @@
 
 /* 🌟 프리미엄 바이브 테마 (v2.1) */
 :root {
-    position: relative; 
-    overflow: hidden; 
-    border: 1px solid var(--border-color); 
+    --main-color: #ff8fa3;
+    --bg-light: #fff5f7;
+    --card-bg: #ffffff;
+    --text-dark: #334155;
+    --border-color: #ffe4e6;
+    --btn-hover-shadow: rgba(255, 143, 163, 0.2);
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+    font-family: 'Pretendard', -apple-system, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.card {
+    background: var(--card-bg);
+    border-radius: 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+    padding: 40px 30px;
+    width: 100%;
+    max-width: 450px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
 }
 
 /* 제목 및 설명 */
