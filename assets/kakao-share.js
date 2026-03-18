@@ -38,7 +38,7 @@ function shareKakao(customTitle, customDesc, customImg) {
                 link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
             },
             {
-                title: '총 테스트 보기',
+                title: '다른 테스트 해보기',
                 link: { 
                     mobileWebUrl: 'https://blog.naver.com/forgiven_77/224198478277', 
                     webUrl: 'https://blog.naver.com/forgiven_77/224198478277' 

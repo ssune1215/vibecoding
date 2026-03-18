@@ -3,22 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>연애 밸런스 게임 | 연애 가치관 테스트</title>
+    <title>무인도 생존 심리 테스트 | 나만의 생존 전략은?</title>
     
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="당신의 연애 밸런스는? | 연애 가치관 테스트" />
-    <meta property="og:description" content="양보할 수 없는 연애의 순간들! 당신의 연애 밸런스를 스캔해드립니다." />
+    <meta property="og:title" content="무인도 생존 심리 테스트 | 나의 생존 등급은?" />
+    <meta property="og:description" content="위급 상황에서 드러나는 당신의 진짜 본능! 무인도에서 당신은 살아남을 수 있을까요?" />
     <meta property="og:url" content="./" />
     <meta property="og:image" content="../assets/share-thumb.jpg" />
 
     <link rel="stylesheet" href="../assets/vibe-theme.css">
     <style>
         :root {
-            --main-color: #14b8a6; /* 틸 */
-            --bg-light: #f0fdfa;
-            --border-color: #ccfbf1;
-            --btn-hover-shadow: rgba(20, 184, 166, 0.3);
+            --main-color: #059669; /* 포레스트 그린 */
+            --bg-light: #f0fdf4;
+            --border-color: #dcfce7;
+            --btn-hover-shadow: rgba(5, 150, 105, 0.2);
         }
     </style>
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
@@ -29,10 +29,10 @@
 
 <div class="card">
     <div id="start-area">
-        <div class="result-image">⚖️❤️</div>
-        <h1 class="title">끝장나는 연애<br>밸런스 게임</h1>
-        <p class="description">양보할 수 없는 연애의 순간들!<br>당신의 연애 밸런스를 스캔해드립니다.</p>
-        <button class="btn-start" onclick="startTest()">밸런스 스캔 시작 🚀</button>
+        <div class="result-image">🏝️🔥</div>
+        <h1 class="title">무인도 생존<br>심리 테스트</h1>
+        <p class="description">위급 상황에서 드러나는 당신의 진짜 본능!<br>무인도에서 당신은 살아남을 수 있을까요?</p>
+        <button class="btn-start" onclick="startTest()">생존 테스트 시작 🚀</button>
     </div>
 
     <div id="quiz-area" style="display: none;">
@@ -43,22 +43,22 @@
     </div>
 
     <div id="result-area" style="display: none;">
-        <div class="tiny" style="font-weight: 700;">나의 연애 밸런스 결과</div>
+        <div class="tiny" style="font-weight: 700;">나의 생존 본능 분석</div>
         <div id="res-image" class="result-image">✨</div>
         <div id="res-name" class="result-title">결과 이름</div>
         
         <div class="result-box">
-            <span class="result-box-title">🔍 연애 심리학자 분석</span>
+            <span class="result-box-title">🔦 생존 전문가의 조언</span>
             <div id="res-desc" class="result-desc">결과 설명이 여기에 나옵니다.</div>
         </div>
 
         <div class="action-btns">
             <button class="btn-kakao">
                 <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
-                내 밸런스 결과 공유하기
+                내 생존 결과 공유하기
             </button>
-            <a href="https://blog.naver.com/forgiven_77/224195220807" target="_blank" class="btn-blog">
-                👀 다른 재미있는 테스트 구경가기
+            <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog">
+                👀 다른 테스트 해보기
             </a>
             <button class="btn-retry" onclick="location.reload()">🔄 다시 테스트하기</button>
         </div>
@@ -71,55 +71,63 @@
 
     const questions = [
         {
-            q: "평생 한 명만 선택해야 한다면?",
+            q: "무인도에 떠내려온 당신, 가장 먼저 확보할 생존 필수템은?",
             options: [
-                { text: "나를 미치게 사랑해주는 사람", type: 'A' },
-                { text: "내가 미치게 사랑하는 사람", type: 'B' },
-                { text: "돈이 엄청 많은 사람", type: 'A' },
-                { text: "성격이 너무 잘 맞는 사람", type: 'B' }
+                { text: "다용도 맥가이버 칼", type: 'A' },
+                { text: "식량 확보를 위한 낚시 도구", type: 'B' },
+                { text: "체온 유지와 신호를 위한 라이터", type: 'A' },
+                { text: "부상 대비용 구급 상자", type: 'B' }
             ]
         },
         {
-            q: "더 참기 힘든 상황은?",
+            q: "첫날 밤, 잠자리를 정해야 한다면 어디가 가장 안전할까?",
             options: [
-                { text: "내 절친 깻잎 떼어주는 애인", type: 'A' },
-                { text: "내 절친 새우 까주는 애인", type: 'B' },
-                { text: "연락 안 되는 애인", type: 'A' },
-                { text: "거짓말하는 애인", type: 'B' }
+                { text: "시야가 탁 트인 해변가", type: 'A' },
+                { text: "비바람을 피할 수 있는 동굴", type: 'B' },
+                { text: "나무 위에 지은 간이 쉼터", type: 'A' },
+                { text: "덤불 속 은폐된 비밀 공간", type: 'B' }
             ]
         },
         {
-            q: "기념일에 더 선호하는 데이트는?",
+            q: "숲속에서 정체 모를 짐승의 소리가 들린다. 당신의 행동은?",
             options: [
-                { text: "화려한 호텔 다이닝", type: 'A' },
-                { text: "소박하지만 진심 어린 집밥", type: 'B' },
-                { text: "시끌벅적한 축제 현장", type: 'A' },
-                { text: "조용한 숲속 캠핑", type: 'B' }
+                { text: "횃불을 들고 소리 나는 곳을 확인한다", type: 'A' },
+                { text: "숨죽이고 소리가 멀어질 때까지 기다린다", type: 'B' },
+                { text: "함정을 설치하고 전투 준비를 한다", type: 'A' },
+                { text: "가장 높은 나무 위로 올라가 살핀다", type: 'B' }
             ]
         },
         {
-            q: "애인과 다퉜을 때 나의 스타일은?",
+            q: "구조를 기다리며 가장 견디기 힘든 고통은 무엇일까요?",
             options: [
-                { text: "그 자리에서 끝장을 본다", type: 'A' },
-                { text: "생각할 시간을 갖는다", type: 'B' },
-                { text: "먼저 사과하고 분위기를 푼다", type: 'A' },
-                { text: "상대방이 먼저 풀릴 때까지 기다린다", type: 'B' }
+                { text: "끊임없는 배고픔과 목마름", type: 'A' },
+                { text: "끝을 알 수 없는 지독한 고독감", type: 'B' },
+                { text: "이름 모를 벌레와 눅눅한 습기", type: 'A' },
+                { text: "언제 나타날지 모르는 맹수의 위협", type: 'B' }
             ]
         },
         {
-            q: "더 설레는 고백 방식은?",
+            q: "저 멀리 구조 헬기가 보인다! 당신이 가장 먼저 취할 행동은?",
             options: [
-                { text: "사람들 앞에서 화려하게", type: 'A' },
-                { text: "둘이 있을 때 진지하게", type: 'B' },
-                { text: "기습 키스와 함께", type: 'A' },
-                { text: "수줍은 손편지와 함께", type: 'B' }
+                { text: "불을 피워 검은 연기 신호를 보낸다", type: 'A' },
+                { text: "거울을 이용해 반사광 신호를 보낸다", type: 'B' },
+                { text: "미친 듯이 소리를 지르며 뛰어간다", type: 'A' },
+                { text: "해변에 쓴 SOS 글자를 더 크게 다듬는다", type: 'B' }
             ]
         }
     ];
 
     const results = {
-        A: { name: "화끈하고 정열적인\n직진 로맨티스트형", img: "🔥", desc: "확실한 감정 표현과 뜨거운 에너지를 가진 당신! 연애에서도 주도적이고 화끈한 스타일을 선호하는군요. 당신의 열정이 사랑을 더욱 빛나게 만듭니다." },
-        B: { name: "은은하고 깊은\n감성 로맨티스트형", img: "🌙", desc: "서서히 스며드는 사랑과 깊은 유대감을 소중히 여기는 당신! 화려함보다는 진심 어린 소통과 신뢰를 중요하게 생각하는군요. 마음이 따뜻한 파트너입니다." }
+        A: { 
+            name: "불굴의 생존력!\n강인한 행동파 생존자", 
+            img: "🐺", 
+            desc: "당신은 위기 상황에서 주저하지 않고 몸을 던지는 강인한 생존 본능을 가졌습니다! 빠른 판단력과 행동력으로 어떤 험난한 환경도 정복할 수 있는 사람입니다. 리더십이 뛰어나 팀원들에게 큰 힘이 됩니다." 
+        },
+        B: { 
+            name: "차분한 분석력!\n지혜로운 전략가 생존자", 
+            img: "🦊", 
+            desc: "당신은 무작정 움직이기보다 주변 환경을 분석하고 최선의 전략을 짜는 지혜로운 생존자입니다! 보이지 않는 위험까지 대비하는 당신의 신중함이 장기 생존의 열쇠가 됩니다. 지적이고 차분한 매력을 가졌군요." 
+        }
     };
 
     function startTest() {
