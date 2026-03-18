@@ -38,6 +38,10 @@ function shareKakao(customTitle, customDesc, customImg) {
             {
                 title: '테스트 해보기',
                 link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
+            },
+            {
+                title: '다른 테스트 해보기',
+                link: { mobileWebUrl: blogUrl, webUrl: blogUrl }
             }
         ]
     });
