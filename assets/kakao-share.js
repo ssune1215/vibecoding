@@ -24,25 +24,20 @@ function shareKakao(customTitle, customDesc, customImg) {
     // 이미지 추출 (결과 이모지 또는 og:image)
     const img = customImg || window.location.origin + "/assets/share-thumb.jpg";
 
+    const blogUrl = 'https://blog.naver.com/forgiven_77/224198478277';
+
     Kakao.Share.sendDefault({
         objectType: 'feed',
         content: {
             title: title + " 🔍",
             description: desc,
             imageUrl: img,
-            link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
+            link: { mobileWebUrl: blogUrl, webUrl: blogUrl }
         },
         buttons: [
             {
                 title: '테스트 해보기',
                 link: { mobileWebUrl: shareUrl, webUrl: shareUrl }
-            },
-            {
-                title: '다른 테스트 해보기',
-                link: { 
-                    mobileWebUrl: 'https://blog.naver.com/forgiven_77/224198478277', 
-                    webUrl: 'https://blog.naver.com/forgiven_77/224198478277' 
-                }
             }
         ]
     });
