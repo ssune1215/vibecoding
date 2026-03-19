@@ -68,5 +68,10 @@
     "title": "🌿 나의 향기 테스트 (Personal Scent)",
     "path": "./scent-test/",
     "group": "psy"
+  },
+  {
+    "title": "🎞️ 내 인생은 어떤 영화일까?",
+    "path": "./life-movie/",
+    "group": "psy"
   }
 ]
