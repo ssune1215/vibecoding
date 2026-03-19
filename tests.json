@@ -63,5 +63,10 @@
     "title": "💘 첫 데이트 시뮬레이션",
     "path": "./date-simulation/",
     "group": "love"
+  },
+  {
+    "title": "🌿 나의 향기 테스트 (Personal Scent)",
+    "path": "./scent-test/",
+    "group": "psy"
   }
 ]

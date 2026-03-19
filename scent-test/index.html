@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>나의 향기 테스트 | 당신은 어떤 아우라를 풍기나요? 🌿</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="나의 향기 테스트 | 나만의 퍼스널 센트는?" />
+    <meta property="og:description" content="눈에 보이지 않는 당신만의 고유한 향기, 8가지 스캔 결과로 확인해보세요!" />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            --main-color: #059669; /* 에메랄드/그린 */
+            --bg-light: #ecfdf5;
+            --border-color: #6ee7b7;
+            --btn-hover-shadow: rgba(5, 150, 105, 0.2);
+        }
+    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
+</head>
+<body>
+
+<div class="card">
+    <div id="start-area">
+        <div class="result-image">🌿✨</div>
+        <h1 class="title">나의 고유한 아우라<br>퍼스널 향기 테스트</h1>
+        <p class="description">당신의 감각적인 선택이 모여<br>눈에 보이지 않는 당신만의 향기를 찾아드립니다.</p>
+        <button class="btn-start" onclick="startTest()">스캔 시작하기 🚀</button>
+    </div>
+
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700;">Question 1 / 5</div>
+        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.4;">향기 입자 분석 중...</div>
+        <div id="options-container"></div>
+    </div>
+
+    <div id="result-area" style="display: none;">
+        <div class="tiny" style="font-weight: 700; color: #059669;">나의 향기 스캔 리포트</div>
+        <div id="res-image" class="result-image">🧴</div>
+        <div id="res-name" class="result-title">결과 이름</div>
+        
+        <div class="result-box">
+            <span class="result-box-title">🌿 향기 심리 정밀 분석</span>
+            <div id="res-desc" class="result-desc">결과 분석 내용이 여기에 표시됩니다.</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                내 결과 카톡 공유하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog">
+                👀 다른 테스트 구경 가기
+            </a>
+            <button class="btn-retry" onclick="location.reload()">🔄 다시 하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentQ = 0;
+    let score = 0;
+
+    const questions = [
+        {
+            q: "당신이 가장 좋아하는 휴일의 아침 풍경을 골라본다면?",
+            options: [
+                { text: "상쾌한 햇살이 창가로 쏟아지는 하얀 침대 위", point: 4 },
+                { text: "짙은 안개가 낀 조용한 숲속 산책로", point: 1 },
+                { text: "꽃향기가 가득한 테라스에서의 티타임", point: 2 },
+                { text: "파도 소리가 들리는 탁 트인 새벽 바닷가", point: 3 }
+            ]
+        },
+        {
+            q: "처음 보는 사람에게 당신이 주고 싶은 첫 이미지는?",
+            options: [
+                { text: "밝고 긍정적인 에너지가 넘치는 활기찬 사람", point: 2 },
+                { text: "말 한마디에도 무게감이 느껴지는 성숙한 사람", point: 1 },
+                { text: "단정하고 깨끗해서 자꾸만 눈이 가는 사람", point: 4 },
+                { text: "오묘하고 비밀스러운 매력을 가진 신비로운 사람", point: 3 }
+            ]
+        },
+        {
+            q: "당신이 가장 편안함을 느끼는 공간의 조명은 어떤가요?",
+            options: [
+                { text: "온 몸을 비추는 아주 환하고 쨍한 직사광 조명", point: 4 },
+                { text: "주황빛의 은은하고 따뜻한 간접 스탠드 조명", point: 1 },
+                { text: "알록달록 예쁜 색깔이 조화를 이루는 무드등", point: 2 },
+                { text: "조명 없이 자연광만 들어오는 내추럴한 공간", point: 3 }
+            ]
+        },
+        {
+            q: "스트레스를 풀기 위해 선택하는 나만의 힐링 방법은?",
+            options: [
+                { text: "신나는 음악을 들으며 땀 흘려 운동하기", point: 4 },
+                { text: "좋아하는 정적 속에서 차분하게 독서하기", point: 1 },
+                { text: "예쁜 카페에 가서 달콤한 디저트 먹기", point: 2 },
+                { text: "정처 없이 걷거나 숲길을 천천히 산책하기", point: 3 }
+            ]
+        },
+        {
+            q: "연인이 당신을 정의할 때 어떤 말이 가장 듣고 싶나요?",
+            options: [
+                { text: "\"너랑 있으면 매일이 상큼하고 즐거워!\"", point: 2 },
+                { text: "\"너는 내 인생의 든든하고 깊은 뿌리 같은 사람이야.\"", point: 1 },
+                { text: "\"말로는 다 설명 못 할 신비로운 매력이 있어.\"", point: 3 },
+                { text: "\"언제 봐도 질리지 않는 투명하고 맑은 사람이야.\"", point: 4 }
+            ]
+        }
+    ];
+
+    const results = [
+        { min: 5, max: 6, name: "깊고 고요한 안정감\n[우디 우먼/맨]", img: "🪵🍂", desc: "당신은 짙은 숲속의 고목처럼 듬직하고 차분한 존재감을 가졌군요! 결코 가볍지 않은 당신의 무게감은 주변 사람들에게 깊은 신뢰와 편안함을 줍니다." },
+        { min: 7, max: 8, name: "비밀스러운 매혹\n[블랙 머스크]", img: "🔮🖤", desc: "한 마디로 정의할 수 없는 묘한 분위기의 소유자! 은근하게 퍼지는 당신의 매력은 사람들의 호기심을 자극하고, 한 번 빠지면 헤어 나오기 힘든 여운을 남깁니다." },
+        { min: 9, max: 10, name: "화려한 낭만의 정원\n[플로럴 가든]", img: "🌸💐", desc: "어딜 가나 사랑받는 밝고 로맨틱한 아우라를 풍기네요! 당신의 상냥함과 우아함은 마치 만개한 꽃들처럼 주변을 화사하고 행복하게 만드는 마법이 있습니다." },
+        { min: 11, max: 12, name: "강렬한 개성과 독창성\n[오리엔탈 스파이시]", img: "🕯️🌋", desc: "누구와도 닮지 않은 독보적인 색깔을 가졌군요! 과감하고 예술적인 당신의 성향은 정형화된 세상 속에서 가장 선명하게 빛나는 특별한 향기와 같습니다." },
+        { min: 13, max: 14, name: "숲속의 싱그러운 치유\n[포레스트 그린]", img: "🌿🌲", desc: "답답한 가슴을 뻥 뚫어주는 신선한 바람 같은 사람! 있는 그대로의 자연스러움을 추구하는 당신의 태도는 지친 이들에게 최고의 휴식이 되어줍니다." },
+        { min: 15, max: 16, name: "맑고 깨끗한 자유\n[아쿠아 오션]", img: "🌊🏙️", desc: "투명하고 시원한 바다를 닮은 현대적인 감각의 소유자군요! 냉철한 판단력과 자유로운 영혼을 모두 갖춘 당신은 언제 어디서나 쾌적한 에너지를 전파합니다." },
+        { min: 17, max: 18, name: "상큼한 비타민 에너지\n[프레시 시트러스]", img: "🍋☀️", desc: "당신이 나타나면 주변 공기부터 맑아집니다! 톡 쏘는 상큼함과 지치지 않는 열정을 가진 당신은 모두의 일상에 활력을 불어넣는 인간 레몬 같은 존재입니다." },
+        { min: 19, max: 20, name: "포근하고 순수한 안식\n[클린 코튼]", img: "☁️🧼", desc: "갓 세탁한 셔츠처럼 깨끗하고 다정한 향기가 나는군요! 정직하고 따뜻한 당신의 성격은 누구나 곁에 머물고 싶게 만드는 포근하고 순수한 아우라를 내뿜습니다." }
+    ];
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let percent = (currentQ / questions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        document.getElementById('q-number').innerText = `Question ${currentQ + 1} / ${questions.length}`;
+        let currentData = questions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
+        let container = document.getElementById('options-container');
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.point);
+            container.appendChild(btn);
+        });
+    }
+
+    function nextQuestion(point) {
+        score += point;
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        
+        // 점수 기반 결과 매칭
+        let resultData = results.find(r => score >= r.min && score <= r.max);
+        if(!resultData) resultData = results[results.length - 1];
+
+        document.getElementById('res-image').innerText = resultData.img;
+        document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
+        document.getElementById('res-desc').innerHTML = resultData.desc;
+    }
+</script>
+</body>
+</html>
