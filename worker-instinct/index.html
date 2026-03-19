@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>직장인 본능 테스트 | 내 안의 진짜 오피스 캐릭터는? 💼</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="직장인 본능 테스트 | 나의 직장내 캐릭터는?" />
+    <meta property="og:description" content="사무실 안의 내 모습, 진짜 본능은? 지금 바로 확인해보세요!" />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            --main-color: #334155; /* 슬레이트/스틸 블루 */
+            --bg-light: #f8fafc;
+            --border-color: #e2e8f0;
+            --btn-hover-shadow: rgba(51, 65, 85, 0.2);
+        }
+    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
+</head>
+<body>
+
+<div class="card">
+    <div id="start-area">
+        <div class="result-image">💼🏢</div>
+        <h1 class="title">나의 사무실 본능<br>직장인 성향 테스트</h1>
+        <p class="description">출근부터 퇴근까지, 당신의 선택으로<br>숨겨진 오피스 캐릭터를 찾아드려요!</p>
+        <button class="btn-start" onclick="startTest()">내 본능 확인하기 🚀</button>
+    </div>
+
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700;">Question 1 / 5</div>
+        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.4;">상황 분석 중...</div>
+        <div id="options-container"></div>
+    </div>
+
+    <div id="result-area" style="display: none;">
+        <div class="tiny" style="font-weight: 700; color: #334155;">나의 직장인 캐릭터 분석 결과</div>
+        <div id="res-image" class="result-image">👨‍💻</div>
+        <div id="res-name" class="result-title">결과 이름</div>
+        
+        <div class="result-box">
+            <span class="result-box-title">📊 오피스 지수 리포트</span>
+            <div id="res-desc" class="result-desc">결과 분석 내용이 여기에 표시됩니다.</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                내 결과 카톡 공유하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog">
+                👀 다른 테스트 구경가기
+            </a>
+            <button class="btn-retry" onclick="location.reload()">🔄 다시 하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentQ = 0;
+    let score = { A: 0, B: 0, C: 0, D: 0 };
+
+    const questions = [
+        {
+            q: "월요일 아침, 출근하자마자 당신이 가장 먼저 하는 행동은?",
+            options: [
+                { text: "오늘의 할 일을 완벽하게 정리하며 전투 준비.", type: 'C' },
+                { text: "동료들에게 인사하며 주말 얘기를 짧게 나눈다.", type: 'B' },
+                { text: "조용히 자리에 앉아 메일과 스케줄을 스캔한다.", type: 'A' },
+                { text: "먼저 커피부터 한 잔! 언제 퇴근하나 시계를 본다.", type: 'D' }
+            ]
+        },
+        {
+            q: "상사가 갑자기 긴급 회의를 소집했을 때 당신의 속마음은?",
+            options: [
+                { text: "회의 주제를 미리 예측하고 메모장을 챙긴다.", type: 'C' },
+                { text: "회의가 길어지지 않게 분위기를 리드할 준비를 한다.", type: 'B' },
+                { text: "하던 업무가 밀릴까 봐 걱정하며 일단 들어간다.", type: 'A' },
+                { text: "영혼을 유체 이탈시킨 채 그냥 자리에 앉아 있는다.", type: 'D' }
+            ]
+        },
+        {
+            q: "점심시간, 당신이 가장 선호하는 식사 스타일은?",
+            options: [
+                { text: "오후 업무 효율을 위해 깔끔하고 적당한 식사.", type: 'A' },
+                { text: "동료들과 맛집을 탐방하며 수다로 스트레스 해소.", type: 'B' },
+                { text: "혼자 조용히 맛있는 거 먹으며 즐기는 사색의 시간.", type: 'D' },
+                { text: "업무 생각을 멈추지 않고 대충 빠르게 해결한다.", type: 'C' }
+            ]
+        },
+        {
+            q: "퇴근 10분 전! 예상치 못한 추가 업무가 발견되었습니다.",
+            options: [
+                { text: "오늘 끝낼 것만 골라 빛의 속도로 처리한다.", type: 'A' },
+                { text: "내일 일찍 와서 하겠다며 동료들과 웃으며 협상한다.", type: 'B' },
+                { text: "완벽주의 발동! 야근해서라도 끝내고 퇴근한다.", type: 'C' },
+                { text: "신속하게 못 본 척하거나 내일의 나에게 미룬다.", type: 'D' }
+            ]
+        },
+        {
+            q: "당신의 책상 위에서 가장 눈에 띄는 소품은 무엇인가요?",
+            options: [
+                { text: "먼지 하나 없이 깔끔하게 정돈된 키보드와 마우스.", type: 'A' },
+                { text: "옆자리 동료에게 줄 간식 바구니와 예쁜 텀블러.", type: 'B' },
+                { text: "빼곡한 스케줄러와 메모지가 붙은 모니터 주변.", type: 'C' },
+                { text: "귀여운 피규어들과 화려한 소품들의 데스크테리어.", type: 'D' }
+            ]
+        }
+    ];
+
+    const results = {
+        A: { 
+            name: "조용한 실무 마스터\n오피스의 든든한 등대", 
+            img: "👨‍💻⚙️", 
+            desc: "당신은 요란하지 않지만 묵묵하게 자기 몫을 해내며 조직을 지탱하는 핵심 인재군요! 화려한 말보다는 결과로 증명하는 당신의 성실함이야말로 최고의 무기입니다." 
+        },
+        B: { 
+            name: "복사기 앞 인싸 사원\n분위기를 살리는 오피스 비타민", 
+            img: "☕️🕺", 
+            desc: "당신이 없으면 사무실 공기가 삭막해질 거예요! 뛰어난 친화력으로 팀의 결속력을 높이는 당신은 어딜 가나 환명받는 분위기 메이커입니다." 
+        },
+        C: { 
+            name: "밤을 잊은 열정 전략가\n성공을 설계하는 치밀한 승부사", 
+            img: "📈🧠", 
+            desc: "완벽한 계획과 실행력을 겸비한 당신은 리더가 될 재능이 넘칩니다! 타협하지 않는 꼼꼼함으로 늘 최상의 성과를 만들어내는 진정한 프로페셔널입니다." 
+        },
+        D: { 
+            name: "자유로운 영혼의 워커\n몸은 사무실, 마음은 이미 퇴근", 
+            img: "✈️🎈", 
+            desc: "일과 삶의 균형을 누구보다 중시하는 당신! 업무 스트레스에 휘둘리지 않고 자신만의 속도를 유지하는 모습이 인상적입니다. 당신의 긍정적인 에너지는 주변 사람들에게도 여유를 줍니다." 
+        }
+    };
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let percent = (currentQ / questions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        document.getElementById('q-number').innerText = `Question ${currentQ + 1} / ${questions.length}`;
+        let currentData = questions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
+        let container = document.getElementById('options-container');
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.type);
+            container.appendChild(btn);
+        });
+    }
+
+    function nextQuestion(type) {
+        score[type]++;
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        
+        let finalType = Object.keys(score).reduce((a, b) => score[a] >= score[b] ? a : b);
+        let resultData = results[finalType] || results['A'];
+
+        document.getElementById('res-image').innerText = resultData.img;
+        document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
+        document.getElementById('res-desc').innerHTML = resultData.desc;
+    }
+</script>
+</body>
+</html>

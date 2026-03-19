@@ -48,5 +48,10 @@
     "title": "✨ 첫인상 스캐너 (Vibe Check)",
     "path": "./firstimpression/",
     "group": "psy"
+  },
+  {
+    "title": "💼 직장인 본능 테스트",
+    "path": "./worker-instinct/",
+    "group": "psy"
   }
 ]
