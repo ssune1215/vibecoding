@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>첫 데이트 시뮬레이션 | 나의 연애 매력은? 💘</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="첫 데이트 시뮬레이션 | 나의 설레는 지수는?" />
+    <meta property="og:description" content="첫 만남부터 애프터까지! 나의 선택으로 알아보는 연애 매력 유형 테스트" />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            --main-color: #f472b6; /* 핑크/로맨틱 */
+            --bg-light: #fdf2f8;
+            --border-color: #f9a8d4;
+            --btn-hover-shadow: rgba(244, 114, 182, 0.2);
+        }
+    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
+</head>
+<body>
+
+<div class="card">
+    <div id="start-area">
+        <div class="result-image">💖☕</div>
+        <h1 class="title">두근두근 설레는<br>첫 데이트 시뮬레이션</h1>
+        <p class="description">당신의 선택으로 결정되는 첫 데이트의 운명!<br>당신은 상대방에게 어떤 매력을 보여줄까요?</p>
+        <button class="btn-start" onclick="startTest()">데이트 시작하기 🚀</button>
+    </div>
+
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700;">Question 1 / 5</div>
+        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.4;">두근거리는 만남 중...</div>
+        <div id="options-container"></div>
+    </div>
+
+    <div id="result-area" style="display: none;">
+        <div class="tiny" style="font-weight: 700;">첫 데이트 시뮬레이션 분석 완료</div>
+        <div id="res-image" class="result-image">🍭</div>
+        <div id="res-name" class="result-title">결과 이름</div>
+        
+        <div class="result-box">
+            <span class="result-box-title">💌 나의 연애 매력 리포트</span>
+            <div id="res-desc" class="result-desc">결과 분석 내용이 여기에 표시됩니다.</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                내 결과 카톡 공유하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog">
+                👀 다른 테스트 구경 가기
+            </a>
+            <button class="btn-retry" onclick="location.reload()">🔄 다시 하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentQ = 0;
+    let score = { A: 0, B: 0, C: 0, D: 0 };
+
+    const questions = [
+        {
+            q: "약속 장소에 도착! 멀리서 상대방이 걸어오는걸 발견했을 때 당신의 행동은?",
+            options: [
+                { text: "환하게 웃으며 손을 흔들고 격하게 반긴다.", type: 'D' },
+                { text: "벌떡 일어나 마중 나가며 다정하게 안부를 묻는다.", type: 'B' },
+                { text: "눈이 마주칠 때까지 기다렸다가 수줍게 미소 짓는다.", type: 'C' },
+                { text: "여유로운 톤으로 자연스럽게 대화를 리드한다.", type: 'A' }
+            ]
+        },
+        {
+            q: "식사 도중 상대방이 실수로 물을 쏟았습니다! 이때 당신의 반응은?",
+            options: [
+                { text: "빠르게 휴지를 챙겨주고 침착하게 상황을 수습한다.", type: 'B' },
+                { text: "위트 있는 농담으로 상대방의 민망함을 풀어준다.", type: 'A' },
+                { text: "묵묵히 도와준 뒤, 바로 다른 화제로 자연스럽게 넘긴다.", type: 'C' },
+                { text: "진심으로 걱정하며 다친 곳은 없는지 세심히 살핀다.", type: 'D' }
+            ]
+        },
+        {
+            q: "대화 중 짧은 정적이 흘렀습니다. 이때 당신의 대처 방식은?",
+            options: [
+                { text: "주변 소재로 끊임없이 질문하며 대화를 풍성하게 만든다.", type: 'A' },
+                { text: "상대방의 취향을 깊게 알아볼 수 있는 진지한 질문을 던진다.", type: 'C' },
+                { text: "디저트나 다음 장소 이야기를 꺼내며 분위기를 환기한다.", type: 'B' },
+                { text: "눈을 빤히 바라보며 \"조용하니까 더 설레네요\"라고 한다.", type: 'D' }
+            ]
+        },
+        {
+            q: "데이트가 끝나갈 무렵, 헤어지기 아쉬울 때 당신의 행동은?",
+            options: [
+                { text: "\"오늘 진짜 즐거웠어요. 조만간 또 보고 싶은데 어때요?\"", type: 'D' },
+                { text: "\"도착하면 꼭 톡 해줘요!\"라며 끝까지 상대방을 챙긴다.", type: 'B' },
+                { text: "아쉬운 표정을 숨기지 못한 채 여운 섞인 말을 남긴다.", type: 'C' },
+                { text: "재미있던 부분을 다시 언급하며 자연스럽게 다음 약속을 잡는다.", type: 'A' }
+            ]
+        },
+        {
+            q: "집에 돌아가는 길, 당신이 보낼 첫 번째 애프터 카톡은?",
+            options: [
+                { text: "\"진심으로 오늘 최고였어요! 벌써 보고 싶네요.\"", type: 'D' },
+                { text: "\"오늘 바쁜데 시간 내줘서 고마워요. 덕분에 힐링했어요.\"", type: 'B' },
+                { text: "오늘 즐거웠던 사진을 보내며 귀여운 멘트를 남긴다.", type: 'A' },
+                { text: "\"오늘 어땠어요? 저는 정말 좋았는데...\" 하며 조심히 묻는다.", type: 'C' }
+            ]
+        }
+    ];
+
+    const results = {
+        A: { 
+            name: "설레는 대화 마스터\n눈빛만으로 매료시키는 유혹가", 
+            img: "🗣️✨", 
+            desc: "당신은 타고난 말센스와 유머로 첫 인상을 완벽하게 장악하는 매력쟁이군요! 어떤 어색함도 당신과 있으면 즐거운 추억이 됩니다. 분위기를 리드하는 당신의 여유로운 모습에 상대방은 푹 빠져버릴 거예요." 
+        },
+        B: { 
+            name: "다정한 케어 전문가\n마음까지 따뜻해지는 안식처", 
+            img: "🤲💖", 
+            desc: "상대방의 사소한 것까지 배려하는 당신의 다정함은 최고의 무기입니다! 당신과 함께라면 누구나 보호받는 듯한 포근함을 느끼죠. 안정감 있고 든든한 당신의 매력은 시간이 갈수록 더욱 빛을 발할 거예요." 
+        },
+        C: { 
+            name: "알 수 없는 신비주의\n자꾸만 생각나게 하는 잔잔한 여운", 
+            img: "🌙🔮", 
+            desc: "수줍은 미소 뒤에 숨겨진 깊은 생각이 상대방의 호기심을 자극합니다! 말이 많지 않아도 존재만으로 묘한 아우라를 풍기는 당신. 당신의 진심을 알기 위해 상대방은 안달 나게 될지도 몰라요." 
+        },
+        D: { 
+            name: "열정적인 솔직 직진러\n불꽃 같은 매력의 노빠꾸 사랑꾼", 
+            img: "🔥🏃‍♂️", 
+            desc: "사랑 앞에서 계산은 없다! 솔직하고 뜨겁게 감정을 표현하는 당신의 모습은 상대방의 가슴을 뛰게 만듭니다. 당신의 강렬한 에너지는 지루한 일상을 순식간에 특별한 로맨스로 바꿔버리는 힘이 있네요." 
+        }
+    };
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let percent = (currentQ / questions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        document.getElementById('q-number').innerText = `Question ${currentQ + 1} / ${questions.length}`;
+        let currentData = questions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
+        let container = document.getElementById('options-container');
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.type);
+            container.appendChild(btn);
+        });
+    }
+
+    function nextQuestion(type) {
+        score[type]++;
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        
+        // 점수가 가장 높은 유형 추출
+        let finalType = Object.keys(score).reduce((a, b) => score[a] >= score[b] ? a : b);
+        let resultData = results[finalType] || results['A'];
+
+        document.getElementById('res-image').innerText = resultData.img;
+        document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
+        document.getElementById('res-desc').innerHTML = resultData.desc;
+    }
+</script>
+</body>
+</html>

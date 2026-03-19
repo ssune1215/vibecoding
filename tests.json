@@ -58,5 +58,10 @@
     "title": "🎬 영화 속 커플 테스트",
     "path": "./movie-couple/",
     "group": "love"
+  },
+  {
+    "title": "💘 첫 데이트 시뮬레이션",
+    "path": "./date-simulation/",
+    "group": "love"
   }
 ]
