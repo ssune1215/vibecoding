@@ -31,14 +31,14 @@
     <div id="start-area">
         <div class="result-image">🎨✨</div>
         <h1 class="title">나의 감정 색깔<br>심리 테스트</h1>
-        <p class="description">평소 나의 선택으로 알아보는<br>내 안의 숨겨진 컬러를 찾아드려요.</p>
+        <p class="description">가벼운 선택으로 알아보는<br>내 안의 숨겨진 컬러를 찾아드려요.</p>
         <button class="btn-start" onclick="startTest()">내 컬러 찾기 시작 🚀</button>
     </div>
 
     <div id="quiz-area" style="display: none;">
         <div class="progress-bar"><div class="progress" id="progress"></div></div>
         <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700;">Question 1 / 5</div>
-        <div class="title" id="question-text" style="font-size: 20px;">질문을 불러오고 있습니다...</div>
+        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.4;">질문 로딩 중...</div>
         <div id="options-container"></div>
     </div>
 
@@ -55,12 +55,12 @@
         <div class="action-btns">
             <button class="btn-kakao">
                 <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
-                내 컬러 결과 공유하기
+                결과 카톡 공유하기
             </button>
             <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog">
                 👀 다른 테스트 해보기
             </a>
-            <button class="btn-retry" onclick="location.reload()">🔄 다시 테스트하기</button>
+            <button class="btn-retry" onclick="location.reload()">🔄 다시 하기</button>
         </div>
     </div>
 </div>
@@ -71,74 +71,77 @@
 
     const questions = [
         {
-            q: "길을 걷다 우연히 예쁜 카페를 발견했습니다. 문을 열고 들어갔을 때, 당신이 가장 먼저 느끼는 기분과 행동은?",
+            q: "새로 생긴 예쁜 카페에 들어갔을 때, 당신이 가장 먼저 하는 행동은?",
             options: [
-                { text: "와, 여기 분위기 대박! 당장 사진 찍어서 친구들에게 자랑하고 싶어.", type: 'Y' },
-                { text: "일단 메뉴판부터 정독하며 가장 합리적이고 조용한 자리를 탐색한다.", type: 'B' },
-                { text: "잔잔하게 흐르는 음악과 향기에 몸을 맡기고 깊은 생각에 잠긴다.", type: 'G' },
-                { text: "주문의 속도와 직원의 친절함을 본능적으로 체크하며 자리에 앉는다.", type: 'R' }
+                { text: "분위기가 너무 좋아서 바로 사진을 찍는다.", type: 'Y' },
+                { text: "메뉴판을 정독하며 가장 조용한 자리를 찾는다.", type: 'B' },
+                { text: "잔잔한 음악이 흐르는 공간에서 멍하니 앉아 있는다.", type: 'G' },
+                { text: "주문 줄이 긴지 체크하고 빠르게 메뉴를 고른다.", type: 'R' }
             ]
         },
         {
-            q: "완벽하게 짜놓은 주말 계획이 갑작스러운 비 소식으로 취소되었습니다. 이때 당신의 반응은?",
+            q: "주말 계획이 비 소식으로 취소되었습니다. 이때 당신의 기분은?",
             options: [
-                { text: "오히려 좋아! 빗소리 들으며 집에서 넷플릭스 정주행할 완벽한 핑계가 생겼어.", type: 'P' },
-                { text: "아쉽지만 비 오는 날 가기 좋은 실내 핫플레이스를 빠르게 검색해서 친구를 꼬셔본다.", type: 'Y' },
-                { text: "비 오는 창밖을 바라보며 평소 좋아하던 음악을 틀고 감상에 젖는다.", type: 'G' },
-                { text: "계획이 틀어진 게 짜증 나지만, 밀린 업무나 집안일을 처리할 시간으로 활용한다.", type: 'B' }
+                { text: "오히려 좋아! 집에서 넷플릭스 정주행각이다.", type: 'P' },
+                { text: "아쉽지만 비 오는 날 가기 좋은 곳을 새로 찾는다.", type: 'Y' },
+                { text: "창밖을 보며 좋아하는 음악을 듣고 감상에 젖는다.", type: 'G' },
+                { text: "계획이 틀어져 아쉽지만 못다 한 일을 처리한다.", type: 'B' }
             ]
         },
         {
-            q: "중요한 프로젝트나 시험을 앞두고 긴장될 때, 당신은 어떻게 마음을 다스리나요?",
+            q: "중요한 일을 앞두고 긴장될 때, 당신의 해결 방법은?",
             options: [
-                { text: `"잘 될 거야!"라고 스스로 주문을 외우며 긍정적인 상상을 반복한다.`, type: 'Y' },
+                { text: "크게 소리를 지르거나 활동적인 일로 에너지를 쓴다.", type: 'R' },
+                { text: "만약을 대비해 플랜 B까지 꼼꼼하게 점검한다.", type: 'B' },
+                { text: `"잘 될 거야!"라고 생각하며 긍정적인 상상을 한다.`, type: 'Y' },
+                { text: "아주 광활한 우주를 상상하며 현재를 잊으려 한다.", type: 'P' }
             ]
         },
         {
-            q: "오랜만에 만난 친구가 당신에게 고민을 털어놓으며 눈물을 보입니다. 당신의 반응은?",
+            q: "친구가 갑자기 고민을 털어놓으며 눈물을 흘린다면?",
             options: [
-                { text: "말없이 곁에 있어 주며 따뜻하게 안아주고 함께 슬퍼해 준다.", type: 'G' },
-                { text: "친구의 상황을 분석해서 실질적으로 해결할 수 있는 조언들을 건넨다.", type: 'B' },
-                { text: "분위기를 전환하기 위해 맛있는 걸 먹으러 가자고 제안하며 기운을 북돋아 준다.", type: 'Y' },
-                { text: "일단 친구의 눈물이 멈출 때까지 기다렸다가, 누가 그랬는지 같이 욕해준다.", type: 'R' }
+                { text: "말없이 곁에서 따뜻하게 안아주며 공감해 준다.", type: 'G' },
+                { text: "차분하게 상황을 분석해서 실용적인 조언을 한다.", type: 'B' },
+                { text: "분위기를 바꾸려 맛있는 걸 먹으러 가자고 한다.", type: 'Y' },
+                { text: "친구가 울음을 그칠 때까지 같이 화내며 욕해준다.", type: 'R' }
             ]
         },
         {
-            q: "당신의 드레스룸을 열었을 때, 가장 지배적으로 보이는 옷들의 느낌은 어떤가요?",
+            q: "당신의 옷장을 열었을 때 가장 많이 보이는 스타일은?",
             options: [
-                { text: "깔끔한 무채색 계열의 정돈된 핏과 단정한 스타일들.", type: 'B' },
-                { text: "화려한 패턴과 밝은 원색, 보기만 해도 기분 좋아지는 발랄한 옷들.", type: 'Y' },
-                { text: "활동성 좋은 트레이닝복이나 강인한 인상을 주는 스트릿 패션.", type: 'R' },
-                { text: "독특한 디자인이나 빈티지한 감성의 나만의 개성이 담긴 옷들.", type: 'P' }
+                { text: "깔끔한 무채색 계열의 단정한 스타일.", type: 'B' },
+                { text: "밝고 화사한 색감의 기분 좋아지는 옷들.", type: 'Y' },
+                { text: "활동성 좋은 트레이닝복이나 강렬한 옷들.", type: 'R' },
+                { text: "독특하고 유니크한 나만의 개성이 담긴 옷들.", type: 'P' }
             ]
         }
     ];
 
     const results = {
         Y: { 
-            name: "세상을 밝히는 찬란한 빛\n서니 골드 (Sunny Gold)", 
+            name: "찬란한 빛\n서니 골드 (Sunny Gold)", 
             img: "✨💛", color: "#eab308", 
-            desc: "당신은 존재 자체로 주변에 행복 바이러스를 퍼뜨리는 태양 같은 존재입니다! 지칠 줄 모르는 긍정과 밝은 에너지로 사람들의 마음을 무장해제 시키죠. 당신이 머무는 곳은 언제나 웃음소리가 끊이지 않는군요. 당신의 찬란한 에너지를 잃지 마세요!" 
+            desc: "당신은 주변을 밝게 만드는 태양 같은 존재입니다! 긍정적인 에너지가 넘쳐 사람들의 마음을 환하게 밝히는군요. 당신의 찬란함을 잃지 마세요!" 
         },
         B: { 
-            name: "심해처럼 깊고 고요한 지혜\n딥 오션 블루 (Deep Ocean Blue)", 
+            name: "깊고 고요한 지혜\n딥 오션 블루 (Deep Ocean Blue)", 
             img: "🌊💙", color: "#1e40af", 
-            desc: "당신은 어떤 폭풍우 속에서도 흔들리지 않는 단단한 내면과 냉철한 판단력을 지녔습니다. 당신의 침착함은 주변 사람들에게 거대한 신뢰의 기둥이 되어주죠. 차갑지만 따뜻한 지혜를 가진 당신은 모두가 의지하고 싶은 든든한 조력자입니다." 
+            desc: "당신은 폭풍우 속에서도 흔들리지 않는 냉철함을 지녔습니다. 당신의 침착함은 주변 사람들에게 큰 신뢰와 안정감을 주는군요." 
         },
         R: { 
             name: "심장을 뛰게 만드는 불꽃\n패션 레드 (Passion Red)", 
             img: "🔥❤️", color: "#dc2626", 
-            desc: "당신은 목표를 향해 거침없이 질주하는 야생마 같은 열정의 소유자입니다! 한 번 마음먹은 일은 반드시 해내고야 마는 강한 추진력과 에너지가 당신의 트레이드 마크군요. 당신의 뜨거운 심장이 주변의 지루함을 한순간에 태워버립니다." 
+            desc: "당신은 목표를 향해 달려가는 열정의 소유자입니다! 강한 추진력과 넘치는 에너지는 주변의 지루함을 한순간에 날려보낼 힘이 있습니다." 
         },
         P: { 
-            name: "우주를 담은 신비로운 꿈\n갤럭시 퍼플 (Galaxy Purple)", 
+            name: "신비로운 꿈\n갤럭시 퍼플 (Galaxy Purple)", 
             img: "🌌💜", color: "#7e22ce", 
-            desc: "당신은 남들이 보지 못하는 것을 보고 느끼는 독창적이고 감각적인 영혼의 소유자입니다. 신비로운 분위기와 예술가적인 감수성이 당신을 더욱 특별하게 만들어주죠. 당신의 독특한 상상력은 세상을 더 다채롭고 아름다운 곳으로 변화시킬 힘이 있습니다." 
+            desc: "당신은 남들이 보지 못하는 것을 느끼는 독창적인 영혼의 소유자입니다. 예술적인 감수성과 상상력이 당신을 더욱 특별하게 만드네요." 
         },
         G: { 
-            name: "모든 생명을 품는 대지\n힐링 에메랄드 (Healing Emerald)", 
+            name: "평온한 대지\n힐링 에메랄드 (Healing Emerald)", 
             img: "🌿💚", color: "#059669", 
-            desc: "당신은 지친 영혼들에게 가장 따뜻한 안식처를 제공하는 숲과 같은 사람입니다. 타인의 아픔을 진심으로 공감하고 감싸 안아주는 당신의 포용력은 정말 위대하군요. 당신과 함께라면 누구든 세상을 향해 다시 나아갈 용기를 얻게 됩니다." 
+            desc: "당신은 지친 이들에게 안식처를 주는 숲 같은 사람입니다. 타인의 아픔을 진심으로 안아주는 당신의 포용력은 정말 위대합니다." 
         }
     };
 
@@ -189,7 +192,6 @@
         document.getElementById('result-area').style.display = 'block';
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
         
-        // 가장 많이 나온 타입 선정
         let finalType = Object.keys(score).reduce((a, b) => score[a] >= score[b] ? a : b);
         let resultData = results[finalType];
 
@@ -197,7 +199,6 @@
         document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
         document.getElementById('res-desc').innerHTML = resultData.desc;
         
-        // 결과에 따라 테마 색상 동적 변경 (동적인 재미 요소)
         document.documentElement.style.setProperty('--main-color', resultData.color);
     }
 </script>
