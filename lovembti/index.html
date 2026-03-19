@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>연애 MBTI 테스트 | 로맨틱한 나의 성향 찾기 💘</title>
+    <title>연애 MBTI 테스트 | 나의 연애 캐릭터는? 💘</title>
     
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="연애 MBTI 테스트 | 나의 연애 유형은?" />
-    <meta property="og:description" content="첫 데이트부터 기념일까지! 상황으로 알아보는 나의 연애 MBTI" />
+    <meta property="og:title" content="연애 MBTI 테스트 | 나는 어떤 연인일까?" />
+    <meta property="og:description" content="16가지 MBTI 유형으로 분석하는 나의 숨겨진 연애 스타일!" />
     <meta property="og:url" content="./" />
     <meta property="og:image" content="../assets/share-thumb.jpg" />
 
     <link rel="stylesheet" href="../assets/vibe-theme.css">
     <style>
         :root {
-            --main-color: #ec4899; /* 핫핑크 */
+            --main-color: #ec4899; /* 핑크 */
             --bg-light: #fdf2f8;
-            --border-color: #fbcfe8;
+            --border-color: #fce7f3;
             --btn-hover-shadow: rgba(236, 72, 153, 0.2);
         }
     </style>
@@ -29,117 +29,114 @@
 
 <div class="card">
     <div id="start-area">
-        <div class="result-image">👩‍❤️‍👨✨</div>
-        <h1 class="title">로맨틱 연애 MBTI<br>심리 테스트</h1>
-        <p class="description">당신의 연애 세포는 어떤 성향일까요?<br>상황극을 통해 알아보는 나의 진짜 유형!</p>
-        <button class="btn-start" onclick="startTest()">유형 확인하기 🚀</button>
+        <div class="result-image">💖✨</div>
+        <h1 class="title">나의 연애 캐릭터<br>MBTI 테스트</h1>
+        <p class="description">5가지 질문으로 알아보는<br>나의 진짜 연애 스타일과 MBTI 유형!</p>
+        <button class="btn-start" onclick="startTest()">내 캐릭터 찾기 🚀</button>
     </div>
 
     <div id="quiz-area" style="display: none;">
         <div class="progress-bar"><div class="progress" id="progress"></div></div>
         <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700;">Question 1 / 5</div>
-        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.5;">상황 로딩 중...</div>
+        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.4;">성향 분석 중...</div>
         <div id="options-container"></div>
     </div>
 
     <div id="result-area" style="display: none;">
-        <div class="tiny" style="font-weight: 700;">당신의 최종 연애 유형은?</div>
-        <div id="res-image" class="result-image">💖</div>
+        <div class="tiny" id="res-mbti" style="font-weight: 700; color: #ec4899;">MBTI TYPE</div>
+        <div id="res-image" class="result-image">❤️</div>
         <div id="res-name" class="result-title">결과 이름</div>
         
         <div class="result-box">
-            <span class="result-box-title">💌 스페셜 연애 리포트</span>
+            <span class="result-box-title">💌 연애 성찰 리포트</span>
             <div id="res-desc" class="result-desc">결과 분석 내용이 여기에 표시됩니다.</div>
         </div>
 
         <div class="action-btns">
             <button class="btn-kakao">
                 <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
-                내 유형 결과 공유하기
+                결과 카톡 공유하기
             </button>
             <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog">
                 👀 다른 테스트 구경가기
             </a>
-            <button class="btn-retry" onclick="location.reload()">🔄 다시 테스트하기</button>
+            <button class="btn-retry" onclick="location.reload()">🔄 다시 하기</button>
         </div>
     </div>
 </div>
 
 <script>
     let currentQ = 0;
-    let score = { E: 0, I: 0, F: 0, T: 0 };
+    let scores = { E: 0, I: 0, S: 0, N: 0, T: 0, F: 0, J: 0, P: 0 };
 
     const questions = [
         {
-            q: "드디어 기다리고 기다리던 첫 데이트 날! 약속 장소에 5분 일찍 도착한 당신, 멀리서 걸어오는 상대방을 발견했을 때 가장 먼저 드는 생각은?",
+            q: "주말 데이트, 당신이 더 선호하는 분위기는?",
             options: [
-                { text: "와, 멀리서 봐도 아우라가 장난 아냐! 밝게 손 흔들며 크게 인사해야지!", type: 'E' },
-                { text: "심장이 터질 것 같아... 눈이 마주치면 무슨 첫마디를 건네야 어색하지 않을까?", type: 'I' }
+                { text: "사람들 북적이는 핫플에서 활기차게 즐기기", type: ['E'] },
+                { text: "우리 둘만 있는 조용한 곳에서 깊은 대화 나누기", type: ['I'] },
+                { text: "맛있는 음식과 쇼핑! 눈과 입이 즐거운 데이트", type: ['E', 'S'] },
+                { text: "집에서 편안하게 영화 보며 뒹굴거리는 힐링 타임", type: ['I', 'P'] }
             ]
         },
         {
-            q: "연인과 함께 길을 걷다가 평소 가보고 싶었던 아주 힙한 카페가 만석인 것을 발견했습니다. 이때 당신의 대처는?",
+            q: "연인이 갑자기 '나 오늘 기분이 안 좋아'라고 말한다면?",
             options: [
-                { text: "옆에 대기자가 많아도 일단 대기 명단에 이름을 적고, 기다리는 동안 근처 구경을 하자고 제안한다.", type: 'E' },
-                { text: "사람이 너무 많아 기가 빨린다... 그냥 조용하고 한적한 근처 다른 카페로 가자고 슬쩍 말해본다.", type: 'I' }
+                { text: "무슨 일인데? 누가 그랬어? 구체적으로 원인을 묻는다.", type: ['T', 'S'] },
+                { text: "아이고 속상해라... 바로 안아주며 마음을 달래준다.", type: ['F'] },
+                { text: "기분 전환 시켜줄까? 맛있는 거 먹으러 가자고 한다.", type: ['E', 'N'] },
+                { text: "조용히 곁에 있어 주며 이야기가 나올 때까지 기다린다.", type: ['I', 'F'] }
             ]
         },
         {
-            q: "연인이 갑자기 속상한 일이 있다며 눈물을 글썽이며 전화를 했습니다. 상황을 들어보니 연인이 실수한 부분도 있는 것 같은데, 당신은 어떻게 말해줄까요?",
+            q: "함께 해외여행을 가기로 했습니다. 당신의 준비 스타일은?",
             options: [
-                { text: "많이 속상했지? 누구보다 네 마음이 제일 중요해. 일단 진정하고 맛있는 거 먹으러 갈까?", type: 'F' },
-                { text: "그런 일이 있었구나... 근데 그 부분은 네가 이렇게 대처했으면 더 나았을 것 같은데?", type: 'T' }
+                { text: "분 단위로 맛집과 동선을 체크하는 철저한 계획파", type: ['J', 'S'] },
+                { text: "가고 싶은 큰 장소만 정해두고 발길 닿는 대로 가는 자유파", type: ['P', 'N'] },
+                { text: "연인의 의견에 100% 맞추며 준비를 돕는 서포터즈파", type: ['F', 'J'] },
+                { text: "가기 전까지 정보만 수집하다가 닥쳐서 준비하는 실전파", type: ['P'] }
             ]
         },
         {
-            q: "기념일을 앞두고 연인에게 줄 선물을 고르는 당신! 당신의 쇼핑 스타일은 어느 쪽에 가까운가요?",
+            q: "영화 속 연인들이 이별하는 장면을 볼 때 당신의 생각은?",
             options: [
-                { text: "평소 연인이 필요하다고 했던 것들을 리스트업해서 실용적이고 확실한 선물을 고른다.", type: 'T' },
-                { text: "선물을 받고 감동할 연인의 얼굴을 상상하며, 편지와 함께 감성적인 선물을 준비한다.", type: 'F' }
+                { text: "왜 저런 이유로 헤어지지? 현실적으로 이해가 안 된다.", type: ['T'] },
+                { text: "너무 슬프다... 내 일처럼 감정이입 되어 눈물이 난다.", type: ['F', 'N'] },
+                { text: "저런 상황이면 나는 어떻게 대처했을지 분석해 본다.", type: ['T', 'J'] },
+                { text: "헤어질 만했네. 다음 주인공은 어떤 사랑을 할까 궁금하다.", type: ['E', 'P'] }
             ]
         },
         {
-            q: "둘만의 오붓한 여행 계획을 세우는 중! 당신이 더 선호하는 여행 스타일은 무엇인가요?",
+            q: "연인과 싸운 뒤, 화해하고 싶은 당신의 방식은?",
             options: [
-                { text: "맛집, 카페, 동선까지 완벽하게 짜여진 엑셀 계획표를 공유하며 연인을 리드한다.", type: 'T' },
-                { text: "큰 틀만 정해두고 그날의 기분과 분위기에 맞춰 즉흥적으로 움직이는 낭만을 즐긴다.", type: 'F' }
+                { text: "잘못한 건 인정! 논리적으로 대화해서 오해를 푼다.", type: ['T', 'J'] },
+                { text: "진심 어린 사과와 애교 섞인 메세지로 마음을 녹인다.", type: ['F', 'E'] },
+                { text: "시간을 좀 갖고 생각한 뒤 편지를 써서 전달한다.", type: ['I', 'N'] },
+                { text: "함께 좋아하는 활동을 하며 자연스럽게 풀릴 때를 기다린다.", type: ['P', 'S'] }
             ]
         }
     ];
 
     const results = {
-        EF: { 
-            name: "사랑의 에너자이저\n무한 애정 댕댕이형", 
-            img: "🐶💖", 
-            desc: "당신은 연인에게 아낌없이 표현하고 온 세상의 밝은 에너지를 다 끌어모아 주는 진정한 사랑꾼입니다! 당신과 함께라면 지루할 틈이 없고, 상대방은 당신의 넘치는 활력에 매일매일이 축제 같을 거예요. 주변에서 가장 부러워하는 '워너비 파트너' 1순위!" 
-        },
-        ET: { 
-            name: "카리스마 데이트 설계자\n열정적인 로맨스 CEO", 
-            img: "🦁🔥", 
-            desc: "분위기 좋은 맛집부터 완벽한 미래 계획까지! 주도적으로 연애를 이끌어가는 듬직하고 멋진 리더십의 소유자입니다. 당신의 확신 있는 모습에 상대방은 큰 매력과 안정감을 동시에 느낍니다. 세상을 다 가진 것 같은 든든함을 선물하는 타입!" 
-        },
-        IF: { 
-            name: "마음을 읽는 소울메이트\n포근한 수호천사", 
-            img: "👼☁️", 
-            desc: "상대방의 작은 숨소리 하나도 섬세하게 알아채고 배려해주는 세상에 하나뿐인 힐러 스타일입니다. 당신의 따뜻한 위로와 깊은 공감은 연인에게 그 어떤 것보다 큰 안식처가 됩니다. 존재만으로도 힐링이 되는 귀한 사람!" 
-        },
-        IT: { 
-            name: "츤데레의 정석\n지적인 시크릿 가디언", 
-            img: "🐱💎", 
-            desc: "겉으로는 조금 무심해 보일 수 있어도, 속으로는 누구보다 연인을 깊게 생각하고 뒤에서 묵묵히 챙겨주는 스타일입니다. 당신이 툭 던지는 진중한 배려에 상대방은 예상치 못한 감동의 쓰나미를 겪게 될 거예요. 알면 알수록 진국인 매력 덩어리!" 
-        }
+        ISTJ: { name: "철저한 연애 매니저", img: "💼✅", desc: "약속은 생명! 연애도 계획적으로 관리하는 든든한 등대 같은 당신. 믿음직함의 대명사군요." },
+        ISFJ: { name: "다정한 로맨틱 가디언", img: "🧤💖", desc: "연인의 사소한 것까지 다 기억하는 세심함 끝판왕! 헌신적인 사랑으로 상대방을 행복하게 만드네요." },
+        INFJ: { name: "통찰력 있는 소울메이트", img: "🔮🕯️", desc: "말하지 않아도 눈빛만으로 연인의 마음을 읽어내는 능력이 있군요. 깊고 진실한 사랑을 추구하는 타입입니다." },
+        INTJ: { name: "전략적인 연애 고수", img: "♟️🧠", desc: "사랑도 분석하고 성장하려는 당신! 차가워 보일지 몰라도 내 사람에게는 누구보다 충성스러운 순애보입니다." },
+        ISTP: { name: "자유로운 무심 로맨티스트", img: "🛵🛠️", desc: "말보다는 행동으로! 구속은 싫지만 적당한 거리에서 연인을 묵묵히 챙겨주는 츤데레의 정석입니다." },
+        ISFP: { name: "예술적인 사랑꾼", img: "🎨🎨", desc: "감수성이 풍부하고 따뜻한 영혼의 소유자군요. 연인과 함께하는 소소한 일상을 한 편의 영화처럼 만들어냅니다." },
+        INFP: { name: "몽환적인 낭만주의자", img: "🌙🦄", desc: "운명적인 사랑을 꿈꾸는 순수한 영혼입니다. 연인을 위해 시와 음악을 선물할 수 있는 낭만 가득한 파트너군요." },
+        INTP: { name: "지적인 호기심 연인", img: "🔬📖", desc: "연애도 탐구 대상! 지적인 대화가 통하는 연인과 함께할 때 가장 행복을 느끼는 독특한 매력의 소유자입니다." },
+        ESTP: { name: "짜릿한 도파민 연인", img: "⚡🔥", desc: "오늘만 산다! 지루할 틈 없는 데이트로 연인을 늘 즐겁게 만드는 에너제틱한 불도저 스타일이군요." },
+        ESFP: { name: "슈퍼스타 사랑꾼", img: "🕺🥂", desc: "어딜 가나 시선 집중! 연인과 함께 즐기는 파티 같은 삶을 꿈꾸는 낙천적이고 다정한 파트너입니다." },
+        ENFP: { name: "해피 바이러스 연인", img: "🎈🍭", desc: "상상력 대폭발! 매일매일 새로운 이벤트와 웃음으로 연인의 일상을 축제로 바꾸는 마법사 같은 존재입니다." },
+        ENTP: { name: "유쾌한 연애 논쟁가", img: "📢🎤", desc: "지루한 연애는 거부한다! 재치 있는 농담과 지적 자극으로 연인의 마음을 흔들어놓는 매력쟁이군요." },
+        ESTJ: { name: "결단력 있는 연애 리더", img: "📢🏛️", desc: "연인의 앞날까지 책임지는 든든한 지도자 스타일! 추진력 넘치는 리드와 체계적인 사랑으로 믿음직함을 줍니다." },
+        ESFJ: { name: "함께하면 즐거운 조력자", img: "🥧🏠", desc: "연인과 주변 사람까지 두루 챙기는 따뜻한 마당발! 화목하고 안정적인 관계를 만들어가는 일등 공신입니다." },
+        ENFJ: { name: "열정적인 로맨틱 멘토", img: "🕯️📢", desc: "연인의 성장을 돕고 아낌없이 사랑을 퍼주는 햇살 같은 당신! 누구보다 따뜻한 영향력을 행사하는 사랑꾼입니다." },
+        ENTJ: { name: "카리스마 연애CEO", img: "🦁🌆", desc: "목표를 향해 함께 달리는 파워풀한 연인! 강렬한 추진력으로 연애도 인생도 최고로 이끌어가는 능력자입니다." }
     };
 
-    function shuffle(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-    }
-
     function startTest() {
-        shuffle(questions);
-        questions.forEach(q => shuffle(q.options));
         document.getElementById('start-area').style.display = 'none';
         document.getElementById('quiz-area').style.display = 'block';
         showQuestion();
@@ -162,8 +159,8 @@
         });
     }
 
-    function nextQuestion(type) {
-        score[type]++;
+    function nextQuestion(types) {
+        types.forEach(t => scores[t]++);
         currentQ++;
         if (currentQ < questions.length) {
             showQuestion();
@@ -176,10 +173,16 @@
         document.getElementById('quiz-area').style.display = 'none';
         document.getElementById('result-area').style.display = 'block';
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-        let prefix = score.E >= score.I ? 'E' : 'I';
-        let suffix = score.F >= score.T ? 'F' : 'T';
-        let finalType = prefix + suffix;
-        let resultData = results[finalType] || results['EF'];
+        
+        let mbti = "";
+        mbti += (scores.E >= scores.I) ? "E" : "I";
+        mbti += (scores.S >= scores.N) ? "S" : "N";
+        mbti += (scores.T >= scores.F) ? "T" : "F";
+        mbti += (scores.J >= scores.P) ? "J" : "P";
+
+        let resultData = results[mbti] || results['ISFJ'];
+
+        document.getElementById('res-mbti').innerText = mbti;
         document.getElementById('res-image').innerText = resultData.img;
         document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
         document.getElementById('res-desc').innerHTML = resultData.desc;

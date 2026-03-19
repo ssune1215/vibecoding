@@ -31,14 +31,14 @@
     <div id="start-area">
         <div class="result-image">✨👁️</div>
         <h1 class="title">타인이 보는 나<br>첫인상 스캐너</h1>
-        <p class="description">당신이 방금 모임 장소에 들어왔을 때,<br>사람들은 당신에게서 어떤 아우라를 느낄까요?</p>
+        <p class="description">당신이 방금 모임 장소에 들어왔을 때,<br>사람들은 당신에게 어떤 아우라를 느낄까요?</p>
         <button class="btn-start" onclick="startTest()">스캔 시작하기 🚀</button>
     </div>
 
     <div id="quiz-area" style="display: none;">
         <div class="progress-bar"><div class="progress" id="progress"></div></div>
         <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700;">Question 1 / 5</div>
-        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.5;">아우라 분석 중...</div>
+        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.4;">아우라 분석 중...</div>
         <div id="options-container"></div>
     </div>
 
@@ -55,12 +55,12 @@
         <div class="action-btns">
             <button class="btn-kakao">
                 <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
-                내 첫인상 결과 공유하기
+                결과 카톡 공유하기
             </button>
             <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog">
                 👀 다른 테스트 구경가기
             </a>
-            <button class="btn-retry" onclick="location.reload()">🔄 다시 테스트하기</button>
+            <button class="btn-retry" onclick="location.reload()">🔄 다시 하기</button>
         </div>
     </div>
 </div>
@@ -71,48 +71,48 @@
 
     const questions = [
         {
-            q: "당신이 낯선 파티 장소나 모임에 들어섰을 때, 사람들의 시선이 당신에게 꽂힙니다. 이때 당신 스스로 생각하는 당신의 모습은?",
+            q: "낯선 파티나 모임에 들어섰을 때, 사람들에게 비친 당신의 첫 이미지는?",
             options: [
-                { text: "세련되고 지적인 도시 남녀의 정석! 차갑지만 매혹적인 분위기.", type: 'A' },
-                { text: "주변을 환하게 밝히는 긍정왕! 따뜻하고 포근한 미소를 띤 모습.", type: 'B' },
-                { text: "오묘한 카리스마가 느껴지는 신비주의. 뭔가 사연이 있을 것 같은 느낌.", type: 'C' },
-                { text: "활동적이고 열정적인 에너지. 당장이라도 모임을 주도할 것 같은 개구쟁이 스타일.", type: 'D' }
+                { text: "세련된 도시 남녀! 차갑지만 매혹적인 분위기.", type: 'A' },
+                { text: "주변을 밝게 만드는 긍정왕! 따뜻한 미소의 소유자.", type: 'B' },
+                { text: "오묘한 카리스마의 신비주의. 사연이 있을 듯한 느낌.", type: 'C' },
+                { text: "열정적인 에너지! 당장 모임을 주도할 것 같은 인싸.", type: 'D' }
             ]
         },
         {
-            q: "처음 만난 사람이 당신에게 말을 걸어왔습니다. 당신의 첫마디와 목소리 톤은 어떠한가요?",
+            q: "처음 본 사람이 말을 걸어왔을 때, 당신의 목소리 톤은?",
             options: [
-                { text: "정중하고 예의 바르지만, 확실한 선이 느껴지는 차분하고 신뢰감 있는 톤.", type: 'A' },
-                { text: "마치 오랜 친구를 만난 듯, 높고 명랑한 톤으로 반갑게 대화를 이어간다.", type: 'B' },
-                { text: "말하기보다는 주로 경청하며, 짧지만 핵심을 찌르는 신비로운 대답을 한다.", type: 'C' },
-                { text: "상대방의 긴장을 풀어주기 위해 농담을 섞어가며 유쾌하고 시원시원하게 말한다.", type: 'D' }
+                { text: "정중하고 예의 바르며 확실한 선이 느껴지는 차분함.", type: 'A' },
+                { text: "오랜 친구를 만난 듯 명랑하게 반갑게 대답한다.", type: 'B' },
+                { text: "주로 경청하며 짧지만 핵심만 찌르는 신비로운 대답.", type: 'C' },
+                { text: "상대방의 긴장을 풀어주는 유쾌하고 시원시원한 말투.", type: 'D' }
             ]
         },
         {
-            q: "길을 걷다가 당신의 스타일이 마음에 든다며 번호를 물어보는 사람이 생겼습니다! 이때 당신의 반응은?",
+            q: "길을 걷다 누군가 번호를 물어본다면 당신의 반응은?",
             options: [
-                { text: "상대를 위아래로 슥 훑어본 뒤, 내 취향인지 냉정하게 판단하고 결정한다.", type: 'A' },
-                { text: "당황해서 얼굴이 붉어지지만, 웃으면서 친절하게 거절하거나 수락한다.", type: 'B' },
-                { text: "눈만 살짝 마주친 뒤, 대답 대신 알 수 없는 미소만 남기고 유유히 지나간다.", type: 'C' },
-                { text: "역으로 질문을 던지며 상황 자체를 즐기는 여유를 보여준다.", type: 'D' }
+                { text: "상대를 슥 훑어본 뒤 취향인지 냉정하게 판단한다.", type: 'A' },
+                { text: "당황해서 얼굴이 붉어지지만 친절하게 거절/수락한다.", type: 'B' },
+                { text: "눈만 살짝 마주친 뒤 알 수 없는 미소만 남기고 간다.", type: 'C' },
+                { text: "역으로 질문을 던지며 상황 자체를 즐기는 여유.", type: 'D' }
             ]
         },
         {
-            q: "당신의 가방이나 방 안에서 가장 눈에 띄는 소품은 무엇인가요?",
+            q: "당신의 가방이나 방 안에서 가장 눈에 띄는 소품은?",
             options: [
-                { text: "세련된 디자인의 다이어리나 최신형 IT 기기.", type: 'A' },
-                { text: "귀여운 인형 키링이나 아기자기한 필기구들.", type: 'B' },
-                { text: "독특한 향신료나 오래된 골동품, 혹은 정체불명의 예술 작품.", type: 'C' },
-                { text: "당장이라도 운동하러 갈 수 있는 트레이닝 용품이나 화려한 액세서리.", type: 'D' }
+                { text: "세련된 디자인의 다이어리나 최신 IT 기기.", type: 'A' },
+                { text: "귀여운 인형 키링이나 아기자기한 소품들.", type: 'B' },
+                { text: "향신료, 오래된 골동품 등 정체불명의 유니크한 물건.", type: 'C' },
+                { text: "트레이닝 용품이나 화려하고 눈에 띄는 액세서리.", type: 'D' }
             ]
         },
         {
-            q: "당신이 가장 꿈꾸는 소셜 미디어(인스타그램 등) 속 나만의 이미지는 어떤 느낌인가요?",
+            q: "소셜 미디어(인스타 등)에서 당신이 꿈꾸는 나만의 이미지는?",
             options: [
-                { text: "#자기계발 #성공 #전문직 아우라가 풍기는 지적인 프로페셔널.", type: 'A' },
-                { text: "#일상샷 #따뜻함 #소통 소박하지만 다정한 감성 충만 데일리.", type: 'B' },
-                { text: "#예술 #독창성 #몽환적 누구도 흉내 낼 수 없는 나만의 유니크함.", type: 'C' },
-                { text: "#여행 #스포츠 #파티 매 순간을 짜릿하게 즐기는 핫한 인싸.", type: 'D' }
+                { text: "#성공 #전문직 아우라의 지적인 프로페셔널.", type: 'A' },
+                { text: "#일상 #소통 따뜻함이 느껴지는 다정한 감성 Daily.", type: 'B' },
+                { text: "#예술 #독창성 흉내 낼 수 없는 나만의 유니크함.", type: 'C' },
+                { text: "#여행 #스포츠 매 순간을 짜릿하게 즐기는 핫 인싸.", type: 'D' }
             ]
         }
     ];
@@ -121,22 +121,22 @@
         A: { 
             name: "얼음 왕국의 귀족\n냉철한 프로페셔널상", 
             img: "💎💼", 
-            desc: "당신은 첫눈에 '와, 정말 멋있고 똑똑해 보인다!'라는 감탄을 자아내게 만드는 아우라를 지녔군요. 차갑고 도도해 보여서 다가가기 조금 힘들 순 있지만, 한 번 신뢰를 쌓으면 누구보다 든든한 파트너가 될 상입니다. 당신의 지적 섹시함이 최고의 무기!" 
+            desc: "지적이고 세련된 아우라를 지녔군요! 다가가기 힘들 순 있지만 한 번 신뢰를 쌓으면 누구보다 든든한 파트너가 될 것입니다." 
         },
         B: { 
             name: "햇살 가득한 봄날\n러블리 인간 비타민상", 
             img: "☀️🍬", 
-            desc: "당신이 나타나면 주변 공기부터 따뜻해지는 느낌! 누구나 편안하게 말을 걸고 싶어지는 친근하고 포근한 이미지를 가졌군요. 당신의 밝은 미소는 사람들의 경계심을 무장해제 시키는 강력한 힘이 있습니다. 어딜 가나 사랑받는 '마성의 댕댕이' 스타일!" 
+            desc: "당신이 나타나면 주변 공기부터 따뜻해지네요! 누구나 말을 걸고 싶어지는 친근하고 포근한 이미지를 가졌군요." 
         },
         C: { 
-            name: "안개 속에 가려진 달빛\n몽환적인 신비론자상", 
+            name: "안개 속 달빛\n몽환적인 신비론자상", 
             img: "🌙🔮", 
-            desc: "알면 알수록 더 궁금해지는, 묘한 블랙홀 같은 매력의 소유자군요! 남들이 보지 못하는 것을 보는 듯한 깊은 눈빛과 오묘한 분위기가 당신을 매우 특별하게 만들어줍니다. 당신의 수수께끼 같은 모습에 사람들은 속절없이 빠져들게 될 거예요." 
+            desc: "알면 알수록 궁금해지는 블랙홀 같은 매력의 소유자군요! 오묘한 분위기가 당신을 매우 특별하게 만들어줍니다." 
         },
         D: { 
             name: "타오르는 금요일 밤\n에너제틱 핫인싸상", 
             img: "🔥💃", 
-            desc: "당신이 등장하는 순간 분위기는 이미 축제! 지칠 줄 모르는 에너지가 온몸에서 뿜어져 나오는군요. 활동적이고 유쾌한 당신의 첫인상은 보는 사람까지 기분 좋게 만듭니다. 어색한 침묵을 참지 못하는 당신이야말로 이 시대의 진정한 분위기 메이커!" 
+            desc: "당신이 등장하는 순간 축제 시작! 지칠 줄 모르는 에너지가 뿜어져 나오는군요. 어딜 가나 최고의 분위기 메이커입니다!" 
         }
     };
 
@@ -193,8 +193,6 @@
         document.getElementById('res-image').innerText = resultData.img;
         document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
         document.getElementById('res-desc').innerHTML = resultData.desc;
-        
-        if(resultData.color) document.documentElement.style.setProperty('--main-color', resultData.color);
     }
 </script>
 </body>
