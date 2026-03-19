@@ -53,5 +53,10 @@
     "title": "💼 직장인 본능 테스트",
     "path": "./worker-instinct/",
     "group": "psy"
+  },
+  {
+    "title": "🎬 영화 속 커플 테스트",
+    "path": "./movie-couple/",
+    "group": "love"
   }
 ]

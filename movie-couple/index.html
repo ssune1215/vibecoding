@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>영화 속 커플 테스트 | 나의 연애는 어떤 영화일까? 🎬</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="영화 속 커플 테스트 | 나의 로맨틱 Vibe는?" />
+    <meta property="og:description" content="영화 속 명장면처럼 펼쳐지는 나의 연애 스타일! 어떤 커플을 닮았을까요?" />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            --main-color: #be123c; /* 로즈/로맨틱 레드 */
+            --bg-light: #fff1f2;
+            --border-color: #fb7185;
+            --btn-hover-shadow: rgba(190, 18, 60, 0.2);
+        }
+    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
+</head>
+<body>
+
+<div class="card">
+    <div id="start-area">
+        <div class="result-image">🎬❤️</div>
+        <h1 class="title">나의 연애 테마<br>영화 속 커플 테스트</h1>
+        <p class="description">당신만이 가진 고유한 로맨틱 분위기!<br>영화 속 어떤 커플과 가장 닮았을까요?</p>
+        <button class="btn-start" onclick="startTest()">내 영화 찾기 🚀</button>
+    </div>
+
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700;">Question 1 / 5</div>
+        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.4;">시나리오 분석 중...</div>
+        <div id="options-container"></div>
+    </div>
+
+    <div id="result-area" style="display: none;">
+        <div class="tiny" style="font-weight: 700;">당신을 상징하는 명장면</div>
+        <div id="res-image" class="result-image">🌹</div>
+        <div id="res-name" class="result-title">결과 이름</div>
+        
+        <div class="result-box">
+            <span class="result-box-title">🎬 무비 커플 리포트</span>
+            <div id="res-desc" class="result-desc">결과 분석 내용이 여기에 표시됩니다.</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                내 결과 카톡 공유하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog">
+                👀 다른 테스트 구경 가기
+            </a>
+            <button class="btn-retry" onclick="location.reload()">🔄 다시 하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentQ = 0;
+    let score = { A: 0, B: 0, C: 0, D: 0 };
+
+    const questions = [
+        {
+            q: "꿈꾸던 첫 데이트를 하게 된 당신, 가장 완벽한 코스는?",
+            options: [
+                { text: "해질녘 강변을 산책하며 나누는 깊은 대화", type: 'A' },
+                { text: "화려한 야경이 보이는 루프탑에서 즐기는 낭만", type: 'B' },
+                { text: "빗속을 뚫고 달려가 꽉 껴안는 뜨거운 재회", type: 'C' },
+                { text: "평범하지만 맛있는 떡볶이를 같이 먹는 일상", type: 'D' }
+            ]
+        },
+        {
+            q: "연인과 말다툼이 생겼을 때, 당신이 화해하는 방식은?",
+            options: [
+                { text: "시간 여행을 하듯 어제의 나를 반성하며 사과", type: 'A' },
+                { text: "각자의 꿈과 공간을 잠시 유지하며 감정 정리", type: 'B' },
+                { text: "죽을 때까지 놓지 않겠다는 듯 부딪히며 진심 확인", type: 'C' },
+                { text: "이 관계가 어떤 의미인지 차분하게 곰곰이 생각", type: 'D' }
+            ]
+        },
+        {
+            q: "상대방에게 반하게 되는 당신만의 결정적 포인트는?",
+            options: [
+                { text: "말하지 않아도 느껴지는 편안함과 다정함", type: 'A' },
+                { text: "열정적으로 자신의 꿈을 향해 일하는 모습", type: 'B' },
+                { text: "세상 모두가 등 돌려도 나 하나만 믿어주는 확신", type: 'C' },
+                { text: "대화가 막힘없이 이어질 때 느끼는 짜릿함", type: 'D' }
+            ]
+        },
+        {
+            q: "당신이 정의하는 가장 완벽하고 이상적인 사랑은?",
+            options: [
+                { text: "매일 평범한 일상을 특별하게 채우며 늙어가는 것", type: 'A' },
+                { text: "비록 멀어져도 서로의 성장에 좋은 발판이 되는 것", type: 'B' },
+                { text: "죽음도 갈라놓지 못할 영원한 사랑을 남기는 것", type: 'C' },
+                { text: "아픈 기억까지 모두 끌어안고 다시 시작하는 것", type: 'D' }
+            ]
+        },
+        {
+            q: "연인에게 서운함이 생겼을 때 당신의 본능적인 행동은?",
+            options: [
+                { text: "귀여운 장난으로 분위기를 풀며 슬쩍 이야기한다", type: 'A' },
+                { text: "혼자만의 시간을 가지며 여유 있게 기다린다", type: 'B' },
+                { text: "그 자리에서 바로 서운함을 말하고 감정을 공유한다", type: 'C' },
+                { text: "영화 대사처럼 간접적으로 내 마음을 은근히 비춘다", type: 'D' }
+            ]
+        }
+    ];
+
+    const results = {
+        A: { 
+            name: "시간을 건너 사랑하는\n[어바웃 타임] 팀 & 메리", 
+            img: "⏳🌿", 
+            desc: "당신은 평범한 비범함의 가치를 아는 사람이군요! 일상의 소소한 행복을 소중히 여기며, 상대방을 편안하게 감싸주는 다정한 매력을 지녔습니다. 당신과의 연동은 매일매일이 따뜻하고 풍요로울 거예요." 
+        },
+        B: { 
+            name: "꿈을 속삭이는 연인\n[라라랜드] 세바스찬 & 미아", 
+            img: "💃🎷", 
+            desc: "열정적이고 낭만적인 당신! 사랑만큼이나 각자의 꿈과 성장을 중요하게 생각하는 세련된 스타일입니다. 뜨거운 사랑을 나누면서도 서로의 앞날을 응원해 주는 당신이야말로 이 시대의 진정한 로맨티스트입니다." 
+        },
+        C: { 
+            name: "운명을 이겨낸 순애보\n[노트북] 노아 & 앨리", 
+            img: "📔🛶", 
+            desc: "한 번 꽂히면 끝까지 가는 지독하고 아름다운 사랑꾼! 장애물이 앞을 가로막아도 당신의 진심은 절대로 꺾이지 않죠. 죽음조차 갈라놓지 못할 영원한 사랑을 꿈꾸는 당신의 열정은 영화보다 더 영화 같습니다." 
+        },
+        D: { 
+            name: "현실의 파도를 넘는 성숙함\n[500일의 썸머] 톰 & 썸머", 
+            img: "☁️🏙️", 
+            desc: "사랑을 통해 나 자신을 발견해가는 성숙한 영혼의 소유자군요! 비록 끝이 있더라도 그 과정에서의 성장과 깨달음을 소중히 여길 줄 압니다. 당신이 겪는 모든 만남은 결국 당신을 더 빛나게 만드는 소중한 기록이 될 것입니다." 
+        }
+    };
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let percent = (currentQ / questions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        document.getElementById('q-number').innerText = `Question ${currentQ + 1} / ${questions.length}`;
+        let currentData = questions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
+        let container = document.getElementById('options-container');
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.type);
+            container.appendChild(btn);
+        });
+    }
+
+    function nextQuestion(type) {
+        score[type]++;
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        
+        // 점수가 가장 높은 유형 추출
+        let finalType = Object.keys(score).reduce((a, b) => score[a] >= score[b] ? a : b);
+        let resultData = results[finalType] || results['A'];
+
+        document.getElementById('res-image').innerText = resultData.img;
+        document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
+        document.getElementById('res-desc').innerHTML = resultData.desc;
+    }
+</script>
+</body>
+</html>
