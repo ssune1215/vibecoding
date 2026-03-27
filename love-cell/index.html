@@ -20,6 +20,10 @@
             --border-color: #fcd34d;
             --btn-hover-shadow: rgba(245, 158, 11, 0.2);
         }
+        /* 윈도우/모바일 환경 이모티콘 깨짐 방지를 위한 폰트 스택 추가 */
+        body, .result-image, .option-btn, .result-title, .title, .btn-start {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+        }
     </style>
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -29,7 +33,7 @@
 
 <div class="card">
     <div id="start-area">
-        <div class="result-image">🦠💤</div>
+        <div class="result-image">💖🐣</div>
         <h1 class="title">팩폭 주의!<br>연애 세포 생존율 테스트</h1>
         <p class="description">내 안의 연애 세포는 혹시 화석이 된 건 아닐까?<br>지금 바로 당신의 연애 세포 상태를 진단해 보세요!</p>
         <button class="btn-start" onclick="startTest()">세포 부검 시작하기 🔍</button>
@@ -44,7 +48,7 @@
 
     <div id="result-area" style="display: none;">
         <div class="tiny" style="font-weight: 700; color: #f59e0b;">진단 결과 보고서</div>
-        <div id="res-image" class="result-image">🔬</div>
+        <div id="res-image" class="result-image">🧸</div>
         <div id="res-name" class="result-title">결과 이름</div>
         
         <div class="result-box">
@@ -118,14 +122,14 @@
     ];
 
     const results = [
-        { min: 5, max: 6, name: "삐빅- 사망입니다.\n[연애 세포 화석화]", img: "🪨🦴", desc: "심각합니다. 심장에 거미줄이 쳤군요! 귀찮음이 연애 세포를 압도하여 완전히 화석이 되어버린 상태입니다. 혼자가 제일 재미있는 진정한 자발적 고독 마스터입니다." },
-        { min: 7, max: 8, name: "Zzz... 깨우지 마세요\n[기면증 세포]", img: "🛌💤", desc: "연애 세포들이 집단 겨울잠에 빠졌습니다! 연애를 하고 싶은 생각은 아주 가~끔 들지만, 막상 기회가 오면 이불 밖으로 나가기 귀찮아하는 심각한 만성 피로 상태네요." },
-        { min: 9, max: 10, name: "배고프고 외로운\n[좀비 세포]", img: "🧟‍♂️🍖", desc: "외로움에 굶주려 있지만 막상 썸을 시작할 기력은 없는 상태! 연애 콘텐츠를 보며 대리 만족만 하거나, 영혼 없이 소개팅을 나가는 슬픈 반송장 영혼입니다." },
-        { min: 11, max: 12, name: "평온을 깨지 마\n[평화주의자 세포]", img: "🕊️🍵", desc: "불타는 사랑보다는 내 인생의 평화가 우선인 타입! 연애 세포가 살아있긴 하지만, 상처받거나 스트레스받는 상황을 극도로 꺼려하여 조심성이 매우 많습니다." },
-        { min: 13, max: 14, name: "바늘 하나 안 들어가는\n[철벽 방패 세포]", img: "🛡️🚧", desc: "다가오는 사람도 쳐내는 극강의 빗장 수비수! 의심이 많고 낯가림이 심해 상대를 철저히 검증하려고 합니다. 세포는 살아있으나 두꺼운 방탄복을 입고 있네요!" },
-        { min: 15, max: 16, name: "눈치는 백단 팩트는 쫄보\n[스나이퍼 세포]", img: "🎯👀", desc: "멀리서 지켜보기만 하는 짝사랑 전문! 상대의 마음결을 읽어내는 분석력은 훌륭하지만 막상 다가갈 용기는 부족해서 혼자 애만 태우는 억울한 세포입니다." },
-        { min: 17, max: 18, name: "시속 200km 호감도 급상승\n[금사빠 치타 세포]", img: "🐆💘", desc: "작은 친절 하나에도 심장이 나대기 시작합니다! 연애 세포가 과도하게 활성화되어 있어 0.1초 만에 결혼식장 입장까지 상상하는 폭주 기관차 같은 매력이 있네요." },
-        { min: 19, max: 20, name: "열정 과다 핫 보이/걸\n[불타는 용광로 세포]", img: "🌋🔥", desc: "연애 세포 전투력 9999%! 맘에 드는 사람이 나타나면 물불 가리지 않고 덤벼드는 엄청난 행동파입니다. 당신의 들이대는 에너지에 상대방이 화상을 입을 수도 있겠어요!" }
+        { min: 5, max: 6, name: "삐빅- 사망입니다.\n[연애 세포 화석화]", img: "🧊⛄", desc: "심각합니다. 심장에 거미줄이 쳤군요! 귀찮음이 연애 세포를 압도하여 완전히 화석이 되어버린 상태입니다. 혼자가 제일 재미있는 진정한 자발적 고독 마스터입니다." },
+        { min: 7, max: 8, name: "Zzz... 깨우지 마세요\n[기면증 세포]", img: "🧸🛌", desc: "연애 세포들이 집단 겨울잠에 빠졌습니다! 연애를 하고 싶은 생각은 아주 가~끔 들지만, 막상 기회가 오면 이불 밖으로 나가기 귀찮아하는 심각한 만성 피로 상태네요." },
+        { min: 9, max: 10, name: "배고프고 외로운\n[외로움 세포]", img: "👻🥺", desc: "외로움에 굶주려 있지만 막상 썸을 시작할 기력은 없는 상태! 연애 콘텐츠를 보며 대리 만족만 하거나, 영혼 없이 소개팅을 나가는 슬픈 반송장 영혼입니다." },
+        { min: 11, max: 12, name: "평온을 깨지 마\n[평화주의자 세포]", img: "☁️🕊️", desc: "불타는 사랑보다는 내 인생의 평화가 우선인 타입! 연애 세포가 살아있긴 하지만, 상처받거나 스트레스받는 상황을 극도로 꺼려하여 조심성이 매우 많습니다." },
+        { min: 13, max: 14, name: "바늘 하나 안 들어가는\n[철벽 방패 세포]", img: "🏰🛡️", desc: "다가오는 사람도 쳐내는 극강의 빗장 수비수! 의심이 많고 낯가림이 심해 상대를 철저히 검증하려고 합니다. 세포는 살아있으나 두꺼운 방탄복을 입고 있네요!" },
+        { min: 15, max: 16, name: "눈치는 백단 팩트는 쫄보\n[스나이퍼 세포]", img: "🐾👀", desc: "멀리서 지켜보기만 하는 짝사랑 전문! 상대의 마음결을 읽어내는 분석력은 훌륭하지만 막상 다가갈 용기는 부족해서 혼자 애만 태우는 억울한 세포입니다." },
+        { min: 17, max: 18, name: "시속 200km 호감도 급상승\n[금사빠 토끼 세포]", img: "🐇💨", desc: "작은 친절 하나에도 심장이 나대기 시작합니다! 연애 세포가 과도하게 활성화되어 있어 0.1초 만에 결혼식장 입장까지 상상하는 폭주 기관차 같은 매력이 있네요." },
+        { min: 19, max: 20, name: "열정 과다 핫 보이/걸\n[불타는 로켓 세포]", img: "❤️‍🔥🚀", desc: "연애 세포 전투력 9999%! 맘에 드는 사람이 나타나면 물불 가리지 않고 덤벼드는 엄청난 행동파입니다. 당신의 들이대는 에너지에 상대방이 화상을 입을 수도 있겠어요!" }
     ];
 
     function shuffle(array) {
