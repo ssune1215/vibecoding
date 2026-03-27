@@ -78,5 +78,10 @@
     "title": "🦠 나의 연애 세포 생존율은?",
     "path": "./love-cell/",
     "group": "love"
+  },
+  {
+    "title": "🦊 나의 숨겨진 플러팅(Flirting) 무기는?",
+    "path": "./flirting/",
+    "group": "love"
   }
 ]

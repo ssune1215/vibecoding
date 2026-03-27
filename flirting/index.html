@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>숨겨진 플러팅 무기 테스트 | 나의 치명적 유혹 스킬은? 🦊</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="찾았다! 나의 숨겨진 플러팅 무기 💘" />
+    <meta property="og:description" content="나도 모르게 흘리고 다녔던 치명적 매력... 당신의 진짜 무기는 무엇일까요?" />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            /* 푸시아 핑크 계열 (치명 & 로맨스) */
+            --main-color: #d946ef; 
+            --bg-light: #fdf4ff;
+            --border-color: #f0abfc;
+            --btn-hover-shadow: rgba(217, 70, 239, 0.2);
+        }
+        
+        /* 윈도우/모바일 폰트(이모티콘) 깨짐 방지 스택 */
+        body, .result-image, .option-btn, .result-title, .title, .btn-start {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+        }
+    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
+</head>
+<body>
+
+<div class="card">
+    <div id="start-area">
+        <div class="result-image">😉🦊</div>
+        <h1 class="title">나의 숨겨진<br>플러팅 무기 테스트</h1>
+        <p class="description">나도 모르게 상대를 꼬시고(?) 있었다고?<br>당신 안에 숨겨진 진짜 매력을 파헤쳐 드립니다.</p>
+        <button class="btn-start" onclick="startTest()">내 무기 확인하기 💘</button>
+    </div>
+
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700;">Question 1 / 5</div>
+        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.4;">매력 분석 중...</div>
+        <div id="options-container"></div>
+    </div>
+
+    <div id="result-area" style="display: none;">
+        <div class="tiny" style="font-weight: 700; color: #d946ef;">분석 완료! 당신의 무기는...</div>
+        <div id="res-image" class="result-image">✨</div>
+        <div id="res-name" class="result-title">결과 이름</div>
+        
+        <div class="result-box">
+            <span class="result-box-title">💘 플러팅 스킬 보고서</span>
+            <div id="res-desc" class="result-desc">결과 분석 내용이 여기에 표시됩니다.</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                내 무기 카톡 공유하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog">
+                👀 다른 테스트 구경 가기
+            </a>
+            <button class="btn-retry" onclick="location.reload()">🔄 다시 검사하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentQ = 0;
+    let score = 0;
+
+    const questions = [
+        {
+            q: "마음에 드는 사람과 우연히 눈이 마주쳤을 때, 나의 반사 신경은?",
+            options: [
+                { text: "아무렇지 않은 척 쿨하게 고개를 돌린다.", point: 3 }, // 츤데레/흑묘
+                { text: "피하지 않고 눈을 맞추며 싱긋 웃어준다.", point: 4 }, // 불도저/마상
+                { text: "당황해서 동공 지진, 핸드폰만 뚫어져라 본다.", point: 1 }, // 은근슬쩍 유죄
+                { text: "앗! 하고 피했다가 다시 살짝 훔쳐본다.", point: 2 } // 여우/리트리버
+            ]
+        },
+        {
+            q: "상대방과 메신저로 연락할 때, 나의 톡 스타일은 주로?",
+            options: [
+                { text: "티키타카 폭발! 장난과 짤로 끊임없이 웃게 한다.", point: 3 }, // 여우
+                { text: "\"주말에 시간 어때? 밥 먹자\" 기회 될 때 돌직구를 날린다.", point: 4 }, // 불도저
+                { text: "\"오늘 어땠어?\" 소소한 일상을 꼬박꼬박 묻고 답한다.", point: 1 }, // 스며드는 가랑비
+                { text: "조금 느리게 읽지만 정성스럽고 알찬 내용을 보낸다.", point: 2 } // 흑묘/유죄
+            ]
+        },
+        {
+            q: "여럿이 모인 술자리, 호감 가는 그 사람이 나타났을 때 나는?",
+            options: [
+                { text: "모두와 즐겁게 놀지만 내 모든 시선은 그 사람에게 고정.", point: 2 }, // 리트리버
+                { text: "대화보단 조용히 물을 챙겨주거나 들어주며 배려한다.", point: 1 }, // 유죄/가랑비
+                { text: "자연스럽게 그 사람 옆자리나 앞자리를 사수한다.", point: 4 }, // 직진/치명
+                { text: "먼저 다가오도록 은근슬쩍 여운을 남기며 바라만 본다.", point: 3 } // 흑묘/츤데레
+            ]
+        },
+        {
+            q: "상대가 내게 가벼운 농담이나 장난을 툭 쳤을 때 나의 반응은?",
+            options: [
+                { text: "더 센 장난으로 맞받아치며 분위기를 완전히 주도한다.", point: 3 }, // 여우
+                { text: "어이없다는 듯 웃으면서 가볍게 핀잔을 준다.", point: 2 }, // 츤데레
+                { text: "크게 리액션하며 상대방을 무장해제 시키는 미소를 짓는다.", point: 1 }, // 리트리버/가랑비
+                { text: "\"나 좋아하냐?\" 라며 능글맞고 심쿵하게 받아친다.", point: 4 } // 불도저/마상
+            ]
+        },
+        {
+            q: "드디어 단둘이 있게 된 상황! 분위기가 적당히 무르익었을 때 나는?",
+            options: [
+                { text: "재밌는 대화 주제를 꺼내며 어색할 틈 없이 웃게 만든다.", point: 3 }, // 여우
+                { text: "눈을 지그시 맞추며 살짝 진지하고 의미심장해진다.", point: 4 }, // 치명/불도저
+                { text: "상대의 이야기에 깊이 공감하며 편안하고 따뜻하게 굴어준다.", point: 1 }, // 유죄/가랑비
+                { text: "은근 슬쩍 겉옷을 정리해주거나 아주 가벼운 터치를 한다.", point: 2 } // 흑묘/츤데레
+            ]
+        }
+    ];
+
+    const results = [
+        { min: 5, max: 6, name: "어디서나 스며드는\n[다정한 가랑비 형]", img: "☔🌂", desc: "편안함과 따뜻함이 최고의 무기입니다! 요란하게 티 내지 않지만 상대방의 일상에 조금씩 자연스럽게 스며들어, 어느새 당신 없이는 허전하게 만드는 조용한 실력자입니다." },
+        { min: 7, max: 8, name: "챙겨주다 정드는\n[은근슬쩍 유죄인간]", img: "💕☕", desc: "'이 사람 혹시 나 좋아하나?' 당신의 무의식적인 배려와 다정함에 많은 이들이 착각에 빠집니다. 담백함 속에 숨겨진 훅 들어오는 다정함이 상대를 안달 나게 만듭니다!" },
+        { min: 9, max: 10, name: "장벽 해제 100%\n[우당탕탕 리트리버]", img: "🐶🎾", desc: "밝은 에너지와 솔직한 리액션이 상대를 완벽히 무장해제 시킵니다. 꾸밈없이 해맑은 웃음과 댕댕이 같은 친화력에 단단했던 상대의 마음도 사르르 녹아내립니다." },
+        { min: 11, max: 12, name: "툭 던진 말에 심쿵\n[알쏭달쏭 츤데레]", img: "😎🖤", desc: "아무 관심 없는 척하면서도 가장 결정적인 순간에 챙겨주는 당신의 반전 매력! 틱틱거리면서도 다해주는 모습에 '나한테만 이러는 건가?' 하고 설레게 만드는 재주가 있네요." },
+        { min: 13, max: 14, name: "티키타카 예술꾼\n[앙큼한 유혹 여우]", img: "🦊✨", desc: "밀고 당기기의 고수! 재치 있는 말장난과 적절한 칭찬으로 대화의 분위기를 리드합니다. 선을 넘을 듯 말 듯 한 아슬아슬한 센스로 상대를 쥐락펴락하네요." },
+        { min: 15, max: 16, name: "가만히 있어도 꼬이는\n[신비주의 흑고양이]", img: "🐈‍⬛🍷", desc: "도도하고 차가워 보이지만 다가가고 싶게 만드는 강렬한 아우라가 있습니다. 속마음을 100% 드러내지 않아 상대가 더 궁금하고 안달나서 쫓아오게 만드는 고급 스킬입니다." },
+        { min: 17, max: 18, name: "브레이크 따위는 없는\n[직진 불도저]", img: "🚜🔥", desc: "\"주말에 나랑 놀래?\" 밀당 없이 날아가는 스트레이트 펀치! 빙빙 돌려 말하지 않는 솔직함과 박력 있는 리드로 정신 차렸을 땐 이미 상대는 당신의 페이스에 말려있습니다." },
+        { min: 19, max: 20, name: "숨만 쉬어도 플러팅\n[치명적 매력 마스터]", img: "💋❤️‍🔥", desc: "페로몬 과다 주의! 굳이 말하지 않아도 눈빛, 제스처, 목소리 톤 자체에 이미 묘한 분위기가 탑재되어 있습니다. 당신과 눈이 마주치는 순간이 바로 플러팅의 시작입니다." }
+    ];
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let percent = (currentQ / questions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        document.getElementById('q-number').innerText = `Question ${currentQ + 1} / ${questions.length}`;
+        let currentData = questions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
+        let container = document.getElementById('options-container');
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.point);
+            container.appendChild(btn);
+        });
+    }
+
+    function nextQuestion(point) {
+        score += point;
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        
+        let resultData = results.find(r => score >= r.min && score <= r.max);
+        if(!resultData) resultData = results[results.length - 1];
+
+        document.getElementById('res-image').innerText = resultData.img;
+        document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
+        document.getElementById('res-desc').innerHTML = resultData.desc;
+    }
+</script>
+</body>
+</html>
