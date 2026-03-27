@@ -73,5 +73,10 @@
     "title": "🎞️ 내 인생은 어떤 영화일까?",
     "path": "./life-movie/",
     "group": "psy"
+  },
+  {
+    "title": "🦠 나의 연애 세포 생존율은?",
+    "path": "./love-cell/",
+    "group": "love"
   }
 ]
