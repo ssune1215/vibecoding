@@ -88,5 +88,10 @@
     "title": "🧸 연애 중 나의 애착 인형 지수는?",
     "path": "./attachment/",
     "group": "love"
+  },
+  {
+    "title": "🎬 내 연애를 영화로 친다면 어떤 명작일까?",
+    "path": "./romance-movie/",
+    "group": "love"
   }
 ]
