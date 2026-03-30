@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사회생활 생존기 | 내 직장생활은 어떤 영화일까? 💼</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="나의 사회생활, 영화로 만든다면 어떤 장르일까? 💼🎬" />
+    <meta property="og:description" content="악마는 프라다를 입는다부터 해리포터 생존기까지! 오피스 속 나의 생존 본능 100% 매칭" />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            /* 오피스/빌딩을 상징하는 시크한 네이비/골드 톤 */
+            --main-color: #1e3a8a; /* 딥 네이비 */
+            --bg-light: #f0fdf4; /* 아주 밝은 민트톤/화이트 */
+            --border-color: #bfdbfe;
+            --btn-hover-shadow: rgba(30, 58, 138, 0.2);
+        }
+        
+        body, .result-image, .option-btn, .result-title, .title, .btn-start {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+        }
+    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
+</head>
+<body style="background-color: #f8fafc;">
+
+<div class="card" style="box-shadow: 0 10px 25px rgba(30, 58, 138, 0.1);">
+    <div id="start-area">
+        <div class="result-image">💼🏢</div>
+        <h1 class="title">나의 사회생활<br>생존 무비 시상식</h1>
+        <p class="description">환장할 노릇인 직장과 인간관계 속에서<br>나는 어떤 장르의 영화를 찍고 있을까요?</p>
+        <button class="btn-start" onclick="startTest()">출근표 끊기 🎟️</button>
+    </div>
+
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress" style="background-color: var(--main-color);"></div></div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700; color: #1e3a8a;">씬 1 / 5</div>
+        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.4;">대본 분석 중...</div>
+        <div id="options-container"></div>
+    </div>
+
+    <div id="result-area" style="display: none;">
+        <div class="tiny" style="font-weight: 700; color: #1e3a8a;">✨ 컷 컷! 당신이 찍고 있는 영화는...</div>
+        <div id="res-image" class="result-image" style="font-size: 50px; margin-top: 15px;">🎬</div>
+        <div id="res-name" class="result-title" style="margin-top: 5px; color: #1e3a8a; font-size: 24px;">결과 이름</div>
+        
+        <div class="result-box" style="border: 2px solid #3b82f6; background-color: white;">
+            <span class="result-box-title" style="background-color: #1e3a8a; color: white;">📝 캐릭터 분석 리포트</span>
+            <div id="res-desc" class="result-desc" style="color: #1e293b;">결과 분석 내용이 여기에 표시됩니다.</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao" style="background-color: #fde047; color: #451a03; border: 1px solid #facc15;">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                내 오피스 무비 카톡 공유하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog" style="background-color: #dbeafe; color: #1e3a8a;">
+                👀 다른 테스트 구경 가기
+            </a>
+            <button class="btn-retry" onclick="location.reload()" style="background-color: #1e3a8a; color: white;">🔄 다른 회사로 이직하기 (다시하기)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentQ = 0;
+    let score = 0;
+
+    const questions = [
+        {
+            q: "🏢 출근 첫날, 낯선 환경에 뚝 떨어졌다! 나의 생존 전략은?",
+            options: [
+                { text: "\"제발 나한테 먼저 말 걸지 마라...\" 영혼 없이 아무 일도 안 일어나기를 속으로 기도하는 [투명인간 폼]", point: 1 },
+                { text: "\"일단 분위기부터 쫙 보자.\" 조용히 눈치만 보며 사내 분위기와 빌런을 파악하는 [관찰자 폼]", point: 2 },
+                { text: "\"안녕하세요! 밥 드셨어요?\" 밝은 인사성으로 사람들부터 사귀어두고 보는 [핵인싸 폼]", point: 3 },
+                { text: "\"이건 이렇게 하면 더 빠를 텐데?\" 첫날부터 눈으로 업무 프로세스 스캔하는 [능률 기획자 폼]", point: 4 }
+            ]
+        },
+        {
+            q: "🔥 중요한 프로젝트 도중, 누군가 대형 사고를 쳤다! 이 아수라장에서 나는?",
+            options: [
+                { text: "겉으로는 \"헐 어떡해..\" 하면서 속으로는 빨리 내 책임이 아님을 증명할 무죄 입증 증거물부터 탐색", point: 1 },
+                { text: "멘탈 붕괴! 스스로 자책하거나, 옆에서 발만 동동 구르며 어쩔 줄을 모르는 불안 인형", point: 2 },
+                { text: "\"어떻게든 수습되겠죠!\" 남은 인맥과 화려한 임기응변(말빨)을 쥐어짜 내어 무마하려는 입털기 장인", point: 3 },
+                { text: "\"하.. 비켜봐, 내가 할게.\" 속에서 천불이 끓어오르지만 일단 내가 총대 메고 해결부터 하려는 해결사", point: 4 }
+            ]
+        },
+        {
+            q: "🍱 뼈 빠지는 오전 노동이 끝나고 드디어 찾아온 꿀맛 점심시간!",
+            options: [
+                { text: "무조건 자리나 조용한 곳에서 이어폰 꽂고 넷플릭스 보며 혼밥! 절대적인 나만의 침묵 충전 시간", point: 1 },
+                { text: "\"커피 콜?\" 밥 빨리 먹고 마음 맞는 동료들과 티타임 하면서 폭풍 수다로 스트레스를 푸는 힐링 시간", point: 2 },
+                { text: "\"오늘 뭐 먹지?\" 오전부터 메뉴만 고민했다! 가장 맛있는 걸 먹어야 오후를 버틸 수 있는 미식가 모드", point: 3 },
+                { text: "샌드위치로 대충 빨리 때우거나 밥 먹으면서도 남은 오후 업무를 어떻게 쳐낼지 머릿속 리허설 시작", point: 4 }
+            ]
+        },
+        {
+            q: "😤 도저히 말이 안 통하는 꼰대 빌런이 억측 가득한 말도 안 되는 지시를 내렸을 때?",
+            options: [
+                { text: "겉으론 영혼 0%의 맑은 눈으로 \"네~ 알겠습니다~\" 대답 시원하게 해놓고, 어차피 내 맘대로 적당히 결과물 냄", point: 1 },
+                { text: "기분 안 상하게 \"아유 부장님~ 그건 쫌 일정이~\" 능구렁이처럼 부드럽고 유연하게 도망가거나 무마하기", point: 2 },
+                { text: "조목조목 따지며 \"그건 이런 리스크가 있어서 비효율적입니다.\" 논리와 팩트로 뼈 때리는 은어의 암살자", point: 3 },
+                { text: "일단 짜증은 치밀지만 까라면 까는 거니까... 인내심을 꾹꾹 눌러가며 시키는 대로 완벽하게 맞춰줌", point: 4 }
+            ]
+        },
+        {
+            q: "🌃 모든 에너지를 쏟아붓고 피곤한 하루를 마치며 퇴근하는 길, 머릿속엔?",
+            options: [
+                { text: "\"언제까지 이러고 살지? 로또 1등 되면 무조건 사표부터 내고 세계일주 간다...\" 끝없는 현실 도피형 공상", point: 1 },
+                { text: "\"아까 그 대화에서 내가 선 넘은 실수한 건 없겠지? ㅠㅠ\" 종일 있었던 일의 사소한 감정까지 되감기하는 중", point: 2 },
+                { text: "\"집 가서 맥주 까고 예능 정주행해야지!!\" 퇴근과 동시에 회사 스위치가 완벽히 꺼져버리는 쾌락주의자", point: 3 },
+                { text: "\"아씨, 내일은 오전에 출근하자마자 이 업무부터 쳐내야겠다.\" 퇴근길에도 스케줄러를 안 놓는 워커홀릭", point: 4 }
+            ]
+        }
+    ];
+
+    const results = [
+        { min: 5, max: 7, name: "[해리 포터]\n고통받는 불행의 소년가장", img: "🧙‍♂️⚡", desc: "분명 나는 가만히 평화롭게 지내고 싶었는데, 주변 빌런들이 매번 대형 사고를 치고 왜인지 네가 그 수습을 다 떠맡고 있네요. 불행과 피로는 나의 몫. 속으로는 매일 퇴사와 도망을 100번씩 꿈꾸는 짠내 나는 마법사 생존기를 찍고 있습니다." },
+        { min: 8, max: 10, name: "[월터의 상상은 현실이 된다]\n일탈을 꿈꾸는 몽상가", img: "🏔️🛹", desc: "겉보기엔 온순하고 시키는 일 잘하는 평범한 직원인 척 다 하고 있지만, 속마음엔 엄청난 똘기와 일탈의 욕구가 부글부글 끓고 있습니다. 로또만 되어봐라! 언젠가 시원하게 사표를 집어 던지고 나만의 자유를 진짜로 만끽할 자유로운 영혼입니다." },
+        { min: 11, max: 13, name: "[인턴]\n무던하고 평화로운 유지군", img: "☕👔", desc: "어떤 또라이나 진상 상사를 만나도 허허 웃어넘기는 강력한 해탈과 무던함 멘탈 장착! 내 일은 묵묵하게 해내면서 남들에게 적도 만들지 않는 사회생활 짬바이브가 장난 아닙니다. 주변 팀원들에겐 언제나 안정감을 주는 소중한 동료네요." },
+        { min: 14, max: 15, name: "[캐치 미 이프 유 캔]\n입으로 때우는 임기응변 사기캐", img: "✈️🕶️", desc: "실무 능력도 나쁘지 않지만 그보다 센스와 눈치, 화려한 언변이 모든 것을 지배합니다! 예측하지 못한 엄청난 위기가 닥쳐와도 특유의 '아가리 파이터' 기질과 임기응변으로 요리조리 미꾸라지처럼 다 빠져나가는 천재적인 오피스 생명력을 지녔습니다." },
+        { min: 16, max: 17, name: "[극한직업]\n웃음 가득 실속 챙기는 꿀러", img: "🍗🚔", desc: "동료들과 함께 수다 떨고 회식하며 맛있는 거 먹는 낙으로 회사를 버팁니다! 어딘가 은은하게 개그 욕심이 넘치고, 적당한 똘기가 섞여 있지만 일할 때는 또 기가 막힌 실속파 팀워크를 보여줍니다. 회사에 없으면 가장 아쉬운 존재!" },
+        { min: 18, max: 19, name: "[존 윅]\n건드리면 끝장내는 팩폭러", img: "✏️🐕", desc: "평소엔 조용히 내 할 일만 칼같이 끝내지만, 굳이 내 구역을 침범하거나 내게 일을 무논리로 떠넘기는 사람이 있다면 자비는 없습니다. 빙빙 돌려 말하지 않고 날카로운 논리와 팩트 체크 코멘트로 상대방을 은은하고 치명적으로 묵살해 버리는 킬러!" },
+        { min: 20, max: 20, name: "[악마는 프라다를 입는다]\n능력 만렙 워커홀릭 리더", img: "👠📱", desc: "일 못하는 동료나 답답한 핑계를 대는 건 도저히 못 참습니다. 완벽주의와 칼 같은 스케줄 관리! 이왕 하는 거 남들 멱살 쥐고서 하드캐리 해버리는 성격. 자비 없는 업무 텐션으로 모두를 두려움에 떨게 하지만, 능력만큼은 누구도 부정 못 할 진짜 괴물이네요." }
+    ];
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let percent = (currentQ / questions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        document.getElementById('q-number').innerText = `씬 ${currentQ + 1} / ${questions.length}`;
+        let currentData = questions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
+        let container = document.getElementById('options-container');
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.point);
+            container.appendChild(btn);
+        });
+    }
+
+    function nextQuestion(point) {
+        score += point;
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        
+        // 오피스 테마 컨페티 (네이비 골드 블루)
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#1e3a8a', '#facc15', '#3b82f6', '#cbd5e1'] });
+        
+        let resultData = results.find(r => score >= r.min && score <= r.max);
+        if(!resultData) resultData = results[results.length - 1];
+
+        document.getElementById('res-image').innerText = resultData.img;
+        document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
+        document.getElementById('res-desc').innerHTML = resultData.desc;
+    }
+</script>
+</body>
+</html>
