@@ -83,5 +83,10 @@
     "title": "🦊 나의 숨겨진 플러팅(Flirting) 무기는?",
     "path": "./flirting/",
     "group": "love"
+  },
+  {
+    "title": "🧸 연애 중 나의 애착 인형 지수는?",
+    "path": "./attachment/",
+    "group": "love"
   }
 ]

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>애착 인형 지수 테스트 | 나의 연애 독립성은? 🧸</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="나의 연애 애착 인형 지수 테스트 🧸" />
+    <meta property="og:description" content="1mm 껌딱지일까, 방목형 사자일까? 나의 연애 의존도와 독립성을 알아보세요!" />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            /* 코랄/로즈 테마 (따뜻하고 포근한 느낌) */
+            --main-color: #fb7185; 
+            --bg-light: #fff1f2;
+            --border-color: #fda4af;
+            --btn-hover-shadow: rgba(251, 113, 133, 0.2);
+        }
+        
+        /* 윈도우/모바일 폰트(이모티콘) 깨짐 방지 스택 */
+        body, .result-image, .option-btn, .result-title, .title, .btn-start {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+        }
+    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
+</head>
+<body>
+
+<div class="card">
+    <div id="start-area">
+        <div class="result-image">🧸💖</div>
+        <h1 class="title">나의 연애 중<br>애착 인형 지수 테스트</h1>
+        <p class="description">당신은 연인에게 1분 1초 붙어있는 껌딱지인가요,<br>아니면 혼자만의 초원이 필요한 방목형인가요?</p>
+        <button class="btn-start" onclick="startTest()">애착 유형 확인하기 🔍</button>
+    </div>
+
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700;">Question 1 / 5</div>
+        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.4;">심리 분석 중...</div>
+        <div id="options-container"></div>
+    </div>
+
+    <div id="result-area" style="display: none;">
+        <div class="tiny" style="font-weight: 700; color: #fb7185;">분석 완료! 당신의 애착 유형은...</div>
+        <div id="res-image" class="result-image">✨</div>
+        <div id="res-name" class="result-title">결과 이름</div>
+        
+        <div class="result-box">
+            <span class="result-box-title">🧸 애착 분석 보고서</span>
+            <div id="res-desc" class="result-desc">결과 분석 내용이 여기에 표시됩니다.</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                내 결과 카톡 공유하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog">
+                👀 다른 테스트 구경 가기
+            </a>
+            <button class="btn-retry" onclick="location.reload()">🔄 다시 검사하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentQ = 0;
+    let score = 0;
+
+    const questions = [
+        {
+            q: "당장 내일 만나기로 했는데, 상대가 갑자기 야근해야 한다면?",
+            options: [
+                { text: "\"그럼 끝나고 잠깐이라도 얼굴 볼까?\" 어떻게든 만나려 한다.", point: 1 },
+                { text: "\"고생이네, 내가 근처로 야식이나 커피 사갈까?\" 챙겨준다.", point: 2 },
+                { text: "\"알겠어...\" 겉으론 쿨한 척하지만 속으론 엄청 서운해한다.", point: 3 },
+                { text: "\"아쉽지만 어쩔 수 없지! 쉬어~\" 하고 쿨하게 내 할 일을 한다.", point: 4 }
+            ]
+        },
+        {
+            q: "데이트가 없는 나른한 주말, 당신의 하루 일정은?",
+            options: [
+                { text: "하루 종일 밀린 카톡과 통화를 하며 랜선 데이트를 즐긴다.", point: 1 },
+                { text: "처음엔 혼자 놀다 심심해지면 갑자기 연인을 불러낸다.", point: 3 },
+                { text: "연락은 간간이 남겨두고, 나만의 취미 생활을 평화롭게 즐긴다.", point: 2 },
+                { text: "혼자 넷플릭스도 보고 낮잠도 늘어지게 자는 완벽한 휴식!", point: 4 }
+            ]
+        },
+        {
+            q: "연인이 친구들과 술방/회식 중! 3시간째 연락이 없다면?",
+            options: [
+                { text: "불안함 폭발. \"무슨 일 있나? 혹시 딴 사람 만나는 거 아냐?\"", point: 1 },
+                { text: "\"이유가 뭐지?\" 서운함을 꾹 참고 일단 연락이 올 때까지 기다린다.", point: 2 },
+                { text: "\"재밌게 놀고 있어? 끝나면 톡해~\" 하고 내 시간을 보낸다.", point: 3 },
+                { text: "\"나중에 폰 보면 연락하겠지 뭐~\" 전혀 신경 쓰지 않고 잔다.", point: 4 }
+            ]
+        },
+        {
+            q: "연인이 나에게 \"우리 며칠만 각자의 혼자 시간을 갖자\"라고 한다면?",
+            options: [
+                { text: "청천벽력! \"내가 뭐 잘못했나? 이제 나한테 마음이 식었나?\"", point: 1 },
+                { text: "\"갑자기 웬 혼자만의 시간? 무슨 일인데?\" 끝끝내 이유를 캐묻는다.", point: 2 },
+                { text: "\"그래, 알겠어. 생각 정리되면 편하게 연락해.\" 담담하게 배려한다.", point: 3 },
+                { text: "\"그래 좋아! 나도 요즘 피곤했어.\" 쿨하게 동의하며 혼자 재밌게 논다.", point: 4 }
+            ]
+        },
+        {
+            q: "내가 가장 이상적이라고 생각하는 '스킨십 빈도와 거리'는?",
+            options: [
+                { text: "걸을 때도 밥 먹을 때도 찰싹! 1분 1초도 안 떨어지고 싶다.", point: 1 },
+                { text: "서로 어깨에 가볍게 기대고 각자 폰을 보는 편안한 거리가 좋다.", point: 2 },
+                { text: "내가 원할 때, 내가 곁에 다가갈 때 안아주는 것이 이상적이다.", point: 3 },
+                { text: "밖에서 걸을 때는 손잡는 정도가 좋고, 가끔은 각자 걷는 게 편하다.", point: 4 }
+            ]
+        }
+    ];
+
+    const results = [
+        { min: 5, max: 6, name: "1mm도 안 떨어지는\n[분리불안 껌딱지]", img: "🍯💖", desc: "연인 껌딱지 그 자체! 연애의 핵심은 무조건 '함께하는 시간'입니다. 하루 종일 연락하고 꼭 붙어있어야 직성이 풀리는 엄청난 밀착형으로, 떨어져 있으면 심한 분리불안을 느낍니다." },
+        { min: 7, max: 8, name: "내 품에 쏙 들어오는\n[포근한 애착 곰인형]", img: "🧸🫂", desc: "안정감 지수 100%! 따뜻한 스킨십과 내 곁을 내어주는 포근한 배려를 중시합니다. 너무 속박하진 않지만, 항상 서로의 안부를 묻고 감싸 안아주는 다정다감한 연애를 선호하네요." },
+        { min: 9, max: 10, name: "내 뒤를 지켜주는\n[우직한 수호신 정령]", img: "🗿🍀", desc: "묵묵한 믿음의 아이콘! 구속하지 않아도 신뢰가 바탕이 되어 든든하게 뒤를 지켜주는 타입입니다. 떨어져 있어도 불안해하지 않으며, 성숙하고 단단한 울타리가 되어줍니다." },
+        { min: 11, max: 12, name: "자기만의 주머니 속\n[아기 캥거루]", img: "🦘💛", desc: "나만의 바운더리가 소중해요! 상대방을 아끼고 사랑하지만 나만의 주머니 속(안전 공간)이 반드시 보장되어야 합니다. 간섭받는 것을 싫어하지만 막상 연인 품에 안기는 건 좋아합니다." },
+        { min: 13, max: 14, name: "다가오면 멀어지는\n[밀당의 스프링]", img: "🌀😼", desc: "알쏭달쏭 탄성력의 대명사! 상대방이 너무 집착하며 다가오면 부담스러워 도망가고, 막상 상대가 멀어지면 서운함을 느끼며 다가가는 고도화된 밀당 본능을 지녔습니다." },
+        { min: 15, max: 16, name: "자기가 원할 때만\n[무심한 들고양이]", img: "🐈‍⬛🐾", desc: "내가 필요할 때만 가서 쓰담쓰담! 기본적으로 개인주의 성향이 강해 연락이나 만남에 목매지 않습니다. 하지만 불현듯 애정이 고프면 다가가서 치명적인 애교를 부리네요." },
+        { min: 17, max: 18, name: "각자의 초원이 필요한\n[밀림의 방목형 사자]", img: "🦁🌿", desc: "내 삶은 내 것, 네 삶은 네 것! 사랑과 일상은 철저히 분리되는 아주 쿨한 방목형 연애입니다. 만날 땐 열정적으로 사랑하지만 안 만날 땐 철저하게 독립적인 삶의 방식을 존중합니다." },
+        { min: 19, max: 20, name: "속박 극혐 마이웨이\n[자유로운 고무공]", img: "🎾🚀", desc: "초전도체급 마이웨이 본능! 연애를 해도 나의 자유가 가장 중요합니다. 연락에 집착하는 상대를 가장 피곤해하며, 어디로 튈지 모르는 예측 불가의 매력과 독립성의 끝판왕입니다." }
+    ];
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let percent = (currentQ / questions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        document.getElementById('q-number').innerText = `Question ${currentQ + 1} / ${questions.length}`;
+        let currentData = questions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
+        let container = document.getElementById('options-container');
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.point);
+            container.appendChild(btn);
+        });
+    }
+
+    function nextQuestion(point) {
+        score += point;
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+        
+        let resultData = results.find(r => score >= r.min && score <= r.max);
+        if(!resultData) resultData = results[results.length - 1];
+
+        document.getElementById('res-image').innerText = resultData.img;
+        document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
+        document.getElementById('res-desc').innerHTML = resultData.desc;
+    }
+</script>
+</body>
+</html>
