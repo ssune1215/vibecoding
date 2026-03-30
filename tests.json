@@ -1,6 +1,6 @@
 [
   {
-    "title": "💘 나와 찰떡궁합인 이상형 MBTI는?",
+    "title": "💘 이상형 MBTI 찾기",
     "path": "./lovembti/",
     "group": "love"
   },
@@ -20,12 +20,12 @@
     "group": "psy"
   },
   {
-    "title": "👿 내 안의 빌런 테스트",
+    "title": "👿 내 안의 빌런 찾기",
     "path": "./villain/",
     "group": "psy"
   },
   {
-    "title": "🏝️ 무인도 생존 심리 테스트",
+    "title": "🏝️ 무인도 생존 능력",
     "path": "./balance/",
     "group": "psy"
   },
@@ -40,12 +40,12 @@
     "group": "love"
   },
   {
-    "title": "😏 음란마귀 테스트",
+    "title": "😏 나의 음란마귀 지수",
     "path": "./eros/",
     "group": "psy"
   },
   {
-    "title": "✨ 첫인상 스캐너 (Vibe Check)",
+    "title": "✨ 첫인상 스캐너",
     "path": "./firstimpression/",
     "group": "psy"
   },
@@ -65,37 +65,32 @@
     "group": "love"
   },
   {
-    "title": "🌿 나의 향기 테스트 (Personal Scent)",
+    "title": "🌿 나의 분위기 향기",
     "path": "./scent-test/",
     "group": "psy"
   },
   {
-    "title": "🎞️ 내 인생은 어떤 영화일까?",
+    "title": "🎞️ 내 인생 영화 찾기",
     "path": "./life-movie/",
     "group": "psy"
   },
   {
-    "title": "🦠 나의 연애 세포 생존율은?",
+    "title": "🦠 연애 세포 생존율",
     "path": "./love-cell/",
     "group": "love"
   },
   {
-    "title": "🦊 나의 숨겨진 플러팅(Flirting) 무기는?",
+    "title": "🦊 나의 플러팅 무기",
     "path": "./flirting/",
     "group": "love"
   },
   {
-    "title": "🧸 연애 중 나의 애착 인형 지수는?",
+    "title": "🧸 애착 인형 지수",
     "path": "./attachment/",
     "group": "love"
   },
   {
-    "title": "🎬 내 연애를 영화로 친다면 어떤 명작일까?",
-    "path": "./romance-movie/",
-    "group": "love"
-  },
-  {
-    "title": "💼 내 직장/사회생활 생존기는 어떤 영화일까?",
+    "title": "💼 오피스 생존 무비",
     "path": "./office-movie/",
     "group": "psy"
   }
