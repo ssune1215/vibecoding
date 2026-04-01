@@ -93,5 +93,10 @@
     "title": "💼 오피스 생존 무비",
     "path": "./office-movie/",
     "group": "psy"
+  },
+  {
+    "title": "🧐 유교걸/보이 개방성 지수",
+    "path": "./confucian-boygirl/",
+    "group": "love"
   }
 ]

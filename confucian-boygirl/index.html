@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>유교걸/유교보이 지수 | 깻잎은 떼도 지퍼는 안 돼! 🤫</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="나의 '유교 마인드' 개방성 테스트 🧐" />
+    <meta property="og:description" content="남사친은 어디까지? 깻잎 논쟁에서 내 대답은? 조선시대 선비부터 할리우드까지 매칭!" />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            /* 흙, 한지, 전통적이면서도 세련된 브라운/아이보리 톤 */
+            --main-color: #92400e; /* 딥 오렌지/브라운 */
+            --bg-light: #fffbeb; /* 한지 아이보리 */
+            --border-color: #fcd34d;
+            --btn-hover-shadow: rgba(146, 64, 14, 0.2);
+        }
+        
+        body, .result-image, .option-btn, .result-title, .title, .btn-start {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+        }
+    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
+</head>
+<body style="background-color: #fefce8;">
+
+<div class="card" style="box-shadow: 0 10px 25px rgba(146, 64, 14, 0.1);">
+    <div id="start-area">
+        <div class="result-image">🧐📜</div>
+        <h1 class="title">나의 숨겨진<br>유교 마인드 지수</h1>
+        <p class="description">깻잎은? 패딩 지퍼는? 이성 친구는?<br>내 안의 흥선대원군과 아메리칸 본능 사이!</p>
+        <button class="btn-start" onclick="startTest()">내 유교지수 검사 🚀</button>
+    </div>
+
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress" style="background-color: var(--main-color);"></div></div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700; color: #92400e;">심문 시작 1 / 5</div>
+        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.4;">대본 분석 중...</div>
+        <div id="options-container"></div>
+    </div>
+
+    <div id="result-area" style="display: none;">
+        <div class="tiny" style="font-weight: 700; color: #92400e;">✨ 분석 끝! 내 안의 무의식은...</div>
+        <div id="res-image" class="result-image" style="font-size: 55px; margin-top: 15px;">📜</div>
+        <div id="res-name" class="result-title" style="margin-top: 5px; color: #b45309; font-size: 24px;">결과 이름</div>
+        
+        <div class="result-box" style="border: 2px solid #fcd34d; background-color: white;">
+            <span class="result-box-title" style="background-color: #b45309; color: white;">📝 개방성 분석 리포트</span>
+            <div id="res-desc" class="result-desc" style="color: #451a03;">결과 분석 내용이 여기에 표시됩니다.</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao" style="background-color: #fde047; color: #451a03; border: 1px solid #eab308;">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                내 유교 마인드 공유하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog" style="background-color: #fef08a; color: #92400e;">
+                👀 팩폭 심리테스트 더 보기
+            </a>
+            <button class="btn-retry" onclick="location.reload()" style="background-color: #92400e; color: white;">🔄 처음부터 회개하기 (다시하기)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentQ = 0;
+    let score = 0;
+
+    const questions = [
+        {
+            q: "밥그릇 논쟁! 내 애인이 남사친/여사친과 단둘이 식사를 한단다.",
+            options: [
+                { text: "단둘이? 절대 안 돼! 밥은 동성끼리 먹어. (완전 반대)", point: 1 },
+                { text: "미리 허락받고 점심 먹는 것까진 오케이. 술은 절대 금지.", point: 2 },
+                { text: "누굴 만나는지 솔직하게 나한테 말만 해주면 전혀 신경 안 씀.", point: 3 },
+                { text: "어차피 친구인데 단둘이면 뭐 어때? 나도 이성 친구 은근 잘 만남.", point: 4 }
+            ]
+        },
+        {
+            q: "드디어 펼쳐진 깻잎 논쟁! 식사 중 내 애인이 내 절친의 깻잎을 젓가락으로 잡아준다면?",
+            options: [
+                { text: "당장 젓가락 탁 소리 나게 내려놓고 삼자대면 사자후 발사.", point: 1 },
+                { text: "겉으론 웃지만, 집에 가서 그날 밤새도록 삐져서 따져 묻는다.", point: 2 },
+                { text: "조금 거슬리긴 하는데, '눈썰미랑 매너가 좀 좋네' 하고 넘어간다.", point: 3 },
+                { text: "오히려 대신 까줘서 고맙다! 나도 친구 새우 까줄 수 있음. 우정 만세!", point: 4 }
+            ]
+        },
+        {
+            q: "내 애인의 스마트폰에 저장된 이성 친구 연락처 허용 범위는?",
+            options: [
+                { text: "업무상 연락 제외, 사적인 이성 친구는 아예 흔적도 없었으면 좋겠다.", point: 1 },
+                { text: "딱히 겹치는 지인만 남길 것. 이름 뒤에 '♡'나 귀여운 이모티콘은 사살.", point: 2 },
+                { text: "번호가 100명이든 크게 터치 안 함. 단둘이 몰래 만나는 것만 아니면 됨.", point: 3 },
+                { text: "남사친 여사친 어떻게 끊어? 폰 열어놔도 굳이 안 볼 자신 넘침.", point: 4 }
+            ]
+        },
+        {
+            q: "겨울철 패딩 지퍼 참사! 내 애인이 내 친구의 잘 안 올라가는 패딩 지퍼를 중간에서 올려준다면?",
+            options: [
+                { text: "깻잎은 백번 양보해도 지퍼는 극대노. 패딩 당장 찢어버림.", point: 1 },
+                { text: "\"손 시려운데 내가 도와줄게!\" 하며 황급히 중간에 끼어들어 내가 올림.", point: 2 },
+                { text: "어차피 둘이 나랑 같이 있는데, 뭐 그럴 수도 있지 하고 넘어간다.", point: 3 },
+                { text: "오 우리 자기 완전 스윗하네? 친구 립스틱도 예쁘게 대신 발라줘라!", point: 4 }
+            ]
+        },
+        {
+            q: "내가 생각하는 가장 이상적인 연애의 '스킨십 속도'는?",
+            options: [
+                { text: "손잡는 데 최소 한 달! 마음이 먼저 통해야 해. 순서가 가장 중요함.", point: 1 },
+                { text: "서로 사귀기로 확신이 들었다면, 그때부터 자연스럽게 이어지는 게 좋음.", point: 2 },
+                { text: "굳이 기간을 두지 않아. 첫 데이트라도 느낌 팍 오고 통하면 오케이.", point: 3 },
+                { text: "일단 무조건 본능적인 케미(스킨십)가 맞아야 연애를 진짜로 시작할 수 있음!", point: 4 }
+            ]
+        }
+    ];
+
+    const results = [
+        { min: 5, max: 7, name: "[조선시대 유교 모드]\n완고한 흥선대원군", img: "📜🙅‍♂️", desc: "이 구역의 유교걸/보이는 바로 당신! 내 구역에 조금의 이성도 들이지 마라! 질투심이 많고 보수적인 척화비를 칼같이 세워둡니다. 다른 이성에게 주는 친절은 절대 용납 불가. 한 번 스킨십까지 가는 데도 아주 조심스럽고 신중한 완전 순정수비대 스타일입니다." },
+        { min: 8, max: 12, name: "[적당한 K-마인드]\n철벽 치는 K-직장인", img: "💻🛡️", desc: "겉으로는 \"야 나 엄청 쿨해~\" 라고 말하지만 막상 상황이 닥치면 은근히 속이 부글부글 끓는 전형적인 한국형 유교 마인드! 적당한 매너에는 관대하지만, 깻잎이나 이성 단둘 밥약 같은 '결정적 선'을 넘는 건 매우 눈에 불을 켜고 지켜보는 현실파 연애러입니다!" },
+        { min: 13, max: 16, name: "[자유로운 쿨워터 향기]\n쿨내 진동 유학생 마인드", img: "🎒😎", desc: "이성 친구 정도야 뭐 그럴 수 있지! 상대방을 잘 믿어주고, 나 역시 쿨하게 노는 걸 좋아하는 신세대 마인드의 소유자. 굳이 연애한다고 인간관계를 좁혀야 하나? 남들 눈치보다 우리 둘의 행복이 더 중요한 아주 쿨하고 매끈한 연애관을 가지고 있네요." },
+        { min: 17, max: 20, name: "[매운맛 할리우드 스타]\n기력 쇄신 아메리칸 마인드", img: "🇺🇸🔥", desc: "여기가 압구정인가요, LA 할리우드인가요? 연애 생태계를 교란시키는 극강의 마라맛 아메리칸 마인드! 엑스와 밥을 먹어도 오케이, 첫 만남에 불타올라도 오케이! 질투보다는 솔직한 본능과 완전 개방적인 자유연애주의를 지향하는 최고 핫 걸/가이입니다." }
+    ];
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function startTest() {
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let percent = (currentQ / questions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        document.getElementById('q-number').innerText = `심문 시작 ${currentQ + 1} / ${questions.length}`;
+        let currentData = questions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
+        let container = document.getElementById('options-container');
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.point);
+            container.appendChild(btn);
+        });
+    }
+
+    function nextQuestion(point) {
+        score += point;
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        
+        // 전통-화려 컬러 컨페티 (브라운/오렌지/옐로우)
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#92400e', '#facc15', '#b45309', '#fef08a'] });
+        
+        let resultData = results.find(r => score >= r.min && score <= r.max);
+        if(!resultData) resultData = results[results.length - 1];
+
+        document.getElementById('res-image').innerText = resultData.img;
+        document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
+        document.getElementById('res-desc').innerHTML = resultData.desc;
+    }
+</script>
+</body>
+</html>
