@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>술자리 생존 본능 테스트 | 내 알코올 텐션은? 🍻</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="나의 '술자리 생존 본능' 점검하기 🍻" />
+    <meta property="og:description" content="폭주 기관차일까 조용한 신데렐라일까? 건들면 터지는 나의 술자리 팩폭 스캐너!" />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            /* 시원한 맥주/밤거리 네온이 생각나는 옐로우&그린톤 */
+            --main-color: #f59e0b; /* 생맥주 골드 */
+            --bg-light: #fefce8;
+            --border-color: #fde047;
+            --btn-hover-shadow: rgba(245, 158, 11, 0.2);
+        }
+        
+        body, .result-image, .option-btn, .result-title, .title, .btn-start {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+        }
+    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
+</head>
+<body style="background-color: #fefce8;">
+
+<div class="card" style="box-shadow: 0 10px 25px rgba(245, 158, 11, 0.15);">
+    <div id="start-area">
+        <div class="result-image">🍻🤪</div>
+        <h1 class="title">나의 은밀한<br>술자리 본능 테스트</h1>
+        <p class="description">1차부터 3차까지, 알코올이 들어간<br>내 텐션과 생존 본능의 진짜 모습은?</p>
+        <button class="btn-start" style="background-color: #f59e0b;" onclick="startTest()">첫 잔 부딪히기 🍺</button>
+    </div>
+
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress" style="background-color: var(--main-color);"></div></div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700; color: #b45309;">소주 1병째...</div>
+        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.4;">대본 분석 중...</div>
+        <div id="options-container"></div>
+    </div>
+
+    <div id="result-area" style="display: none;">
+        <div class="tiny" style="font-weight: 700; color: #d97706;">✨ 다음 날 남은 팩폭 리포트...</div>
+        <div id="res-image" class="result-image" style="font-size: 55px; margin-top: 15px;">🍷</div>
+        <div id="res-name" class="result-title" style="margin-top: 5px; color: #b45309; font-size: 24px;">결과 이름</div>
+        
+        <div class="result-box" style="border: 2px solid #fde047; background-color: white;">
+            <span class="result-box-title" style="background-color: #f59e0b; color: white;">📝 음주 성향 진단서</span>
+            <div id="res-desc" class="result-desc" style="color: #78350f;">결과 분석 내용이 여기에 표시됩니다.</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao" style="background-color: #fef08a; color: #451a03; border: 1px solid #facc15;">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                내 주사 유형 공유하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog" style="background-color: #fefce8; color: #b45309;">
+                👀 팩폭 심리테스트 더 보기
+            </a>
+            <button class="btn-retry" onclick="location.reload()" style="background-color: #d97706; color: white;">🔄 다시 한 잔 하기 (처음부터)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentQ = 0;
+    let score = 0;
+
+    const questions = [
+        {
+            q: "🍻 불금 퇴근/하교 후 단톡방! 술 약속을 잡을 때 나의 포지션은?",
+            options: [
+                { text: "조용히 읽씹하다가 남들이 오라니까 못 이기는 척 나간다", point: 1 },
+                { text: "\"오늘 약속 있는 분?\" 하며 간잡이 모드로 슬쩍 찔러봄", point: 2 },
+                { text: "미리 장소, 시간, 피벗 테이블 싹 돌려서 주도적으로 통보함", point: 3 },
+                { text: "\"오늘 놀 사람 내 밑으로 집합!!!\" 일단 냅다 번개 치기", point: 4 }
+            ]
+        },
+        {
+            q: "🎤 첫 잔이 돌고 누군가 건배사나 시끄러운 술 게임을 시작했다!",
+            options: [
+                { text: "시선 회피... 제발 나한테 시키지 마... 조용히 묻어간다", point: 1 },
+                { text: "적당히 박수 치고 영혼 없는 큰 웃음으로 분위기를 맞춘다", point: 2 },
+                { text: "어느새 내가 \"자 동전게임 갑니다잉~\" 하며 게임 주도함", point: 3 },
+                { text: "건배사고 뭐고 일단 앞에 있는 안주 다 부수고 원샷!", point: 4 }
+            ]
+        },
+        {
+            q: "😵 슬슬 내 찐 주량을 넘어가고 필름이 끊길락 말락 할 때 나의 행동은?",
+            options: [
+                { text: "말수가 급격히 없어지고 자거나 화장실 간 척 몰래 집에 감", point: 1 },
+                { text: "옆 사람 붙잡고 평소에 못했던 속마음 얘기 무한반복 (감성 충만)", point: 2 },
+                { text: "취한 티 절대 안 내려고 눈 부릅뜨고 정신줄 꽉 붙잡음", point: 3 },
+                { text: "\"야씨, 한 병 더 시켜!!\" 갑자기 눈 풀린 도파민 폭주 시작", point: 4 }
+            ]
+        },
+        {
+            q: "🏃‍♂️ 1차가 끝나고, 텐션 오른 친구들이 2차를 가자고 소리칠 때!",
+            options: [
+                { text: "\"너네 재밌게 놀아~\" 이미 집에 가는 택시 타 있음 (칼귀가)", point: 1 },
+                { text: "\"아 나 내일 약속 있는데...\" 하다가 결국 멱살 잡히고 끌려감", point: 2 },
+                { text: "취한 애들 버리고 텐션 남은 정예멤버만 데리고 깔끔하게 이동", point: 3 },
+                { text: "\"집 가는 배신자들 민증 뺏어라!!\" 제일 앞장서서 달림", point: 4 }
+            ]
+        },
+        {
+            q: "🤮 다음 날 아침, 침대에서 눈을 뜬 당신의 첫 마디와 행동은?",
+            options: [
+                { text: "\"내가 진짜 다시는 술 먹나 봐라 (반복되는 뻔한 거짓말)\"", point: 1 },
+                { text: "어제 헛소리 안 했는지 식은땀 흘리며 단톡방과 통화 기록 확인", point: 2 },
+                { text: "\"다들 살아있냐?\" 해장국 집 픽해서 친구들에게 생사 확인 톡 돌림", point: 3 },
+                { text: "\"으아 속 쓰려.. 야, 오늘 저녁엔 뭐에다 해장술 할래?\"", point: 4 }
+            ]
+        }
+    ];
+
+    const results = [
+        { min: 5, max: 6, name: "[조용한 동굴]\n눈 풀린 닌자 은신 요정", img: "🥷💤", desc: "이 구역의 술자리 신데렐라! 안주는 기가 막히게 잘 챙겨 먹지만, 텐션이 폭발하는 술 게임을 시작할 때나 결제할 때면 쥐도 새도 모르게 사라져 있습니다. 술자리 자체보다 친구들과 속내를 터놓는 고요한 감성 대화를 훨씬 사랑하는 차분한 타입입니다." },
+        { min: 7, max: 8, name: "[감성 버튼 작동]\n무한 반복 속풀이 로봇", img: "😢🤖", desc: "술만 조금 들어갔다 하면 혀가 풀리면서 감성 폭발! 평소 맨정신일 때 못 했던 온갖 섭섭함, 속마음, 혹은 철학적인 개똥(?) 논리를 똑같은 말 무한 반복하며 쏟아냅니다. 주변 사람들은 당신의 끊임없는 푸념을 들어주느라 귀에 딱지가 앉을지도!" },
+        { min: 9, max: 10, name: "[프로 맞장구러]\n팝콘 뜯는 테이블 방청객", img: "🍿👏", desc: "누가 보면 술은 당신이 다 마신 줄 알 정도로 리액션 부자! 방긋방긋 잘 웃어주고 기계적으로 술잔을 부딪쳐주는 최고다! 하지만 사실 머릿속은 '언제 집 가지'라는 냉철한 생각으로 꽉 차 있는, 에너지 가성비 갑 사회생활형 주당입니다." },
+        { min: 11, max: 12, name: "[정신력 최강자]\n취한 티 0% 완벽한 페이스 조절", img: "🧊⚖️", desc: "주량이 세든 약하든 절대 남들에게 흐트러진 꼴을 안 보이려고 발악하는 강철 정신력의 소유자. 겉으로는 티 내지 않고 차분히 사람들을 챙기지만 혼자 있을 때나 다음 날 폭풍 후유증으로 고생하는 은근히 피곤한 술자리 컨트롤 타워입니다." },
+        { min: 13, max: 14, name: "[기획의 달인]\n술자리 세팅 1티어 지휘관", img: "📝🍻", desc: "안주 맛집 선정, 예약, N빵 정산, 건배사 유도까지 모든 진행을 컨트롤하는 회식 요정! 남들이 취해서 흐트러질 때, 당신은 오차 없는 지휘로 모든 술자리판을 짜는 걸 진심으로 즐기는 '쓸데없이 유능한' 플래너입니다." },
+        { min: 15, max: 16, name: "[끝까지 가!]\n브레이크 고장 난 파티 가이/걸", img: "🥳🎢", desc: "처음 뺄 때는 언제고 막상 잔이 돌면 누구보다 신나버리는 브레이크 실종 마인드. 집에 가려는 애들을 협박하고, 본인도 다음날 후회할 걸 뻔히 알면서 분위기에 휩쓸려 내일이 없는 듯한 끝장 텐션을 터뜨려 모두를 뻗게 합니다." },
+        { min: 17, max: 18, name: "[도파민 파괴자]\n밤을 불태우는 돌주먹 폭격기", img: "🥊🔥", desc: "게임이면 게임, 텐션이면 텐션! 알코올만 들어가면 전투력이 측정 불가 상태로 올라갑니다. 잔이 부딪치는 소리만 나도 심장 박동이 빨라지는 도파민 중독자! 2차, 3차 안 가면 잠을 이룰 수 없는 에너자이저 기질을 가지고 있군요." },
+        { min: 19, max: 20, name: "[저세상의 흥]\n브레이크 파열 알코올 몬스터", img: "👹🚂", desc: "전설 속에나 전해지는 극강의 술자리 생태계 파괴종!! 이 사람과 엮이면 다음 날 숙취로 앓아눕지 않은 인간이 없습니다. 멈추지 않는 게임 압박과 \"해장술 한 번 더?\"를 외치는, 알코올로 피가 도는 듯한 저세상 텐션의 지배자입니다." }
+    ];
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let percent = (currentQ / questions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        document.getElementById('q-number').innerText = `소주 ${currentQ + 1}병째... (${currentQ + 1}/${questions.length})`;
+        let currentData = questions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
+        let container = document.getElementById('options-container');
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.point);
+            container.appendChild(btn);
+        });
+    }
+
+    function nextQuestion(point) {
+        score += point;
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        
+        // 시원한 황금빛 생맥주 옐로우, 오렌지 컨페티!
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#f59e0b', '#fbbf24', '#fde047', '#fffbeb'] });
+        
+        let resultData = results.find(r => score >= r.min && score <= r.max);
+        if(!resultData) resultData = results[results.length - 1];
+
+        document.getElementById('res-image').innerText = resultData.img;
+        document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
+        document.getElementById('res-desc').innerHTML = resultData.desc;
+    }
+</script>
+</body>
+</html>

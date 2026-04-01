@@ -103,5 +103,10 @@
     "title": "📺 연애 리얼리티 예능 포지션",
     "path": "./reality-show/",
     "group": "love"
+  },
+  {
+    "title": "🍻 나의 술자리 본능 테스트",
+    "path": "./drinking-habit/",
+    "group": "psy"
   }
 ]
