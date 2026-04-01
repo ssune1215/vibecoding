@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>예능 연애 포지션 | 내가 연애 리얼리티에 나간다면? 📺</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="나의 연애 예능 포지션 찾기 📺🔥" />
+    <meta property="og:description" content="환승도 하고 지옥도 가는 마라맛 연애 예능! 내 분량과 캐릭터는 메기일까, 순애파일까?" />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            /* 예능 세트장의 네온 보라/핑크 톤 */
+            --main-color: #8b5cf6; /* 바이올렛 */
+            --bg-light: #f5f3ff; /* 연보라 배경 */
+            --border-color: #ddd6fe;
+            --btn-hover-shadow: rgba(139, 92, 246, 0.2);
+        }
+        
+        body, .result-image, .option-btn, .result-title, .title, .btn-start {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+        }
+    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
+</head>
+<body style="background-color: #faf5ff;">
+
+<div class="card" style="box-shadow: 0 10px 25px rgba(139, 92, 246, 0.15);">
+    <div id="start-area">
+        <div class="result-image">📺🔥</div>
+        <h1 class="title">나의 연애 리얼리티<br>예능 포지션 테스트</h1>
+        <p class="description">마라맛 합숙 하우스 입소 환영!<br>환승과 지옥을 넘나드는 곳에서 나의 캐릭터는?</p>
+        <button class="btn-start" onclick="startTest()">합숙소 입소하기 🏠</button>
+    </div>
+
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress" style="background-color: var(--main-color);"></div></div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700; color: #6d28d9;">촬영 시작 1 / 5</div>
+        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.4;">대본 분석 중...</div>
+        <div id="options-container"></div>
+    </div>
+
+    <div id="result-area" style="display: none;">
+        <div class="tiny" style="font-weight: 700; color: #7c3aed;">✨ 컷 컷! 시청률을 폭발시킨 당신의 정체는...</div>
+        <div id="res-image" class="result-image" style="font-size: 55px; margin-top: 15px;">🎬</div>
+        <div id="res-name" class="result-title" style="margin-top: 5px; color: #5b21b6; font-size: 24px;">결과 이름</div>
+        
+        <div class="result-box" style="border: 2px solid #c4b5fd; background-color: white;">
+            <span class="result-box-title" style="background-color: #6d28d9; color: white;">📝 시청자 게시판 반응</span>
+            <div id="res-desc" class="result-desc" style="color: #4c1d95;">결과 분석 내용이 여기에 표시됩니다.</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao" style="background-color: #fde047; color: #451a03; border: 1px solid #facc15;">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                내 예능 캐릭터 공유하기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog" style="background-color: #ede9fe; color: #5b21b6;">
+                👀 팩폭 심리테스트 더 보기
+            </a>
+            <button class="btn-retry" onclick="location.reload()" style="background-color: #7c3aed; color: white;">🔄 시즌2 재출연하기 (다시하기)</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentQ = 0;
+    let score = 0;
+
+    const questions = [
+        {
+            q: "🏠 드디어 예능 합숙소 첫날! 거실에 처음 출연자들이 다 모였다.",
+            options: [
+                { text: "최대한 구석에서 조용히 눈치만 보며 스캐너 작동 (관찰자)", point: 1 },
+                { text: "어색함을 깨기 위해 나서서 대화를 리드하고 정리함 (MC 본능)", point: 2 },
+                { text: "은근슬쩍 내 고정픽 옆자리를 꿰차고 소소한 사담 시작 (선점형)", point: 3 },
+                { text: "여유로운 미소와 함께 머리부터 발끝까지 싹 스캔함 (포식자)", point: 4 }
+            ]
+        },
+        {
+            q: "🔥 내 호감 상대가 다른 이성과 데이트를 엄청 재밌게 하고 왔다며 자랑한다.",
+            options: [
+                { text: "속으로 엄청 서운해하며 방에 가서 혼자 눈물 훔친다 (애절)", point: 1 },
+                { text: "티 안 내려고 겉으론 웃어넘기지만 내내 텐션이 떨어짐 (인내)", point: 2 },
+                { text: "어? 그래? 하며 나비효과를 위해 나도 다른 사람한테 직진 플러팅 (맞불)", point: 3 },
+                { text: "내일 나랑 나가면 더 재밌을 텐데? 당당하게 어필 시전 (도발)", point: 4 }
+            ]
+        },
+        {
+            q: "🤫 모두가 모인 진실게임 시간. \"지금 확고한 1픽이 있나요?\"라는 질문을 받았다.",
+            options: [
+                { text: "얼굴이 새빨개지며 끄덕인다. 이미 표정으로 다 들통남 (솔직 투명)", point: 1 },
+                { text: "내 마음을 들키지 않으려고 무표정하게 아직 없다고 함 (방어막)", point: 2 },
+                { text: "의미심장한 미소를 띠며 글쎄요~ 하면서 여지를 남김 (어장)", point: 3 },
+                { text: "여유 넘치게 당연하죠 라고 말해서 분위기를 뒤집어 놓음 (초토화)", point: 4 }
+            ]
+        },
+        {
+            q: "💔 그토록 기다렸던 지목 데이트에서 내 호감 상대가 나를 선택하지 않았다.",
+            options: [
+                { text: "그래도 난 너 하나야... 꺾이지 않는 미련으로 그 사람만 기다림", point: 1 },
+                { text: "어쩔 수 없지. 아프지만 빠른 체념 후 모두와 친목 도모", point: 2 },
+                { text: "어떻게 하면 질투 작전으로 마음을 돌려놓을지 치밀하게 궁리함", point: 3 },
+                { text: "완전 자존심 상함. 곧바로 쿨하게 다른 타겟으로 변경!", point: 4 }
+            ]
+        },
+        {
+            q: "🌙 최종 선택 여부가 결정되는 마지막 밤 1:1 대화! 나의 마지막 카드는?",
+            options: [
+                { text: "처음부터 너밖에 없었어. 진심을 눌러 담아 울먹거리며 고백", point: 1 },
+                { text: "상대방의 마음을 떠보면서 마지막까지 돌직구 타이밍을 잰다", point: 2 },
+                { text: "거절할 수 없는 논리와 함께 나를 선택해야 편해질 거라 설득함", point: 3 },
+                { text: "긴장된 분위기에서도 여유롭게 농담을 던지며 텐션을 쥐락펴락함", point: 4 }
+            ]
+        }
+    ];
+
+    const results = [
+        { min: 5, max: 6, name: "[한 놈만 팬다]\n답답 고구마 직진 순애보", img: "🍠💦", desc: "분량 확보도 못하고 시청자들 속만 썩이는 극강의 고구마 순애파! 하지만 그 애절하고 찌질한 찐망사랑 덕분에 후반부 코어 팬덤이 폭발합니다. 한 번 꽂히면 절절하게 목매달아서 온 국민이 응원하게 되는 주인공 포지션이네요." },
+        { min: 7, max: 8, name: "[매일 밤 오열]\n눈물로 분량 채우는 감성 빌런", img: "😭💔", desc: "마음대로 안 따라주는 연애 전선에 합숙소 이불 뒤집어쓰고 매일 오열! 조금만 서운해도 눈시울이 붉어져서 온통 당신 우는 장면만 방송을 탑니다. 근데 묘하게 감정선이 리얼해서 시청자들 과몰입 버튼을 제일 쎄게 누르는 마성의 캐릭터!" },
+        { min: 9, max: 10, name: "[리액션 장인]\n연애보단 구경 온 방청객", img: "🍿👀", desc: "내 연애보단 남들 삼각관계 구경하는 게 제일 재밌어! 거실 소파에 앉아 팝콘 먹으며 출연진들 러브라인 분석을 기가 막히게 해 냅니다. 분량 자체는 튀지 않지만 소소한 명언과 짤방을 미친 듯이 생성하는 예능 최강 감초 스나이퍼입니다." },
+        { min: 11, max: 12, name: "[선택적 다정함]\n내 사람 한정 온미남/녀", img: "☕🧣", desc: "남들에겐 칼같이 철벽을 치면서 내 픽에게는 한없이 듬직하게 다정함을 쏟아냅니다. 크게 자극적이고 흔들리는 삼각관계를 만들지는 않지만, 시청자들에게 안정적인 설렘 대리만족을 안겨주는 가장 정석적인 인기 캐릭터 마인드!" },
+        { min: 13, max: 14, name: "[플러팅 자판기]\n여우/늑대 탈을 쓴 전략가", img: "🦊💋", desc: "가만히 눈만 마주쳐도 눈웃음과 플러팅이 뚝뚝 떨어집니다! 나도 모르게 모든 사람에게 여지를 주면서 온 합숙소를 어장으로 만들어버리는 능력자. 유튜브 쇼츠마다 '플러팅 모음집'으로 단독 박제되며 시청자들의 도파민을 미친 듯이 터뜨립니다." },
+        { min: 15, max: 16, name: "[눈치백단 지략가]\n판을 통제하는 설계자", img: "🧠♟️", desc: "이 구역의 연애 보드게임 마스터! 겉보기엔 쿨하지만, 무의식중에 질투 유발 작전과 타이밍 쪼개기로 판을 내 위주로 굴려버립니다. 머리가 너무 좋아서 상대방 마음을 쥐락펴락하지만, 가끔 역풍을 맞아 머플러를 꼬아버리는 매력파입니다." },
+        { min: 17, max: 18, name: "[도파민 중독자]\n자극만 찾는 환승의 민족", img: "🎢🌪️", desc: "지루하고 조용한 연애는 너무 질색! 첫눈에 반해놓고도 다음 날 다른 사람 데이트에서 흔들려버리는 전형적인 환승/자극 중독자. 매화 썸 상대가 계속 바뀌며 하우스의 갈등과 폭발을 주도하는 메인 작가님의 최고 사랑방패 빌런입니다!" },
+        { min: 19, max: 20, name: "[생태계 파괴종]\n등장만으로 압살! 치명적 메기", img: "🦈🔥", desc: "프로그램 중반 나른한 타이밍에 혜성처럼 등장해 판을 완전 초토화시키는 절대 포식자 메기남/녀!! 여유로운 텐션과 넘사벽 피지컬, 당당한 플러팅으로 단 3일 만에 기존 러브라인을 박살 내고 모두의 흔들림을 유도하는 최강 시청률 제조기!" }
+    ];
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function startTest() {
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let percent = (currentQ / questions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        document.getElementById('q-number').innerText = `촬영 시작 ${currentQ + 1} / ${questions.length}`;
+        let currentData = questions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
+        let container = document.getElementById('options-container');
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.point);
+            container.appendChild(btn);
+        });
+    }
+
+    function nextQuestion(point) {
+        score += point;
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        
+        // 방송 예능용 도파민 핑크/보라 컨페티
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#8b5cf6', '#d946ef', '#fbcfe8', '#6d28d9'] });
+        
+        let resultData = results.find(r => score >= r.min && score <= r.max);
+        if(!resultData) resultData = results[results.length - 1];
+
+        document.getElementById('res-image').innerText = resultData.img;
+        document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
+        document.getElementById('res-desc').innerHTML = resultData.desc;
+    }
+</script>
+</body>
+</html>

@@ -98,5 +98,10 @@
     "title": "🧐 유교걸/보이 개방성 지수",
     "path": "./confucian-boygirl/",
     "group": "love"
+  },
+  {
+    "title": "📺 연애 리얼리티 예능 포지션",
+    "path": "./reality-show/",
+    "group": "love"
   }
 ]
