@@ -136,7 +136,6 @@
     }
 
     function startTest() {
-        shuffle(questions);
         questions.forEach(q => shuffle(q.options));
         document.getElementById('start-area').style.display = 'none';
         document.getElementById('quiz-area').style.display = 'block';

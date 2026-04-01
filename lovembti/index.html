@@ -13,7 +13,9 @@
     <meta property="og:image" content="../assets/share-thumb.jpg" />
 
     <link rel="stylesheet" href="../assets/vibe-theme.css">
-    <style>
+    <style>        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
+
         :root {
             --main-color: #ec4899; /* 핑크 */
             --bg-light: #fdf2f8;
@@ -140,6 +142,14 @@
         ENFJ: { name: "아낌없이 부어주는 햇살 멘토", img: "🕯️📢", desc: "마치 여름날 태양처럼 열정이 가득한 오지라퍼 ENFJ! 당신이 언제나 긍정적으로 발전할 수 있게 아낌없는 칭찬 폭격과 로맨틱한 동기부여를 계속해서 펌프질해 줍니다." },
         ENTJ: { name: "카리스마 폭발 능력지상주의 CEO", img: "🦁🌆", desc: "강렬하고 야망 넘미치는 열혈 불도저 ENTJ! 나약한 투정보다는, 연애도 인생도 모두 당신과 함께 최고의 반열에 오르고자 같이 발맞춰 달리는 추진력 폭발 최강 파워풀 파트너입니다." }
     };
+
+    
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
 
     function startTest() {
         document.getElementById('start-area').style.display = 'none';

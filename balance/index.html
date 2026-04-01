@@ -13,7 +13,9 @@
     <meta property="og:image" content="../assets/share-thumb.jpg" />
 
     <link rel="stylesheet" href="../assets/vibe-theme.css">
-    <style>
+    <style>        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
+
         :root {
             --main-color: #059669; /* 포레스트 그린 */
             --bg-light: #f0fdf4;
@@ -129,6 +131,14 @@
             desc: "당신은 무작정 움직이기보다 주변 환경을 분석하고 최선의 전략을 짜는 지혜로운 생존자입니다! 보이지 않는 위험까지 대비하는 당신의 신중함이 장기 생존의 열쇠가 됩니다. 지적이고 차분한 매력을 가졌군요." 
         }
     };
+
+    
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
 
     function startTest() {
         document.getElementById('start-area').style.display = 'none';
