@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연애 T/F 과몰입 테스트 | 공감 로봇 vs 울보 요정 🤖💖</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="나의 연애 T/F 지수 점검하기 🤖💖" />
+    <meta property="og:description" content="팩트 폭행범인가, 공감 중독자인가? 우리의 연애 소통 방식을 진단해 보자!" />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            /* T(Blue)와 F(Pink)의 강렬한 대비 */
+            --main-color: #6366f1; /* 인디고/퍼플 중간색 */
+            --bg-light: #f8fafc;
+            --border-color: #e2e8f0;
+            --btn-hover-shadow: rgba(99, 102, 241, 0.2);
+            --t-color: #3b82f6; /* T 블루 */
+            --f-color: #ec4899; /* F 핑크 */
+        }
+        
+        body, .result-image, .option-btn, .result-title, .title, .btn-start {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif !important;
+        }
+
+        .tf-header {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 10px;
+            font-weight: 900;
+            font-size: 40px;
+        }
+        .t-text { color: var(--t-color); }
+        .f-text { color: var(--f-color); }
+    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
+</head>
+<body style="background-color: #f1f5f9;">
+
+<div class="card" style="box-shadow: 0 10px 30px rgba(99, 102, 241, 0.15); border-top: 5px solid var(--main-color);">
+    <div id="start-area">
+        <div class="tf-header">
+            <span class="t-text">T</span> <span style="color: #94a3b8;">vs</span> <span class="f-text">F</span>
+        </div>
+        <h1 class="title" style="font-size: 24px;">나의 연애 T/F 과몰입 테스트</h1>
+        <p class="description">"나 사고 났어" 할 때 당신의 첫 마디는?<br>숨길 수 없는 나의 공감 지수(EQ)를 확인해 보세요!</p>
+        <button class="btn-start" style="background: linear-gradient(135deg, var(--t-color), var(--f-color)); border: none;" onclick="startTest()">테스트 시작 🚀</button>
+    </div>
+
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress" style="background: linear-gradient(to right, var(--f-color), var(--t-color));"></div></div>
+        <div id="q-number" class="tiny" style="margin-bottom: 10px; font-weight:700; color: #64748b;">공감 능력 측정 중 1 / 5</div>
+        <div class="title" id="question-text" style="font-size: 19px; line-height: 1.4; color: #1e293b;">분석 중...</div>
+        <div id="options-container"></div>
+    </div>
+
+    <div id="result-area" style="display: none;">
+        <div class="tiny" style="font-weight: 700; color: #475569;">데이터 분석 결과, 당신은...</div>
+        <div id="res-image" class="result-image" style="font-size: 55px; margin-top: 15px;">🤖</div>
+        <div id="res-name" class="result-title" style="margin-top: 5px; color: #1e293b; font-size: 24px;">결과 이름</div>
+        
+        <div class="result-box" style="border: 2px solid #e2e8f0; background-color: white; border-radius: 12px; padding: 20px;">
+            <span class="result-box-title" style="background-color: #1e293b; color: white; padding: 5px 15px; border-radius: 20px;">💘 연애 소통 리포트</span>
+            <div id="res-desc" class="result-desc" style="color: #334155; margin-top: 15px; line-height: 1.6;">결과 설명</div>
+        </div>
+
+        <div class="action-btns">
+            <button class="btn-kakao" style="background-color: #fee500; color: #3c1e1e; border: none; font-weight: 700;">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                결과 카톡으로 쏘기
+            </button>
+            <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog" style="background-color: #f1f5f9; color: #475569;">
+                다른 테스트 더 보기 👀
+            </a>
+            <button class="btn-retry" onclick="location.reload()" style="background-color: #1e293b; color: white;">🔄 다시 측정하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentQ = 0;
+    let score = 0;
+
+    const questions = [
+        {
+            q: "👤 상사한테 엄청 깨지고 온 연인, \"나 오늘 너무 힘들어서 울었어...\"",
+            options: [
+                { text: "헐 무슨 일이야? ㅠㅠ 그 상사 진짜 선 넘네.. 고생 진짜 많았어 (토닥토닥)", point: 1 },
+                { text: "아이고.. 맛있는 거 먹으러 가자! 기분 확 풀리게 내가 다 들어줄게.", point: 2 },
+                { text: "왜 깨진 거야? 혹시 네가 실수한 부분이 있었어?", point: 4 },
+                { text: "울 정도로 힘들었구나.. 그래도 내일은 좀 나을 거야. 기운 내!", point: 3 }
+            ]
+        },
+        {
+            q: "📅 이번 기념일 데이트 장소를 정할 때 당신의 스타일은?",
+            options: [
+                { text: "네가 가고 싶어 했던 곳 리스트 떴다! 너만 행복하면 난 다 좋아 ❤️", point: 1 },
+                { text: "오랜만에 데이트라니 너무 설렌다! 우리 가서 예쁜 사진 많이 찍자.", point: 2 },
+                { text: "거기 주차는 돼? 동선 확인해 보니까 여기가 효율적일 것 같아.", point: 4 },
+                { text: "맛집 몇 군데 찾아봤어. 평점도 나쁘지 않더라. 골라봐!", point: 3 }
+            ]
+        },
+        {
+            q: "🚗 연인에게 온 다급한 전화, \"나 차 사고 났어... 앞부분 찌그러진 것 같아.\"",
+            options: [
+                { text: "헉!! 몸은 괜찮아?! 안 다쳤어? 많이 놀랐지.. 일단 침착해 ㅠㅠ", point: 1 },
+                { text: "일단 보험사 연락했고? 사진 다 찍었어? 과실 비율 확인해 봐야겠다.", point: 4 },
+                { text: "어쩌다 사고가 났어? 수리비 많이 나올 것 같은데.. 일단 몸부터 챙겨.", point: 3 },
+                { text: "너무 놀랐겠다.. 내가 지금 그쪽으로 갈까? 옆에 있어줄게.", point: 2 }
+            ]
+        },
+        {
+            q: "🍺 친구가 우울하다고 해서 술 마시러 간다는 연인, 당신의 반응은?",
+            options: [
+                { text: "가서 친구 얘기 잘 들어주고 위로 많이 해줘! 조심히 다녀와.", point: 1 },
+                { text: "에고.. 무슨 안 좋은 일 있대? 너도 너무 많이 마시지는 말고!", point: 2 },
+                { text: "술 마신다고 우울함이 풀리나? 적당히 놀고 일찍 들어와.", point: 4 },
+                { text: "가서 몇 시쯤 올 거야? 위치 찍어주면 이따 연락할게.", point: 3 }
+            ]
+        },
+        {
+            q: "💇‍♀️ \"나 오늘 머리 새로 했는데 어때?\" (실제로 큰 차이는 안 보임)",
+            options: [
+                { text: "우와아!! 분위기 확 바뀌었다! 오늘따라 더 예쁜데? 찰떡이야 ✨", point: 1 },
+                { text: "깔끔해졌네! 네가 하니까 다 시원해 보이고 예쁘다.", point: 2 },
+                { text: "어디 고친 거야? 전이랑 큰 차이는 모르겠는데.. 조금 짧아진 건가?", point: 4 },
+                { text: "무슨 펌 한 거야? 머릿결 상하지 않게 관리 잘 해야겠다.", point: 3 }
+            ]
+        }
+    ];
+
+    const results = [
+        { min: 5, max: 6, name: "[인간 솜사탕]\n공감 1000% 감성 오열러", img: "🍭😭", desc: "모든 말에 진심으로 반응하는 당신은 움직이는 힐링 센터! 논리보다는 감정이 먼저 앞서는 따뜻한 타입입니다. 연인의 슬픔을 내 것처럼 느끼기에 가끔은 본인이 더 힘들어할 때도 있지만, 그만큼 사랑이 넘치는 로맨티스트군요!" },
+        { min: 7, max: 8, name: "[공감 요정]\n세상의 모든 눈물을 닦아줄 타입", img: "🧚‍♀️💕", desc: "상대방의 기분을 최우선으로 생각하는 배려왕! '왜' 보다는 '그랬구나'를 가장 잘하는 당신은 연인에게 가장 의지하고 싶은 안식처입니다. 당신과 함께라면 영원히 따뜻한 핑크빛 연애가 가능합니다." },
+        { min: 9, max: 10, name: "[따뜻한 라떼]\n부드럽게 챙겨주는 유죄인간", img: "☕🧣", desc: "공감은 기본, 거기에 소소한 해결책도 곁들일 줄 아는 센스쟁이! 가끔 논리적으로 생각하려 하지만 결국 연인의 눈빛 한 번에 무장해제됩니다. 다정함이 몸에 배어 있어 누구에게나 호감을 사는 인기 캐릭터네요." },
+        { min: 11, max: 12, name: "[사회적 멀티태스커]\n후천적으로 습득한 F형 T", img: "📱🧠", desc: "머릿속은 냉정한 판단이 끝났지만, 입으로는 사회화된 공감을 내뱉는 지능적 타입! 갈등을 피하기 위해 리액션을 하지만 사실 가장 효율적인 관계를 선호합니다. 전략적인 소통 능력으로 연애를 아주 매끄럽게 이끌어갑니다." },
+        { min: 13, max: 14, name: "[냉정한 츤데레]\n말투는 건조하지만 행동은 진심", img: "🧊🔥", desc: "위로의 말은 서툴러도 해결책은 누구보다 빨리 찾아주는 해결사! \"왜 울어?\"라고 묻지만 손은 이미 휴지를 건네고 있네요. 당신의 투박한 다정함을 알아주는 사람만이 당신의 진정한 매력을 깊게 느낄 수 있습니다." },
+        { min: 15, max: 16, name: "[냉철한 설계자]\n감정 소모보단 팩트가 최고", img: "🦾📐", desc: "모든 상황을 데이터와 논리로 분석하는 이성적인 영혼! 연인이 힘들 때 해결책을 제시하는 것이 최고의 사랑이라고 믿습니다. 가끔은 '그랬구나' 한마디가 백 가지 해결책보다 낫다는 것을 잊지 마세요." },
+        { min: 17, max: 18, name: "[인간 엑셀]\n감정이 낄 자리가 없는 팩트 폭격기", img: "📊🤖", desc: "현상 유지와 효율성을 가장 중요하게 생각하는 효율 극대화형 인간! 근거 없는 걱정보다는 명확한 대안을 제시할 때 쾌감을 느낍니다. 연애도 비즈니스처럼 깔끔하고 잡음 없이 관리하는 프로 소통러(이지만 감성은 0에 수렴)입니다." },
+        { min: 19, max: 20, name: "[알고리즘 로봇]\n에러 404: 인간미를 찾을 수 없음", img: "📟🚫", desc: "축하합니다. 당신의 뇌는 반도체로 이루어져 있군요! 감정 호소는 당신에게 무의미한 불규칙 데이터일 뿐입니다. 소름 돋게 정확하고 논리적이지만, 연인의 입술이 튀어나오기 시작하면 그 이유를 수학적으로 분석하려다 관계를 종료시킬 위험이 있습니다!" }
+    ];
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function startTest() {
+        shuffle(questions);
+        questions.forEach(q => shuffle(q.options));
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let percent = (currentQ / questions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        document.getElementById('q-number').innerText = `공감 능력 측정 중 ${currentQ + 1} / ${questions.length}`;
+        let currentData = questions[currentQ];
+        document.getElementById('question-text').innerText = currentData.q;
+        let container = document.getElementById('options-container');
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.point);
+            container.appendChild(btn);
+        });
+    }
+
+    function nextQuestion(point) {
+        score += point;
+        currentQ++;
+        if (currentQ < questions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        
+        // T(블루)와 F(핑크)의 콜라보 컨페티!
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#3b82f6', '#ec4899', '#818cf8', '#f472b6'] });
+        
+        let resultData = results.find(r => score >= r.min && score <= r.max);
+        if(!resultData) resultData = results[results.length - 1];
+
+        document.getElementById('res-image').innerText = resultData.img;
+        document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
+        document.getElementById('res-desc').innerHTML = resultData.desc;
+    }
+</script>
+</body>
+</html>

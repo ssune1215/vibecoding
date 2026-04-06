@@ -108,5 +108,10 @@
     "title": "🍻 나의 술자리 본능 테스트",
     "path": "./drinking-habit/",
     "group": "psy"
+  },
+  {
+    "title": "🤖 연애 T/F 과몰입 테스트",
+    "path": "./love-tf/",
+    "group": "love"
   }
 ]
