@@ -128,5 +128,15 @@
     "title": "🔮 오늘의 비밀 운세 리포트",
     "path": "./birthday-fortune/",
     "group": "fortune"
+  },
+  {
+    "title": "🍱 오늘의 점심 메뉴 이상형 월드컵",
+    "path": "./menu-worldcup/",
+    "group": "game"
+  },
+  {
+    "title": "🆚 무한 밸런스 게임",
+    "path": "./balance-game/",
+    "group": "game"
   }
 ]

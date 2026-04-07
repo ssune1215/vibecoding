@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>무한 밸런스 게임 | 당신의 선택은? 🆚</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="인생 최대 난제! 무한 밸런스 게임 🆚🔥" />
+    <meta property="og:description" content="솔직히 이건 못 고른다... 당신의 선택과 다른 사람들의 답변을 확인해보세요!" />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        body {
+            background-color: #f1f5f9;
+            min-height: 100vh;
+        }
+
+        .balance-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .question-card {
+            background: #fff;
+            border-radius: 32px;
+            padding: 40px 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-top: 20px;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .vs-text {
+            font-size: 32px;
+            font-weight: 900;
+            color: #cbd5e1;
+            margin: 20px 0;
+            font-style: italic;
+        }
+
+        .option-box {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 20px;
+            font-weight: 800;
+            line-height: 1.4;
+            position: relative;
+            overflow: hidden;
+            border: 3px solid transparent;
+        }
+
+        .option-a { background-color: #fee2e2; color: #991b1b; }
+        .option-b { background-color: #e0f2fe; color: #075985; }
+
+        .option-box:hover {
+            transform: scale(1.03);
+            border-color: rgba(0,0,0,0.1);
+        }
+
+        /* Result View */
+        .option-box.selected {
+            pointer-events: none;
+            border-color: #000;
+        }
+
+        .stat-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 8px;
+            background: rgba(0,0,0,0.1);
+            transition: width 1s ease-out;
+        }
+
+        .percent-text {
+            display: none;
+            font-size: 24px;
+            margin-top: 10px;
+            font-weight: 900;
+        }
+
+        .next-btn {
+            display: none;
+            margin-top: 30px;
+            background: #000;
+            color: #fff;
+            width: 100%;
+            padding: 18px;
+            border-radius: 16px;
+            font-weight: 800;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+        }
+
+        .btn-blog-bottom {
+            display: block;
+            margin-top: 20px;
+            color: #64748b;
+            text-decoration: underline;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .count-info {
+            font-size: 14px;
+            color: #94a3b8;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+<div class="balance-container">
+    <div id="start-area" class="card" style="padding: 50px 20px;">
+        <div style="font-size: 60px; margin-bottom: 20px;">🆚🔥</div>
+        <h1 class="title">무한 밸런스 게임<br>당신의 선택은?</h1>
+        <p class="description">평생 둘 중 하나만 선택해야 한다면?<br>당신의 고집과 대중의 선택을 비교해보세요!</p>
+        <button class="btn-start" onclick="startLoading()">게임 시작하기 🚀</button>
+    </div>
+
+    <div id="game-area" style="display: none;">
+        <div class="count-info" id="q-count">QUESTION 1</div>
+        <div class="question-card">
+            <div class="option-box option-a" id="opt-a" onclick="selectOpt('a')">
+                <span id="text-a">항목 A</span>
+                <div class="stat-bar" id="bar-a" style="width: 0"></div>
+                <div class="percent-text" id="per-a">50%</div>
+            </div>
+            
+            <div class="vs-text">VS</div>
+
+            <div class="option-box option-b" id="opt-b" onclick="selectOpt('b')">
+                <span id="text-b">항목 B</span>
+                <div class="stat-bar" id="bar-b" style="width: 0"></div>
+                <div class="percent-text" id="per-b">50%</div>
+            </div>
+
+            <button class="next-btn" id="next-btn" onclick="nextQuestion()">다음 난제로 넘어가기 ➡️</button>
+        </div>
+        <a href="https://blog.naver.com/forgiven_77/224219719421" target="_blank" class="btn-blog-bottom">
+            👀 다른 킬링타임 컨텐츠 더 보기
+        </a>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script>
+    const QUESTIONS = [
+        ["평생 라면만 먹기", "평생 치킨만 먹기"],
+        ["잠 안 자도 안 피곤하기", "밥 안 먹어도 배 안 고프기"],
+        ["과거로 돌아가기", "미래로 미리 가보기"],
+        ["여름에 에어컨 없이 살기", "겨울에 히터 없이 살기"],
+        ["평생 폰 없이 살기", "평생 친구 없이 살기"],
+        ["재입대 하기 (보상 10억)", "그냥 지금처럼 살기"],
+        ["민트초코 치킨 먹기", "초코 시럽 라면 먹기"],
+        ["주 4일제 월급 200", "주 6일제 월급 500"],
+        ["내가 좋아하는 사람과 결혼", "나를 죽도록 좋아하는 사람과 결혼"],
+        ["이성 친구와 1박 2일 여행 가능", "절대 불가능"],
+        ["비 오는 날 신발 젖기", "더운 날 상의 젖기"],
+        ["평생 콜라만 마시기", "평생 사이다만 마시기"],
+        ["평생 양치 안 하기", "평생 세수 안 하기"],
+        ["내 과거 다 보여주기", "남의 과거 다 보기"],
+        ["원빈으로 살기 (지능 하)", "지금 얼굴로 살기 (천재)"],
+        ["월 1000만원 백수", "월 2000만원 대기업 임원(워라밸 X)"],
+        ["하루 종일 자도 졸리기", "하루 종일 먹어도 배고프기"],
+        ["모든 사람에게 사랑받기", "모든 사람에게 미움받기 (재산 100억)"],
+        ["평생 이어폰 없이 살기", "평생 충전기 없이 살기"],
+        ["전 애인과 친구 가능", "절대 불가능"]
+    ];
+
+    let currentIdx = 0;
+    let shuffledList = [];
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+        return array;
+    }
+
+    function startLoading() {
+        shuffledList = shuffle([...QUESTIONS]);
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('game-area').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        document.getElementById('q-count').innerText = `난제 #${currentIdx + 1}`;
+        const q = shuffledList[currentIdx];
+        
+        document.getElementById('text-a').innerText = q[0];
+        document.getElementById('text-b').innerText = q[1];
+        
+        // Reset styles
+        const optA = document.getElementById('opt-a');
+        const optB = document.getElementById('opt-b');
+        optA.classList.remove('selected');
+        optB.classList.remove('selected');
+        optA.style.pointerEvents = 'auto';
+        optB.style.pointerEvents = 'auto';
+        
+        document.getElementById('bar-a').style.width = '0';
+        document.getElementById('bar-b').style.width = '0';
+        document.getElementById('per-a').style.display = 'none';
+        document.getElementById('per-b').style.display = 'none';
+        document.getElementById('next-btn').style.display = 'none';
+    }
+
+    function selectOpt(choice) {
+        const optA = document.getElementById('opt-a');
+        const optB = document.getElementById('opt-b');
+        
+        optA.classList.add('selected');
+        optB.classList.add('selected');
+        optA.style.pointerEvents = 'none';
+        optB.style.pointerEvents = 'none';
+
+        // Fake Statistics Logic (Deterministic based on question text)
+        const qText = shuffledList[currentIdx][0];
+        let hash = 0;
+        for (let i = 0; i < qText.length; i++) {
+            hash = ((hash << 5) - hash) + qText.charCodeAt(i);
+        }
+        const perA = 35 + (Math.abs(hash) % 31); // 35% ~ 65%
+        const perB = 100 - perA;
+
+        // Show Bar and Percent
+        document.getElementById('bar-a').style.width = perA + '%';
+        document.getElementById('bar-b').style.width = perB + '%';
+        
+        document.getElementById('per-a').innerText = perA + '%';
+        document.getElementById('per-b').innerText = perB + '%';
+        document.getElementById('per-a').style.display = 'block';
+        document.getElementById('per-b').style.display = 'block';
+
+        // Button Reveal
+        document.getElementById('next-btn').style.display = 'block';
+        
+        // Optional Confetti for majority
+        if ((choice === 'a' && perA > 50) || (choice === 'b' && perB > 50)) {
+            confetti({ particleCount: 50, spread: 50, origin: { y: 0.8 } });
+        }
+    }
+
+    function nextQuestion() {
+        currentIdx++;
+        if (currentIdx >= shuffledList.length) {
+            alert("준비된 모든 난제를 풀었습니다! 다시 처음부터 섞어서 시작합니다.");
+            currentIdx = 0;
+            shuffledList = shuffle([...QUESTIONS]);
+        }
+        showQuestion();
+    }
+</script>
+
+</body>
+</html>
