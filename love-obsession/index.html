@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>연애 집착도 & 얀데레 지수 테스트 👁️💖</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="나의 연애 집착도는 몇 %? 👁️" />
+    <meta property="og:description" content="사랑일까 집착일까? 당신의 숨겨진 얀데레 본능을 분석해 드립니다." />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            --main-color: #ff007f; /* 핫핑크 (집착) */
+            --bg-light: #0a0a0a; /* 올블랙 배경 */
+            --border-color: #2a2a2a;
+            --btn-hover-shadow: rgba(255, 0, 127, 0.4);
+        }
+        
+        body {
+            background-color: var(--bg-light);
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .card {
+            background-color: #121212;
+            border: 1px solid #333;
+            box-shadow: 0 0 30px rgba(255, 0, 127, 0.1);
+        }
+
+        .title { color: #ff007f; font-weight: 900; }
+        
+        .option-btn {
+            background-color: #1a1a1a;
+            color: #ccc;
+            border: 1px solid #333;
+            text-align: left;
+            padding: 16px 20px;
+            font-size: 15px;
+            margin-bottom: 12px;
+            transition: all 0.3s;
+        }
+
+        .option-btn:hover {
+            background-color: #ff007f;
+            color: white;
+            border-color: #ff007f;
+            transform: translateX(10px);
+            box-shadow: -10px 0 20px rgba(255, 0, 127, 0.2);
+        }
+
+        .progress { background: linear-gradient(to right, #ff007f, #ff40ac); }
+        
+        .result-box {
+            background: #1a1a1a;
+            border: 1px dashed #ff007f;
+        }
+
+        .obsession-tag {
+            background: #ff007f;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-size: 11px;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 15px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .obsession-score {
+            font-size: 48px;
+            font-weight: 900;
+            color: #ff007f;
+            margin: 10px 0;
+            text-shadow: 0 0 15px rgba(255, 0, 127, 0.5);
+        }
+    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
+</head>
+<body>
+
+<div class="card">
+    <div id="start-area">
+        <div class="obsession-tag">WARNING: DEEP LOVE</div>
+        <h1 class="title">나의 연애 집착도 &<br>얀데레 지수 테스트</h1>
+        <p class="description" style="color: #999;">"사랑이라는 이름의 감옥..."<br>당신은 연인을 얼마나 소유하고 싶어 하나요?<br>10개 중 5개의 질문이 무작위로 나타납니다.</p>
+        <button class="btn-start" style="background-color: #ff007f; border: none;" onclick="startTest()">내 집착도 확인하기 👁️💖</button>
+    </div>
+
+    <div id="quiz-area" style="display: none;">
+        <div class="progress-bar"><div class="progress" id="progress"></div></div>
+        <div id="q-number" class="tiny" style="color: #ff40ac; font-weight: 700; margin-bottom: 15px;">관찰 중...</div>
+        <div class="title" id="question-text" style="font-size: 20px; line-height: 1.5; color: #fff;">...</div>
+        <div id="options-container" style="margin-top: 25px;"></div>
+    </div>
+
+    <div id="result-area" style="display: none;">
+        <div class="obsession-tag">ANALYSIS COMPLETE</div>
+        <div id="res-score" class="obsession-score">0%</div>
+        <div id="res-name" class="result-title" style="color: #fff; font-size: 24px; margin-bottom: 20px;">집착 캐릭터 이름</div>
+        
+        <div class="result-box">
+            <span class="result-box-title" style="background-color: #ff007f; color: white;">👀 집착 성향 리포트</span>
+            <div id="res-desc" class="result-desc" style="color: #ccc; margin-top: 10px; line-height: 1.7;">상세 분석 내용</div>
+        </div>
+
+        <div class="action-btns" style="margin-top: 30px;">
+            <button class="btn-kakao" style="background-color: #fee500; color: #3c1e1e; font-weight: 700; border: none;">
+                <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png" width="20">
+                결과 공유하기 (카톡)
+            </button>
+            <button class="btn-retry" onclick="location.reload()" style="background-color: transparent; color: #ff007f; border: 1px solid #ff007f; margin-top: 10px;">🔄 다시 측정하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let currentQ = 0;
+    let scores = { E:0, I:0, S:0, N:0, T:0, F:0, J:0, P:0, Obsess: 0 };
+    let selectedQuestions = [];
+
+    const questionPool = [
+        {
+            q: "📱 연인이 1시간 동안 카톡 답장이 없다면?",
+            options: [
+                { text: "바쁘겠거니 하고 내 할 일 한다", points: { S: 2, T: 1, Obsess: 0 } },
+                { text: "뭐 하는지 궁금하지만 참는다", points: { F: 1, Obsess: 10 } },
+                { text: "연결된 SNS에 접속 중인지 확인해 본다", points: { N: 1, Obsess: 30 } },
+                { text: "전화를 걸거나 답장이 올 때까지 계속 보낸다", points: { I: 2, Obsess: 50 } }
+            ]
+        },
+        {
+            q: "🏠 연인이 친구들과 술자리에 갔을 때 당신은?",
+            options: [
+                { text: "재밌게 놀라고 인사하고 잔다", points: { E: 1, P: 2, Obsess: 0 } },
+                { text: "누구랑 마시는지, 언제 들어가는지 묻는다", points: { J: 1, Obsess: 15 } },
+                { text: "중간중간 셀카나 영상 통화를 요구한다", points: { Obsess: 40 } },
+                { text: "몰래 그 술집 근처에 가보거나 위치를 확인한다", points: { J: 2, s: 1, Obsess: 60 } }
+            ]
+        },
+        {
+            q: "👥 연인이 새로 들어온 동료가 '성격이 좋다'고 칭찬한다면?",
+            options: [
+                { text: "좋은 분인가 보다 하며 넘긴다", points: { T: 2, Obsess: 0 } },
+                { text: "어느 정도 좋은지 상세히 캐묻는다", points: { S: 1, Obsess: 20 } },
+                { text: "은근히 질투하며 내 칭찬도 해달라고 한다", points: { F: 2, Obsess: 35 } },
+                { text: "그 동료의 SNS를 찾아보며 나보다 나은 게 뭔지 분석한다", points: { J: 1, Obsess: 55 } }
+            ]
+        },
+        {
+            q: "🔒 연인의 핸드폰 비밀번호, 당신은 알고 싶나요?",
+            options: [
+                { text: "사생활 보호를 위해 알 필요 없다", points: { P: 3, Obsess: 0 } },
+                { text: "비상시를 대비해 서로 공유하는 게 좋다", points: { J: 1, Obsess: 20 } },
+                { text: "나에게만 오픈하지 않는다면 서운하다", points: { F: 2, Obsess: 40 } },
+                { text: "잠든 사이에 몰래 지문을 대보거나 훔쳐본 적 있다", points: { Obsess: 70 } }
+            ]
+        },
+        {
+            q: "👫 연인이 이성 친구와 단둘이 밥을 먹는다고 한다면?",
+            options: [
+                { text: "오래된 친구면 쿨하게 보내준다", points: { E: 2, T: 1, Obsess: 0 } },
+                { text: "기분은 나쁘지만 믿고 보내준다", points: { F: 1, Obsess: 25 } },
+                { text: "절대 안 된다며 심하게 화를 낸다", points: { J: 2, Obsess: 45 } },
+                { text: "보내주는 척하고 뒤에서 미행하거나 연락 폭탄을 보낸다", points: { Obsess: 65 } }
+            ]
+        },
+        {
+            q: "🛋️ 주말에 연인이 '혼자 쉬고 싶다'고 한다면?",
+            options: [
+                { text: "나도 혼자만의 시간을 보낸다", points: { I: 2, P: 1, Obsess: 0 } },
+                { text: "알겠다고 하지만 계속 신경이 쓰인다", points: { F: 1, Obsess: 20 } },
+                { text: "나랑 있는 게 지겨운지 물어보고 확인한다", points: { F: 2, Obsess: 40 } },
+                { text: "집 앞으로 몰래 찾아가서 정말 혼자 있는지 확인한다", points: { Obsess: 60 } }
+            ]
+        },
+        {
+            q: "📸 연인의 인스타그램 팔로우 목록을 본 적 있나요?",
+            options: [
+                { text: "거의 보지 않는다", points: { P: 2, Obsess: 0 } },
+                { text: "가끔 누가 추가됐는지 훑어본다", points: { S: 1, Obsess: 20 } },
+                { text: "새로 팔로우한 이성이 누군지 끝까지 추적한다", points: { N: 1, Obsess: 45 } },
+                { text: "연인의 팔로워들을 하나하나 눌러보며 댓글을 감시한다", points: { Obsess: 65 } }
+            ]
+        },
+        {
+            q: "🎁 기념일이 아닌데 갑자기 큰 선물을 사온 연인, 당신의 반응은?",
+            options: [
+                { text: "너무 고맙다며 안아준다", points: { F: 2, E: 1, Obsess: 0 } },
+                { text: "무슨 일 있냐며 돈 많이 쓴 거 아니냐고 묻는다", points: { T: 2, S: 1, Obsess: 10 } },
+                { text: "최근에 잘못한 게 있어서 미안해서 사온 건지 의심한다", points: { N: 1, Obsess: 40 } },
+                { text: "선물을 받고 감동하는 척하며 연인의 카드 내역을 살핀다", points: { J: 2, Obsess: 55 } }
+            ]
+        },
+        {
+            q: "📞 통화 중에 연인의 뒤에서 낯선 웃음소리가 들린다면?",
+            options: [
+                { text: "누구랑 있냐고 가볍게 물어본다", points: { E: 1, S: 1, Obsess: 15 } },
+                { text: "조금 신경 쓰이지만 믿고 대화를 이어간다", points: { S: 2, Obsess: 25 } },
+                { text: "목소리 톤이 바뀌며 지금 어디냐고 끈질기게 묻는다", points: { Obsess: 50 } },
+                { text: "영상 통화로 당장 주변을 비추라고 요구한다", points: { J: 2, Obsess: 75 } }
+            ]
+        },
+        {
+            q: "💭 '우리가 헤어진다면?'이라는 가정 하에 당신은?",
+            options: [
+                { text: "슬프지만 각자의 길을 갈 것이다", points: { P: 2, T: 1, Obsess: 0 } },
+                { text: "절대 헤어지기 싫다며 매달릴 것 같다", points: { F: 2, Obsess: 30 } },
+                { text: "헤어져도 상대가 누구랑 만나는지 계속 염탐할 것 같다", points: { Obsess: 55 } },
+                { text: "나를 떠난다면 상대를 파멸시키거나 끝까지 괴롭힐 것이다", points: { Obsess: 90 } }
+            ]
+        }
+    ];
+
+    const resultsMapping = {
+        "ISTJ": { score: 40, name: "철저한 규칙 감시자", emoji: "🧐", desc: "연애에도 매뉴얼이 있어야 한다고 믿는 당신. 집착이 심하진 않지만, 약속을 어기거나 불투명한 태도를 보이면 끝까지 이유를 캐묻는 질긴 면이 있습니다." },
+        "ISFJ": { score: 65, name: "헌신을 가장한 올가미", emoji: "🥀", desc: "당신은 모든 걸 희생하지만, 그만큼의 보상을 집착으로 요구합니다. 상대가 내 헌신을 몰라주면 서운함이 극에 달해 정서적으로 압박하는 스타일입니다." },
+        "INFJ": { score: 85, name: "모든 걸 꿰뚫어 보는 투명 감옥", emoji: "🧿", desc: "말하지 않아도 다 알고 있습니다. 상대의 미세한 변화를 포착해 혼자서 결론을 내리고, 조용히 상대를 통제하려 드는 무서운 통찰형 집착러입니다." },
+        "INTJ": { score: 50, name: "치밀한 설계자", emoji: "♟️", desc: "상대를 완벽하게 파악해 자신의 영향력 아래에 두려 합니다. 감정적인 구속보다는 효율적인 통제를 원하며, 상대가 예상 밖의 행동을 할 때 가장 예민해집니다." },
+        "ISTP": { score: 15, name: "개인주의 고양이", emoji: "🐈", desc: "집착? 그런 건 귀찮습니다. 상대가 뭘 하든 크게 관여하지 않으며, 나를 귀찮게 하는 것만 아니면 무한 방임주의를 채택합니다. 때로는 너무 안 고와서 상대가 서운해할 정도." },
+        "ISFP": { score: 35, name: "조용한 침묵의 집착", emoji: "🌙", desc: "앞에서 티는 안 내지만 혼자 SNS를 염탐하고 과거 사진을 보며 집착하는 스타일. 직접적인 구속보다는 혼자 상처받고 혼자 의심하는 '속앓이형'입니다." },
+        "INFP": { score: 75, name: "상상력 과부하 얀데레", emoji: "🩸", desc: "연락 한 번 안 되면 이미 머릿속에선 배신과 이별의 시나리오가 100편쯤 써집니다. 순수한 사랑이 깊어질수록 상대를 파멸로 이끌 수도 있는 위험한 감수성을 지녔습니다." },
+        "INTP": { score: 25, name: "분석하는 관조자", emoji: "🧬", desc: "집착보다는 '왜 저런 행동을 할까?'를 분석하는 데 더 관심이 많습니다. 감정적인 집착은 비효율적이라고 생각하지만, 논리적으로 이해 안 가는 행동은 끝까지 추적합니다." },
+        "ESTP": { score: 20, name: "쿨한 척하는 야생마", emoji: "🐎", desc: "지금 이 순간이 즐거우면 됐지! 뒤끝도 없고 집착도 적습니다. 다만 자존심이 세서 상대를 빼앗기거나 무시당했다는 느낌을 받으면 승부욕 섞인 집착이 튀어나올 수 있습니다." },
+        "ESFP": { score: 45, name: "관심 갈구 푸들", emoji: "🐩", desc: "상대를 구속하기보다는 내가 관심받고 싶어 집착합니다. 연락 문제에 예민하며, 나보다 다른 것이 우선순위일 때 삐치고 화내는 '관종형 집착'입니다." },
+        "ENFP": { score: 60, name: "사랑의 도파민 중독자", emoji: "🌈", desc: "사랑에 빠지면 온 세상이 그 사람 중심으로 돕니다. 밝아 보이지만 속으로는 상대의 일거수일투족을 궁금해하며, 언제든 상대의 세계로 다이빙할 준비가 된 열정적 집착러입니다." },
+        "ENTP": { score: 30, name: "말싸움의 악마", emoji: "😈", desc: "집착하기보다는 상대를 건드리고 반응을 보는 것을 즐깁니다. 구속하진 않지만 상대의 자유를 시험하고 논쟁하며 정신적으로 피곤하게 만드는 스타일입니다." },
+        "ESTJ": { score: 55, name: "엄격한 질서 반장", emoji: "⚖️", desc: "연애도 공정하고 투명해야 한다고 믿어 의심치 않습니다. 상대의 일정을 관리하고 규칙을 세우며, 그 틀에서 벗어나는 것을 용납하지 않는 관리형 집착입니다." },
+        "ESFJ": { score: 70, name: "친절을 빙자한 감시자", emoji: "👩‍🏫", desc: "주변 모든 사람에게서 당신의 소식을 듣습니다. 아는 사람이 많아 피하고 싶어도 피할 수 없는 촘촘한 그물망 같은 집착을 보여줍니다." },
+        "ENFJ": { score: 80, name: "구원자 컴플렉스", emoji: "👼", desc: "당신을 구원해주겠다는 명목으로 당신의 모든 인생에 개입합니다. 당신을 가르치려 들고, 자신의 정답 안에서만 움직이길 바라는 고단수 집착러입니다." },
+        "ENTJ": { score: 90, name: "권위주의 독재자", emoji: "👑", desc: "당신은 나의 소유물입니다. 나의 승인 없이는 아무것도 할 수 없으며, 당신의 미래조차 내가 설계하려 드는 왕(여왕)형 집착 끝판왕입니다." }
+    };
+
+    function shuffle(array) {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    }
+
+    function startTest() {
+        shuffle(questionPool);
+        selectedQuestions = questionPool.slice(0, 5); 
+        selectedQuestions.forEach(q => shuffle(q.options));
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('quiz-area').style.display = 'block';
+        showQuestion();
+    }
+
+    function showQuestion() {
+        let percent = (currentQ / selectedQuestions.length) * 100;
+        document.getElementById('progress').style.width = percent + '%';
+        let currentData = selectedQuestions[currentQ];
+        document.getElementById('q-number').innerText = `집착 지수 측정 중... ${currentQ + 1} / ${selectedQuestions.length}`;
+        document.getElementById('question-text').innerText = currentData.q;
+        let container = document.getElementById('options-container');
+        container.innerHTML = "";
+        currentData.options.forEach(opt => {
+            let btn = document.createElement("button");
+            btn.className = "option-btn";
+            btn.innerText = opt.text;
+            btn.onclick = () => nextQuestion(opt.points);
+            container.appendChild(btn);
+        });
+    }
+
+    function nextQuestion(points) {
+        for (let key in points) {
+            scores[key] += points[key];
+        }
+        currentQ++;
+        if (currentQ < selectedQuestions.length) {
+            showQuestion();
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+        
+        let mbti = "";
+        mbti += (scores.E >= scores.I) ? "E" : "I";
+        mbti += (scores.S >= scores.N) ? "S" : "N";
+        mbti += (scores.T >= scores.F) ? "T" : "F";
+        mbti += (scores.J >= scores.P) ? "J" : "P";
+
+        let resultData = resultsMapping[mbti];
+        let totalObsess = Math.min(100, Math.round(scores.Obsess / 5 * 2)); // 보정
+
+        // 컨페티 (핑크/레드)
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff007f', '#ff40ac', '#ffffff'] });
+
+        document.getElementById('res-score').innerText = resultData.score + "%";
+        document.getElementById('res-name').innerText = resultData.emoji + " " + resultData.name;
+        document.getElementById('res-desc').innerHTML = resultData.desc;
+    }
+</script>
+</body>
+</html>

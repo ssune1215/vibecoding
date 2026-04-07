@@ -118,5 +118,10 @@
     "title": "🚫 나와 상극인 MBTI 빌런 테스트",
     "path": "./mbti-badmatch/",
     "group": "love"
+  },
+  {
+    "title": "👁️ 연애 집착도 & 얀데레 지수 테스트",
+    "path": "./love-obsession/",
+    "group": "love"
   }
 ]
