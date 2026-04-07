@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>연애 집착도 & 얀데레 지수 테스트 👁️💖</title>
+    <title>얀데레 지수 테스트 👁️🩸</title>
     
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="나의 연애 집착도는 몇 %? 👁️" />
-    <meta property="og:description" content="사랑일까 집착일까? 당신의 숨겨진 얀데레 본능을 분석해 드립니다." />
+    <meta property="og:title" content="나의 얀데레 지수는 몇 %? 👁️🩸" />
+    <meta property="og:description" content="그냥 사랑하는 걸까, 아니면 소유하려는 걸까? 당신의 숨겨진 얀데레 본능 스캔!" />
     <meta property="og:url" content="./" />
     <meta property="og:image" content="../assets/share-thumb.jpg" />
 
@@ -95,15 +95,15 @@
 
 <div class="card">
     <div id="start-area">
-        <div class="obsession-tag">WARNING: DEEP LOVE</div>
-        <h1 class="title">나의 연애 집착도 &<br>얀데레 지수 테스트</h1>
-        <p class="description" style="color: #999;">"사랑이라는 이름의 감옥..."<br>당신은 연인을 얼마나 소유하고 싶어 하나요?<br>10개 중 5개의 질문이 무작위로 나타납니다.</p>
-        <button class="btn-start" style="background-color: #ff007f; border: none;" onclick="startTest()">내 집착도 확인하기 👁️💖</button>
+        <div class="obsession-tag">WARNING: YANDERE LEVEL</div>
+        <h1 class="title">나의 숨겨진<br>얀데레 지수 테스트</h1>
+        <p class="description" style="color: #999;">"사랑이라는 이름의 지독한 구속..."<br>당신은 얼마나 강한 얀데레 본능을 가졌나요?<br>10개 중 5개의 질문이 무작위로 나타납니다.</p>
+        <button class="btn-start" style="background-color: #ff007f; border: none;" onclick="startTest()">얀데레 지수 확인하기 👁️🩸</button>
     </div>
 
     <div id="quiz-area" style="display: none;">
         <div class="progress-bar"><div class="progress" id="progress"></div></div>
-        <div id="q-number" class="tiny" style="color: #ff40ac; font-weight: 700; margin-bottom: 15px;">관찰 중...</div>
+        <div id="q-number" class="tiny" style="color: #ff40ac; font-weight: 700; margin-bottom: 15px;">얀데레 본능 스캔 중...</div>
         <div class="title" id="question-text" style="font-size: 20px; line-height: 1.5; color: #fff;">...</div>
         <div id="options-container" style="margin-top: 25px;"></div>
     </div>
@@ -111,10 +111,10 @@
     <div id="result-area" style="display: none;">
         <div class="obsession-tag">ANALYSIS COMPLETE</div>
         <div id="res-score" class="obsession-score">0%</div>
-        <div id="res-name" class="result-title" style="color: #fff; font-size: 24px; margin-bottom: 20px;">집착 캐릭터 이름</div>
+        <div id="res-name" class="result-title" style="color: #fff; font-size: 24px; margin-bottom: 20px;">얀데레 캐릭터 이름</div>
         
         <div class="result-box">
-            <span class="result-box-title" style="background-color: #ff007f; color: white;">👀 집착 성향 리포트</span>
+            <span class="result-box-title" style="background-color: #ff007f; color: white;">👀 얀데레 성향 리포트</span>
             <div id="res-desc" class="result-desc" style="color: #ccc; margin-top: 10px; line-height: 1.7;">상세 분석 내용</div>
         </div>
 
@@ -265,7 +265,7 @@
         let percent = (currentQ / selectedQuestions.length) * 100;
         document.getElementById('progress').style.width = percent + '%';
         let currentData = selectedQuestions[currentQ];
-        document.getElementById('q-number').innerText = `집착 지수 측정 중... ${currentQ + 1} / ${selectedQuestions.length}`;
+        document.getElementById('q-number').innerText = `얀데레 지수 측정 중... ${currentQ + 1} / ${selectedQuestions.length}`;
         document.getElementById('question-text').innerText = currentData.q;
         let container = document.getElementById('options-container');
         container.innerHTML = "";
