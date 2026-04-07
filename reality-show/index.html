@@ -141,7 +141,7 @@
     }
 
     function startTest() {
-        shuffle(questions);
+        // 스토리텔링을 위해 질문 순서 셔플 제거 (순차 진행)
         questions.forEach(q => shuffle(q.options));
         document.getElementById('start-area').style.display = 'none';
         document.getElementById('quiz-area').style.display = 'block';
