@@ -113,5 +113,10 @@
     "title": "🤖 연애 T/F 과몰입 테스트",
     "path": "./love-tf/",
     "group": "love"
+  },
+  {
+    "title": "🚫 나와 상극인 MBTI 빌런 테스트",
+    "path": "./mbti-badmatch/",
+    "group": "love"
   }
 ]
