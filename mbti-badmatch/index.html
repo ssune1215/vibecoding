@@ -15,58 +15,59 @@
     <link rel="stylesheet" href="../assets/vibe-theme.css">
     <style>
         :root {
-            --main-color: #ff4757; /* 경고 레드 */
-            --bg-light: #121212; /* 다크 모드 고정 */
-            --border-color: #2f3542;
-            --btn-hover-shadow: rgba(255, 71, 87, 0.3);
+            --main-color: #a29bfe; /* 소프트 퍼플 */
+            --bg-light: #1e1e2f; /* 신비로운 다크 네이비 */
+            --border-color: #3d3d5c;
+            --btn-hover-shadow: rgba(162, 155, 254, 0.4);
         }
         
         body {
-            background-color: #000;
+            background-color: #12121e;
             color: #fff;
         }
 
         .card {
-            background-color: #1a1a1a;
-            border: 2px solid #ff4757;
-            box-shadow: 0 0 20px rgba(255, 71, 87, 0.2);
+            background-color: #1e1e2f;
+            border: 1px solid #a29bfe;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
         }
 
-        .title { color: #ff4757; font-weight: 900; }
+        .title { color: #a29bfe; font-weight: 800; }
         
         .option-btn {
-            background-color: #262626;
+            background-color: #2a2a3e;
             color: #eee;
-            border: 1px solid #333;
+            border: 1px solid #3d3d5c;
             text-align: left;
             padding: 15px 20px;
             font-size: 15px;
-            transition: all 0.2s;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .option-btn:hover {
-            background-color: #ff4757;
-            color: white;
-            border-color: #ff4757;
-            transform: translateX(5px);
+            background-color: #a29bfe;
+            color: #12121e;
+            border-color: #a29bfe;
+            transform: translateY(-2px);
         }
 
-        .progress { background: linear-gradient(to right, #ff4757, #ff6b81); }
+        .progress { background: linear-gradient(to right, #a29bfe, #6c5ce7); }
         
         .result-box {
-            background: #262626;
-            border: 1px dashed #ff4757;
+            background: #252538;
+            border: 1px solid #3d3d5c;
         }
 
         .warning-tag {
-            background: #ff4757;
+            background: #6c5ce7;
             color: white;
             padding: 4px 12px;
-            border-radius: 5px;
-            font-size: 12px;
+            border-radius: 20px;
+            font-size: 11px;
             font-weight: 700;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
+            letter-spacing: 1px;
         }
     </style>
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
@@ -77,10 +78,10 @@
 
 <div class="card">
     <div id="start-area">
-        <div class="warning-tag">DANGER ZONE v2.1</div>
+        <div class="warning-tag">ANALYSIS ZONE</div>
         <h1 class="title">나와 상극인<br>MBTI 빌런 테스트</h1>
-        <p class="description" style="color: #ccc;">"제발 이 사람만은 피해라!"<br>10개의 빌런 탐지 문항 중 **5개가 무작위 선정**됩니다.<br>예측 불가능한 당신의 파멸 궁합은?</p>
-        <button class="btn-start" style="background-color: #ff4757; border: none;" onclick="startTest()">주의사항 확인 후 시작 🚫</button>
+        <p class="description" style="color: #b2bec3;">"제발 이 사람만은 피해라!"<br>10개의 빌런 탐지 문항 중 **5개가 무작위 선정**됩니다.<br>당신의 최악의 궁합을 분석해 드릴게요.</p>
+        <button class="btn-start" style="background-color: #6c5ce7; border: none;" onclick="startTest()">지금 분석 시작하기 ✨</button>
     </div>
 
     <div id="quiz-area" style="display: none;">
@@ -96,8 +97,8 @@
         <div id="res-name" class="result-title" style="color: #ff4757; font-size: 26px;">최악의 빌런 이름</div>
         
         <div class="result-box">
-            <span class="result-box-title" style="background-color: #ff4757; color: white;">⚠️ 접근 금지 리포트</span>
-            <div id="res-desc" class="result-desc" style="color: #ddd; margin-top: 10px; line-height: 1.7;">상세 분석 내용</div>
+            <span class="result-box-title" style="background-color: #6c5ce7; color: white;">🔍 상극 관계 분석 리포트</span>
+            <div id="res-desc" class="result-desc" style="color: #b2bec3; margin-top: 10px; line-height: 1.7;">상세 분석 내용</div>
         </div>
 
         <div class="action-btns">
@@ -108,7 +109,7 @@
             <a href="https://blog.naver.com/forgiven_77/224198478277" target="_blank" class="btn-blog" style="background-color: #2f3542; color: white; border: none;">
                 다른 팩폭 테스트 더 보기
             </a>
-            <button class="btn-retry" onclick="location.reload()" style="background-color: #000; color: #ff4757; border: 1px solid #ff4757;">🔄 처음부터 다시 스캔</button>
+            <button class="btn-retry" onclick="location.reload()" style="background-color: transparent; color: #a29bfe; border: 1px solid #a29bfe;">🔄 다시 분석해보기</button>
         </div>
     </div>
 </div>
@@ -287,8 +288,8 @@
 
         let resultData = resultsMapping[mbti];
 
-        // 파괴적인 레드/블랙 컨페티!
-        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#ff4757', '#000000', '#2f3542', '#ff6b81'] });
+        // 세련된 퍼플/골드 컨페티!
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#a29bfe', '#6c5ce7', '#ffffff', '#ffd700'] });
 
         document.getElementById('res-image').innerText = resultData.img;
         document.getElementById('res-name').innerHTML = resultData.name.replace('\n', '<br>');
