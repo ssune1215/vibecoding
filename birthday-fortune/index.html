@@ -261,23 +261,42 @@
             background: #22c55e;
             color: #fff;
             text-align: center;
-            padding: 15px;
+            padding: 18px;
             border-radius: 12px;
             text-decoration: none;
-            font-weight: 700;
-            margin-top: 30px;
+            font-weight: 800;
+            font-size: 16px;
+            margin-top: 20px;
             border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-kakao-mystic {
+            display: block;
+            background: #fde047;
+            color: #451a03;
+            text-align: center;
+            padding: 18px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 16px;
+            margin-top: 30px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
         }
 
         .btn-retry {
             margin-top: 15px;
             width: 100%;
-            padding: 15px;
+            padding: 18px;
             background: transparent;
             color: #94a3b8;
             border: 1px solid rgba(255,255,255,0.1);
             border-radius: 12px;
             cursor: pointer;
+            font-weight: 700;
+            font-size: 15px;
         }
 
         /* Animation for appearance */
@@ -363,6 +382,10 @@
                     <div class="lucky-card"><div class="lucky-label">행운의 음식</div><div class="lucky-value" id="luck-food"></div></div>
                 </div>
             </div>
+
+            <button id="kakao-share" class="btn-kakao-mystic">
+                💬 결과 카톡으로 공유하기
+            </button>
 
             <a href="https://blog.naver.com/forgiven_77/224219719421" target="_blank" class="btn-blog-fixed">
                 👉 다른 운세&테스트 구경가기
@@ -496,6 +519,32 @@
         document.getElementById('luck-number').innerText = DATA.numbers[getIdx(DATA.numbers.length)];
         document.getElementById('luck-item').innerText = DATA.items[getIdx(DATA.items.length)];
         document.getElementById('luck-food').innerText = DATA.foods[getIdx(DATA.foods.length)];
+
+        // 카카오 공유 설정
+        if (window.Kakao && Kakao.isInitialized()) {
+            Kakao.Share.createDefaultButton({
+                container: '#kakao-share',
+                objectType: 'feed',
+                content: {
+                    title: `[비밀의 운세] ${bd} 당신의 운명 기록 🔮`,
+                    description: `오늘 당신의 운세는 🍀${scoreVal}점! 방대한 운세 리포트를 지금 확인해보세요.`,
+                    imageUrl: 'https://ssune1215.github.io/vibecoding/assets/share-thumb.jpg',
+                    link: {
+                        mobileWebUrl: window.location.href,
+                        webUrl: window.location.href,
+                    },
+                },
+                buttons: [
+                    {
+                        title: '나도 확인하기',
+                        link: {
+                            mobileWebUrl: window.location.href,
+                            webUrl: window.location.href,
+                        },
+                    },
+                ],
+            });
+        }
     }
 </script>
 
