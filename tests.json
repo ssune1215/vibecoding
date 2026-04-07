@@ -123,5 +123,10 @@
     "title": "👁️ 얀데레 지수 테스트",
     "path": "./love-obsession/",
     "group": "love"
+  },
+  {
+    "title": "🔮 오늘의 비밀 운세 리포트",
+    "path": "./birthday-fortune/",
+    "group": "fortune"
   }
 ]

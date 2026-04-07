@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>비밀의 운세 | 생년월일 기반 프리미엄 운세 리포트 🔮</title>
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="나만의 '오늘의 비밀 운세' 확인하기 🔮✨" />
+    <meta property="og:description" content="사주 오행과 성운의 흐름으로 읽어내는 방대한 나의 운세 리포트! 오늘 당신의 운명은?" />
+    <meta property="og:url" content="./" />
+    <meta property="og:image" content="../assets/share-thumb.jpg" />
+
+    <link rel="stylesheet" href="../assets/vibe-theme.css">
+    <style>
+        :root {
+            /* 신비로운 미드나잇 퍼플 & 골드 테마 */
+            --mystic-bg: #0f172a; /* 딥 네이비 */
+            --mystic-card: rgba(30, 41, 59, 0.7);
+            --mystic-accent: #fbbf24; /* 골드 */
+            --mystic-pink: #f472b6;
+            --mystic-blue: #60a5fa;
+            --text-gold: #fde68a;
+        }
+
+        body {
+            background: linear-gradient(135deg, #020617 0%, #0f172a 100%);
+            color: #f1f5f9;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .mystic-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card {
+            background: var(--mystic-card);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(251, 191, 36, 0.2);
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.5);
+            border-radius: 24px;
+            padding: 35px 25px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.05) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .mystic-title {
+            font-size: 32px;
+            font-weight: 900;
+            margin-bottom: 10px;
+            background: linear-gradient(to bottom, #fde68a, #fbbf24);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 5px 15px rgba(251, 191, 36, 0.3);
+        }
+
+        .mystic-desc {
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* Input Styles */
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .label {
+            display: block;
+            font-weight: 700;
+            color: var(--mystic-accent);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .gender-selection {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .gender-btn {
+            flex: 1;
+            padding: 15px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.05);
+            color: #94a3b8;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .gender-btn.active {
+            background: var(--mystic-accent);
+            color: #000;
+            border-color: var(--mystic-accent);
+            box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
+        }
+
+        input[type="date"] {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 16px;
+            font-family: inherit;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .btn-reveal {
+            background: linear-gradient(135deg, #fbbf24, #d97706);
+            color: #000;
+            border: none;
+            width: 100%;
+            padding: 18px;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 800;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow: 0 10px 25px rgba(217, 119, 6, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .btn-reveal:active { transform: scale(0.98); }
+
+        /* Loading */
+        #loading-area {
+            display: none;
+            padding: 50px 0;
+        }
+
+        .crystal-ball {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 5px var(--mystic-accent)); }
+            50% { transform: scale(1.1); filter: drop-shadow(0 0 25px var(--mystic-accent)); }
+        }
+
+        .loading-text {
+            color: var(--text-gold);
+            font-weight: 700;
+            font-size: 18px;
+            height: 24px;
+        }
+
+        /* Result Area */
+        #result-area {
+            display: none;
+            text-align: left;
+        }
+
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .luck-score {
+            font-size: 48px;
+            margin: 10px 0;
+        }
+
+        .keyword-badge {
+            display: inline-block;
+            background: rgba(251, 191, 36, 0.1);
+            color: var(--mystic-accent);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            margin: 3px;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .report-section {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--text-gold);
+        }
+
+        .section-content {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #cbd5e1;
+            word-break: keep-all;
+        }
+
+        .lucky-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .lucky-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .lucky-label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 5px;
+        }
+
+        .lucky-value {
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .btn-blog-fixed {
+            display: block;
+            background: #22c55e;
+            color: #fff;
+            text-align: center;
+            padding: 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 700;
+            margin-top: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-retry {
+            margin-top: 15px;
+            width: 100%;
+            padding: 15px;
+            background: transparent;
+            color: #94a3b8;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        /* Animation for appearance */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+<div class="mystic-container">
+    <div class="card" id="main-content">
+        <!-- Start Area -->
+        <div id="start-area">
+            <div class="mystic-title">비밀의 운세 리포트</div>
+            <p class="mystic-desc">하늘에 새겨진 당신만의 암호를 해독합니다.<br>생년월일을 입력하여 오늘의 방대한 운세를 받아보세요.</p>
+            
+            <div class="input-group">
+                <span class="label">성별</span>
+                <div class="gender-selection">
+                    <button class="gender-btn active" onclick="setGender('male', this)">남성</button>
+                    <button class="gender-btn" onclick="setGender('female', this)">여성</button>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <span class="label">생년월일</span>
+                <input type="date" id="birth-date" value="1995-01-01">
+            </div>
+
+            <button class="btn-reveal" onclick="analyzeFortune()">나의 기운 분석하기 ✨</button>
+        </div>
+
+        <!-- Loading Area -->
+        <div id="loading-area">
+            <div class="crystal-ball">🔮</div>
+            <div class="loading-text" id="status-text">우주의 흐름을 읽는 중...</div>
+            <div style="margin-top: 30px; font-size: 13px; color: #64748b;">이 작업은 최대 3초가 소요될 수 있습니다.</div>
+        </div>
+
+        <!-- Result Area -->
+        <div id="result-area" class="fade-in">
+            <div class="result-header">
+                <div id="res-keywords"></div>
+                <div class="luck-score" id="res-score">🍀🍀🍀🍀</div>
+                <div style="font-weight: 800; font-size: 20px; color: var(--mystic-accent);" id="res-date-title"></div>
+            </div>
+
+            <div class="report-section">
+                <div class="section-title">✨ 오늘의 운세 총평</div>
+                <div class="section-content" id="res-summary"></div>
+            </div>
+
+            <div class="report-section">
+                <div class="section-title">💘 연애와 인연의 흐름</div>
+                <div class="section-content" id="res-love"></div>
+            </div>
+
+            <div class="report-section">
+                <div class="section-title">💰 금전과 재물의 기운</div>
+                <div class="section-content" id="res-money"></div>
+            </div>
+
+            <div class="report-section">
+                <div class="section-title">📈 성공과 성취의 에너지</div>
+                <div class="section-content" id="res-work"></div>
+            </div>
+
+            <div class="report-section" style="border-bottom: none;">
+                <div class="section-title">💊 오늘의 처방과 비책</div>
+                <div class="section-content" id="res-advice"></div>
+                <div class="lucky-grid">
+                    <div class="lucky-card"><div class="lucky-label">행운의 컬러</div><div class="lucky-value" id="luck-color"></div></div>
+                    <div class="lucky-card"><div class="lucky-label">행운의 숫자</div><div class="lucky-value" id="luck-number"></div></div>
+                    <div class="lucky-card"><div class="lucky-label">행운의 품목</div><div class="lucky-value" id="luck-item"></div></div>
+                    <div class="lucky-card"><div class="lucky-label">행운의 음식</div><div class="lucky-value" id="luck-food"></div></div>
+                </div>
+            </div>
+
+            <a href="https://blog.naver.com/forgiven_77/224219719421" target="_blank" class="btn-blog-fixed">
+                👉 다른 운세&테스트 구경가기
+            </a>
+            <button class="btn-retry" onclick="location.reload()">🔄 다시 입소하기</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let userGender = 'male';
+
+    function setGender(g, btn) {
+        userGender = g;
+        document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    }
+
+    // 결정론적 랜덤을 위한 시드 생성 함수
+    function seedRandom(seed) {
+        let x = Math.sin(seed++) * 10000;
+        return x - Math.floor(x);
+    }
+
+    // 방대한 데이터 풀 (Pool)
+    const DATA = {
+        keywords: ["#역전의_기회", "#인내의_결실", "#금풍의_파도", "#귀인의_등장", "#지혜로운_침묵", "#뜻밖의_성취", "#변화의_시작", "#강력한_직관", "#화합의_기운", "#안식의_시간"],
+        summary: [
+            "하늘의 문이 열리고 당신의 기운이 땅으로 내려오는 날입니다. 그동안 애타게 기다렸던 소식이 있다면 오늘 오후 즈음 긍정적인 신호가 올 수 있습니다. 성급하게 움직이기보다는 주변의 흐름을 관망하며 에너지를 비축하는 것이 현명합니다. 당신의 진심이 누군가의 마음을 움직일 수 있는 강력한 감응의 힘이 서려 있는 하루입니다.",
+            "메마른 대지에 단비가 내리는 형국입니다. 예상치 못한 곳에서 움튼 희망이 당신의 길을 비춰줄 것입니다. 오늘은 특히 대인 관계에서 큰 이득을 볼 수 있는데, 평소 소원했던 사람에게 먼저 연락이 온다면 기쁘게 맞이하십시오. 당신의 겸손함이 가장 큰 무기가 되어 경쟁자조차 당신의 편으로 만들 수 있는 평화로운 날입니다.",
+            "높은 산 정상에 올라 세상을 굽어보는 장엄한 기운이 느껴집니다. 결단력이 필요한 순간이 온다면 뒤돌아보지 말고 당신의 직관을 믿으십시오. 오늘은 사소한 것에 연연하기보다 큰 그림을 그리는 일에 집중할 때 성취가 큽니다. 당신의 당당함이 곧 성공의 지름길이니, 어딜 가든 어깨를 펴고 주도권을 잡으십시오.",
+            "비단 위에 꽃이 피어나는 금상첨화의 날입니다. 주변의 모든 환경이 당신을 돕기 위해 움직이고 있으니, 망설이던 일이 있다면 오늘 시작해보는 것이 좋습니다. 특히 예술적인 감각이나 창의적인 아이디어가 빛을 발할 것입니다. 당신을 지켜보던 귀인이 나타나 조용히 손을 내미는 형국이니, 열린 마음으로 기회를 포착하십시오.",
+            "물 흐르듯 자연스러운 순리를 따를 때 가장 길한 날입니다. 억지로 무언가를 바꾸려 애쓰기보다 주어진 상황에 감사하며 최선을 다하십시오. 오후에는 뜻밖의 소소한 행운이 찾아와 당신을 미소 짓게 할 것입니다. 마음의 평화가 곧 건강과 행운의 근원이니, 명상이나 가벼운 산책으로 당신의 내면을 돌보는 시간을 가지십시오."
+        ],
+        love: [
+            "인연의 실타래가 부드럽게 풀려나가는 날입니다. 연인이 있다면 깊은 대화를 통해 서로의 신뢰를 확인하게 될 것이며, 솔로라면 뜻밖의 장소에서 눈에 띄는 상대를 마주할 수 있습니다. 오늘은 당신의 향기가 가장 짙게 배어나는 날이니, 평소보다 조금 더 외모에 신경을 쓰는 것도 좋습니다.",
+            "상대방의 마음을 읽는 혜안이 생기는 날입니다. 짝사랑 중이라면 오늘 당신의 작은 배려가 상대에게 큰 울림으로 다가갈 것입니다. 연인 사이에서는 사소한 오해가 풀리고 다시금 설렘이 찾아오는 계기가 마련됩니다. 대화할 때 경청하는 자세를 보인다면 사랑의 파동이 더욱 커질 것입니다.",
+            "부드러운 카리스마가 이성을 사로잡는 날입니다. 오늘은 당신이 주도권을 쥐고 데이트를 이끌어가는 것이 좋습니다. 솔로라면 주변 지인의 소개로 인해 소중한 인연이 시작될 가능성이 매우 높습니다. 새로운 만남에 두려움을 갖지 말고 밝은 미소로 응답하십시오.",
+            "사랑의 에너지가 충만한 하루입니다. 연인에게 예기치 못한 작은 선물을 준비해 본다면 감동이 배가 될 것입니다. 솔로라면 눈이 높은 기존의 기준을 잠시 내려놓고 주변을 둘러보십시오. 이미 당신 곁에서 조용히 당신을 지켜보고 있는 따뜻한 시선이 느껴질 것입니다."
+        ],
+        money: [
+            "재물의 기운이 서쪽에서 들어오는 형국입니다. 투자나 계약을 앞두고 있다면 오후 시간이 길하며, 사소한 정보에도 귀를 기울이십시오. 오늘은 지출보다 수입의 흐름이 강하니, 아껴둔 지갑이 조금은 두툼해질 수 있는 소식이 들려옵니다.",
+            "풀리지 않던 금전적인 매듭이 하나씩 풀어지는 날입니다. 빌려준 돈을 돌려받거나, 잊고 있던 적립금이 생각날 수도 있습니다. 고액의 지출보다는 종잣돈을 모으는 계획을 세우기에 최적의 날이니, 꼼꼼하게 장부를 정돈해 보십시오.",
+            "횡재수보다는 노력에 따른 결실이 명확한 날입니다. 성실하게 쌓아온 공든 탑이 마침내 금빛으로 빛나기 시작합니다. 오늘은 무리한 투자보다는 현재의 자산을 지키고 관리하는 데 에너지를 쏟으십시오. 정직한 땀방울이 곧 당신의 통장을 채워줄 것입니다.",
+            "재물운의 파도가 완만하게 상승하고 있습니다. 쇼핑보다는 미래의 가치에 투자하는 안목이 생길 것입니다. 주변 사람들과의 식사 대접에서 당신이 쓴 돈이 나중에 더 큰 이익으로 돌아오는 순환의 흐름이니, 베푸는 것에 인색하지 마십시오."
+        ],
+        work: [
+            "업무적 능력이 최고조에 달하여 상사나 동료의 인정을 받게 됩니다. 해결하지 못한 난제가 있다면 오늘 집중력을 발휘해 보십시오. 의외로 간단한 곳에서 해답을 찾을 수 있습니다. 당신의 리더십이 빛을 발해 팀원들이 당신을 추종하게 되는 하루입니다.",
+            "새로운 프로젝트나 업무를 제안받기에 아주 좋은 운입니다. 변화를 두려워하지 말고 당신의 역량을 마음껏 펼치십시오. 꾸준한 노력이 드디어 상반기에 결실을 맺는 첫 단추를 끼우는 날입니다. 자신감을 가지고 당당하게 목소리를 내십시오.",
+            "조직 내에서 당신의 입지가 단단해지는 날입니다. 사소한 실수에도 당황하지 말고 침착하게 대응하십시오. 당신의 위기 관리 능력이 평가의 핵심이 될 것입니다. 퇴근 전 마무리 작업에 신중을 기한다면 완벽한 성취를 이룰 수 있습니다.",
+            "전문성을 강화할 기회가 찾아옵니다. 공부나 강의 수강 등 자기계발에 투자하기에 더없이 좋습니다. 오늘 습득한 지식은 머지않아 당신을 최고의 자리에 올려놓는 주춧돌이 될 것입니다. 끈기 있게 파고드는 집요함이 필요한 때입니다."
+        ],
+        advice: [
+            "오늘은 대화 중 3초간 뜸을 들인 후 말하십시오. 당신의 무게감이 살아납니다. 또한 초록색 계열의 옷이나 소품을 활용한다면 나쁜 기운을 막아줄 것입니다.",
+            "남의 말에 흔들리지 말고 당신의 주관을 지키십시오. 향기가 강한 커피 한 잔이 당신의 흐트러진 정신을 맑게 해주고 행운을 불러올 매개체가 됩니다.",
+            "주변 정리를 깔끔하게 하는 것에서 행운은 시작됩니다. 책상을 정리하거나 지갑 속 영수증을 비우십시오. 비워진 그 자리에 새로운 복이 들어올 것입니다.",
+            "겸허한 자세로 아랫사람의 말에도 귀를 기울이십시오. 당신이 보지 못했던 빈틈을 채워줄 소중한 힌트가 들어있습니다. 일몰 후의 휴식이 당신의 기운을 보강해 줍니다."
+        ],
+        colors: ["딥 퍼플", "미드나잇 블루", "에메랄드 그린", "샴페인 골드", "로즈 핑크", "크림 화이트", "차콜 그레이"],
+        numbers: ["7", "3", "8", "1", "9", "22", "11"],
+        items: ["빈티지 열쇠", "가죽 수첩", "원석 목걸이", "작은 거울", "향초", "만년필"],
+        foods: ["따뜻한 홍차", "수제 버거", "초밥", "매콤한 파스타", "담백한 샐러드", "달콤한 마카롱"]
+    };
+
+    const loadingTexts = [
+        "사주 오행의 균형을 맞추는 중...",
+        "오늘의 성운의 흐름을 분석하는 중...",
+        "당신의 기운을 데이터화 하는 중...",
+        "하늘에 새겨진 당신의 암호를 해독 중...",
+        "최상의 리포트를 조합하는 중..."
+    ];
+
+    function analyzeFortune() {
+        const bd = document.getElementById('birth-date').value;
+        if(!bd) { alert("생년월일을 선택해주세요."); return; }
+
+        document.getElementById('start-area').style.display = 'none';
+        document.getElementById('loading-area').style.display = 'block';
+
+        let textIdx = 0;
+        const interval = setInterval(() => {
+            textIdx = (textIdx + 1) % loadingTexts.length;
+            document.getElementById('status-text').innerText = loadingTexts[textIdx];
+        }, 600);
+
+        setTimeout(() => {
+            clearInterval(interval);
+            showResult(bd);
+        }, 2500);
+    }
+
+    function showResult(bd) {
+        document.getElementById('loading-area').style.display = 'none';
+        document.getElementById('result-area').style.display = 'block';
+
+        // 축하 효과
+        confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#fbbf24', '#fde68a', '#60a5fa', '#f472b6'] });
+
+        // 결정론적 시드 (생일 + 성별 + 오늘날짜)
+        const todayStr = new Date().toISOString().slice(0, 10);
+        const seedValue = bd.replace(/-/g, '') + userGender + todayStr.replace(/-/g, '');
+        let seed = 0;
+        for(let i=0; i<seedValue.length; i++) {
+            seed = (seed << 5) - seed + seedValue.charCodeAt(i);
+            seed |= 0;
+        }
+
+        const getIdx = (len) => {
+            seed = (seed * 16807) % 2147483647;
+            if(seed < 0) seed += 2147483647;
+            return seed % len;
+        };
+
+        // 데이터 렌더링
+        const kw1 = DATA.keywords[getIdx(DATA.keywords.length)];
+        const kw2 = DATA.keywords[getIdx(DATA.keywords.length)];
+        const kw3 = DATA.keywords[getIdx(DATA.keywords.length)];
+        document.getElementById('res-keywords').innerHTML = `<span class="keyword-badge">${kw1}</span><span class="keyword-badge">${kw2}</span><span class="keyword-badge">${kw3}</span>`;
+        
+        const scoreVal = 3 + (getIdx(3)); // 3~5 별점
+        document.getElementById('res-score').innerText = "🍀".repeat(scoreVal);
+        document.getElementById('res-date-title').innerText = `${todayStr} 당신의 운명 기록`;
+
+        document.getElementById('res-summary').innerText = DATA.summary[getIdx(DATA.summary.length)];
+        document.getElementById('res-love').innerText = DATA.love[getIdx(DATA.love.length)];
+        document.getElementById('res-money').innerText = DATA.money[getIdx(DATA.money.length)];
+        document.getElementById('res-work').innerText = DATA.work[getIdx(DATA.work.length)];
+        document.getElementById('res-advice').innerText = DATA.advice[getIdx(DATA.advice.length)];
+
+        document.getElementById('luck-color').innerText = DATA.colors[getIdx(DATA.colors.length)];
+        document.getElementById('luck-number').innerText = DATA.numbers[getIdx(DATA.numbers.length)];
+        document.getElementById('luck-item').innerText = DATA.items[getIdx(DATA.items.length)];
+        document.getElementById('luck-food').innerText = DATA.foods[getIdx(DATA.foods.length)];
+    }
+</script>
+
+</body>
+</html>
