@@ -158,12 +158,14 @@
         .btn-retry {
             background-color: #e2e8f0;
             color: #475569;
-            padding: 15px;
+            padding: 18px;
             border-radius: 16px;
             text-decoration: none;
-            font-weight: 700;
+            font-weight: 800;
+            font-size: 16px;
             border: none;
             cursor: pointer;
+            transition: all 0.2s;
         }
 
         /* Responsive */
@@ -237,38 +239,22 @@
 <script>
     // 음식 데이터셋 (32종)
     const FOODS_POOL = [
+        { name: "김치찌개", emoji: "🥘", color: "#fef2f2" },
+        { name: "제육볶음", emoji: "🥓", color: "#fff1f0" },
+        { name: "돈까스", emoji: "🍱", color: "#fffbeb" },
+        { name: "짜장면", emoji: "🥣", color: "#f8fafc" },
+        { name: "짬뽕", emoji: "🍜", color: "#fef2f2" },
+        { name: "삼겹살", emoji: "🥓", color: "#fff1f2" },
         { name: "치킨", emoji: "🍗", color: "#fff7ed" },
         { name: "피자", emoji: "🍕", color: "#fef2f2" },
         { name: "햄버거", emoji: "🍔", color: "#fffbeb" },
-        { name: "삼겹살", emoji: "🥓", color: "#fff1f2" },
-        { name: "초밥", emoji: "🍣", color: "#f0f9ff" },
-        { name: "떡볶이", emoji: "🥘", color: "#fff1f0" },
-        { name: "짜장면", emoji: "🥣", color: "#f8fafc" },
-        { name: "짬뽕", emoji: "🍜", color: "#fef2f2" },
-        { name: "돈까스", emoji: "🍱", color: "#fffbeb" },
-        { name: "카레", emoji: "🍛", color: "#fff7ed" },
+        { name: "비빔밥", emoji: "🥗", color: "#f0fdf4" },
         { name: "쌀국수", emoji: "🍜", color: "#ecfdf5" },
         { name: "마라탕", emoji: "🌶️", color: "#fff1f0" },
-        { name: "비빔밥", emoji: "🥗", color: "#f0fdf4" },
-        { name: "김치찌개", emoji: "🥘", color: "#fef2f2" },
-        { name: "부대찌개", emoji: "🍲", color: "#fff1f0" },
-        { name: "스테이크", emoji: "🥩", color: "#f1f5f9" },
-        { name: "파스타", emoji: "🍝", color: "#fffbeb" },
-        { name: "냉면", emoji: "🥣", color: "#f0f9ff" },
-        { name: "족발", emoji: "🐷", color: "#fff7ed" },
-        { name: "곱창", emoji: "🥘", color: "#fff1f2" },
-        { name: "회", emoji: "🐟", color: "#f0f9ff" },
-        { name: "샌드위치", emoji: "🥪", color: "#ecfdf5" },
-        { name: "샐러드", emoji: "🥗", color: "#f0fdf4" },
+        { name: "초밥", emoji: "🍣", color: "#f0f9ff" },
+        { name: "떡볶이", emoji: "🥘", color: "#fff1f0" },
         { name: "국밥", emoji: "🥣", color: "#f8fafc" },
-        { name: "칼국수", emoji: "🍜", color: "#f0f9ff" },
-        { name: "우동", emoji: "🍲", color: "#f0f9ff" },
-        { name: "닭갈비", emoji: "🥘", color: "#fff1f0" },
-        { name: "샤브샤브", emoji: "🍲", color: "#f0fdf4" },
-        { name: "보쌈", emoji: "🐖", color: "#fff7ed" },
-        { name: "김밥", emoji: "🍙", color: "#f0fdf4" },
-        { name: "라면", emoji: "🍜", color: "#fef2f2" },
-        { name: "토스트", emoji: "🍞", color: "#fffbeb" }
+        { name: "된장찌개", emoji: "🍲", color: "#fff7ed" }
     ];
 
     let currentCandidates = [];
@@ -285,9 +271,8 @@
     }
 
     function startGame() {
-        // 32종 중 16개만 랜덤 추출
-        const shuffled = shuffle([...FOODS_POOL]);
-        currentCandidates = shuffled.slice(0, 16);
+        // 대중적인 16개 메뉴를 랜덤하게 섞어서 시작
+        currentCandidates = shuffle([...FOODS_POOL]);
         
         document.getElementById('start-area').style.display = 'none';
         document.getElementById('quiz-area').style.display = 'block';
