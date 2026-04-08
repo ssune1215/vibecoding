@@ -142,30 +142,32 @@
             gap: 12px;
         }
 
-        .btn-blog {
-            background-color: #22c55e;
-            color: #fff;
-            padding: 18px;
+        .btn-kakao,
+        .btn-blog,
+        .btn-retry {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 60px; /* 높이 고정으로 가독성 향상 */
             border-radius: 16px;
-            text-decoration: none;
-            font-weight: 800;
             font-size: 16px;
+            font-weight: 800;
+            text-decoration: none;
             border: none;
             cursor: pointer;
             transition: all 0.2s;
+            box-sizing: border-box;
+            gap: 8px;
         }
 
-        .btn-retry {
-            background-color: #e2e8f0;
-            color: #475569;
-            padding: 18px;
-            border-radius: 16px;
-            text-decoration: none;
-            font-weight: 800;
-            font-size: 16px;
-            border: none;
-            cursor: pointer;
-            transition: all 0.2s;
+        .btn-kakao { background-color: #fde047; color: #451a03; }
+        .btn-blog { background-color: #22c55e; color: #fff; }
+        .btn-retry { background-color: #e2e8f0; color: #475569; }
+
+        .btn-kakao:hover, .btn-blog:hover, .btn-retry:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
         }
 
         /* Responsive */
@@ -225,7 +227,7 @@
         </div>
 
         <div class="action-btns">
-            <button class="btn-kakao" id="kakao-share" style="background-color: #fde047; color: #451a03; padding: 18px; border-radius: 16px; border: none; font-weight: 800; cursor: pointer;">
+            <button class="btn-kakao" id="kakao-share">
                 내 점심 메뉴 친구한테 말하기 💬
             </button>
             <a href="https://blog.naver.com/forgiven_77/224219719421" target="_blank" class="btn-blog">
