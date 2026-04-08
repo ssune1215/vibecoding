@@ -209,30 +209,35 @@ body {
 }
 .btnPrimary:hover { transform: translateY(-2px); }
 
-/* 하단 공유 액션 버튼 매핑 */
+/* 하단 공유 액션 버튼 매핑 (신규 프리미엄 규격으로 업데이트) */
 .btnYellow {
-    width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; 
+    width: 100%; height: 60px; border-radius: 18px; border: none; font-weight: 800; 
     background: #FEE500; color: #3A1D1D; cursor: pointer; font-size: 16px; transition: 0.2s; 
+    display: flex; align-items: center; justify-content: center; margin-bottom: 12px;
 }
-.btnYellow:hover { background: #e5cd00; transform: translateY(-1px); }
+.btnYellow:hover { background: #e5cd00; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(254, 229, 0, 0.3); }
 
 .btnBlue {
-    width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; 
+    width: 100%; height: 60px; border-radius: 18px; border: none; font-weight: 800; 
     background: #3b82f6; color: white; cursor: pointer; font-size: 16px; transition: 0.2s; 
+    display: flex; align-items: center; justify-content: center; margin-bottom: 12px;
+    text-decoration: none;
 }
-.btnBlue:hover { background: #2563eb; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3); }
+.btnBlue:hover { background: #2563eb; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3); }
 
 .btnRed {
-    width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; 
+    width: 100%; height: 60px; border-radius: 18px; border: none; font-weight: 800; 
     background: #ef4444; color: white; cursor: pointer; font-size: 16px; transition: 0.2s; 
+    display: flex; align-items: center; justify-content: center; margin-bottom: 12px;
 }
-.btnRed:hover { background: #dc2626; transform: translateY(-1px); box-shadow: 0 4px 10px rgba(239, 68, 68, 0.3); }
+.btnRed:hover { background: #dc2626; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3); }
 
 .btnGray {
-    width: 100%; padding: 16px; border-radius: 14px; border: none; font-weight: 800; 
+    width: 100%; height: 60px; border-radius: 18px; border: none; font-weight: 800; 
     background: #f1f5f9; color: #475569; cursor: pointer; font-size: 16px; transition: 0.2s; 
+    display: flex; align-items: center; justify-content: center; margin-bottom: 12px;
 }
-.btnGray:hover { background: #e2e8f0; transform: translateY(-1px); }
+.btnGray:hover { background: #e2e8f0; transform: translateY(-2px); }
 
 /* 질문 제목, 프로그레스 바 영역 등 매핑 */
 .qTitle { color: var(--main-color); font-size: 20px; font-weight: 800; margin-bottom: 20px; line-height: 1.4; word-break: keep-all; text-align: center; }

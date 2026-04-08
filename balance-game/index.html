@@ -93,27 +93,35 @@
             font-weight: 900;
         }
 
+        .btn-kakao,
+        .btn-blog,
+        .btn-retry,
         .next-btn {
-            display: none;
-            margin-top: 30px;
-            background: #000;
-            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             width: 100%;
-            padding: 18px;
-            border-radius: 16px;
+            height: 60px;
+            border-radius: 18px;
+            font-size: 16px;
             font-weight: 800;
+            text-decoration: none;
             border: none;
             cursor: pointer;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+            transition: all 0.2s;
+            box-sizing: border-box;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
-        .btn-blog-bottom {
-            display: block;
-            margin-top: 20px;
-            color: #64748b;
-            text-decoration: underline;
-            font-weight: 600;
-            font-size: 14px;
+        .btn-kakao { background-color: #fde047; color: #451a03; margin-top: 20px; }
+        .btn-blog { background-color: #22c55e; color: #fff; }
+        .btn-retry { background-color: #e2e8f0; color: #475569; }
+        .next-btn { background-color: #000; color: #fff; margin-top: 30px; }
+
+        .btn-kakao:hover, .btn-blog:hover, .btn-retry:hover, .next-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
         }
 
         .count-info {
@@ -152,14 +160,23 @@
             </div>
 
             <button class="next-btn" id="next-btn" onclick="nextQuestion()">다음 난제로 넘어가기 ➡️</button>
+            
+            <div id="result-btns" style="display: none; width: 100%;">
+                <button class="btn-kakao" id="kakao-share">
+                    💬 내 선택 결과 공유하기
+                </button>
+                <a href="https://blog.naver.com/forgiven_77/224219719421" target="_blank" class="btn-blog">
+                    👉 다른 테스트&운세 더 보기
+                </a>
+                <button class="btn-retry" onclick="location.reload()">🔄 처음부터 다시 하기</button>
+            </div>
         </div>
-        <a href="https://blog.naver.com/forgiven_77/224219719421" target="_blank" class="btn-blog-bottom">
-            👀 다른 킬링타임 컨텐츠 더 보기
-        </a>
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <script src="../assets/kakao-share.js" defer></script>
 <script>
     const QUESTIONS = [
         ["평생 라면만 먹기", "평생 치킨만 먹기"],
@@ -253,6 +270,7 @@
 
         // Button Reveal
         document.getElementById('next-btn').style.display = 'block';
+        document.getElementById('result-btns').style.display = 'block';
         
         // Optional Confetti for majority
         if ((choice === 'a' && perA > 50) || (choice === 'b' && perB > 50)) {

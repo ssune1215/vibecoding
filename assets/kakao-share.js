@@ -24,7 +24,7 @@ function shareKakao(customTitle, customDesc, customImg) {
     // 이미지 추출 (결과 이모지 또는 og:image)
     const img = customImg || window.location.origin + "/assets/share-thumb.jpg";
 
-    const blogUrl = 'https://blog.naver.com/PostView.naver?blogId=forgiven_77&logNo=224198478277';
+    const blogUrl = 'https://blog.naver.com/forgiven_77/224219719421';
 
     Kakao.Share.sendDefault({
         objectType: 'feed',
