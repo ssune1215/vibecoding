@@ -138,5 +138,10 @@
     "title": "🆚 무한 밸런스 게임",
     "path": "./balance-game/",
     "group": "game"
+  },
+  {
+    "title": "💘 연애 상대 유형 테스트",
+    "path": "./loveother/",
+    "group": "love"
   }
 ]
