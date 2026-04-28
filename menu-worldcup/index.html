@@ -349,7 +349,10 @@
         });
 
         // 카카오 공유 설정 (제목에 우승 메뉴 포함)
-        if (window.Kakao && Kakao.isInitialized()) {
+        if (window.Kakao) {
+            if (!Kakao.isInitialized()) {
+                Kakao.init('b30b6d088f5b3551adc2890111d071fc');
+            }
             Kakao.Share.createDefaultButton({
                 container: '#kakao-share',
                 objectType: 'feed',
