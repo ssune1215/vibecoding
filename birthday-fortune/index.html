@@ -316,6 +316,13 @@
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
     </style>
     <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.0/kakao.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
@@ -324,9 +331,17 @@
 
 <div class="mystic-container">
     <div class="card" id="main-content">
+        <!-- Cover Area -->
+        <div id="cover-area">
+            <div style="font-size: 70px; margin: 10px 0 20px; animation: float 3s ease-in-out infinite;">🔮✨</div>
+            <div class="mystic-title" style="font-size: 28px; margin-bottom: 15px;">오늘의 비밀 운세 리포트</div>
+            <p class="mystic-desc" style="font-size: 15px; margin-bottom: 40px; color: #cbd5e1; word-break: keep-all;">우주의 기운과 사주 오행을 분석하여<br>오늘 당신에게 다가올 거대한 운명의 흐름을 읽어드립니다.</p>
+            <button class="btn-reveal" onclick="showInputArea()">나의 운명 확인하기 🌌</button>
+        </div>
+
         <!-- Start Area -->
-        <div id="start-area">
-            <div class="mystic-title">비밀의 운세 리포트</div>
+        <div id="start-area" style="display: none;" class="fade-in">
+            <div class="mystic-title">기운의 열쇠 입력</div>
             <p class="mystic-desc">하늘에 새겨진 당신만의 암호를 해독합니다.<br>생년월일을 입력하여 오늘의 방대한 운세를 받아보세요.</p>
             
             <div class="input-group">
@@ -405,6 +420,11 @@
 
 <script>
     let userGender = 'male';
+
+    function showInputArea() {
+        document.getElementById('cover-area').style.display = 'none';
+        document.getElementById('start-area').style.display = 'block';
+    }
 
     function setGender(g, btn) {
         userGender = g;
